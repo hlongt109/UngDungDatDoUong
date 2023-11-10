@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "205988776399",
+    "project_id": "sipdrinkapplication",
+    "storage_bucket": "sipdrinkapplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205988776399:android:a2d86c6e1f28f6efa62aba",
+        "android_client_info": {
+          "package_name": "com.longthph30891.ungdungdatdouong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6G14V9F9hp9Cvgsp4UePCc-u8LP6srvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
