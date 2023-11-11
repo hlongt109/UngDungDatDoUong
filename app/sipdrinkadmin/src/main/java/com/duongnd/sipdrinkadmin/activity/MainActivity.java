@@ -1,8 +1,10 @@
-package com.duongnd.sipdrinkadmin;
+package com.duongnd.sipdrinkadmin.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.duongnd.sipdrinkadmin.R;
 
 public class MainActivity extends AppCompatActivity {
 

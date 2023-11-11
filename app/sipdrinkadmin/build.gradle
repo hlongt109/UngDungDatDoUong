@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.duongnd.sipdrinkadmin'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.duongnd.sipdrinkadmin"
@@ -26,6 +26,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 
