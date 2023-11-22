@@ -1,6 +1,8 @@
 package com.longthph30891.ungdungdatdouong.model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private String idDoUong, maLoai, tenDoUong, image, gia, moTa, trangThai;
 
     public Product() {

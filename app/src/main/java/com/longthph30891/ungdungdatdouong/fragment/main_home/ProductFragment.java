@@ -15,9 +15,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.adapter.ProductAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProductBinding;
+import com.longthph30891.ungdungdatdouong.interfaces.ProductInterface;
 import com.longthph30891.ungdungdatdouong.model.Category;
 import com.longthph30891.ungdungdatdouong.model.Product;
 
@@ -52,8 +54,13 @@ public class ProductFragment extends Fragment {
             getParentFragmentManager().popBackStack();
         });
 
+        productAdapter.clickProduct(new ProductInterface() {
 
-
+            @Override
+            public void clickProduct(Product product) {
+                changeToProductDetail(product);
+            }
+        });
 
         return binding.getRoot();
     }
@@ -79,5 +86,16 @@ public class ProductFragment extends Fragment {
                 Log.e("TAG", "onCancelled: " + error.getMessage());
             }
         });
+    }
+
+    private void changeToProductDetail(Product product) {
+        ProducDetailFragment productDetailFragment = new ProducDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("product", product);
+        productDetailFragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_main_view_customer, productDetailFragment)
+                .addToBackStack(ProducDetailFragment.class.getName())
+                .commit();
     }
 }

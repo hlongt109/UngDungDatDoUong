@@ -22,6 +22,7 @@ import com.longthph30891.ungdungdatdouong.adapter.CategoryHomeAdapter;
 import com.longthph30891.ungdungdatdouong.adapter.ProductAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentHomeBinding;
 import com.longthph30891.ungdungdatdouong.interfaces.CategoryInterface;
+import com.longthph30891.ungdungdatdouong.interfaces.ProductInterface;
 import com.longthph30891.ungdungdatdouong.model.Category;
 import com.longthph30891.ungdungdatdouong.model.Product;
 
@@ -66,8 +67,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        productAdapter.clickProduct(new ProductInterface() {
+            @Override
+            public void clickProduct(Product product) {
+                changeToProductDetail(product);
+            }
+        });
 
-        binding.shimmerViewProduct.startShimmerAnimation();
+
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -173,6 +180,18 @@ public class HomeFragment extends Fragment {
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_main_view_customer, productFragment)
                 .addToBackStack(ProductFragment.class.getName())
+                .commit();
+    }
+
+
+    private void changeToProductDetail(Product product) {
+        ProducDetailFragment productDetailFragment = new ProducDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("product", product);
+        productDetailFragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_main_view_customer, productDetailFragment)
+                .addToBackStack(ProducDetailFragment.class.getName())
                 .commit();
     }
 
