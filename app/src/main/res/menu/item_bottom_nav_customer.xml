@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_customer_home"
+        android:title="Trang chu"/>
+    <item
+        android:id="@+id/nav_customer_order"
+        android:title="Gio hang"/>
+
+    <item
+        android:id="@+id/nav_customer_profile"
+        android:title="Thong tin"/>
+</menu>
