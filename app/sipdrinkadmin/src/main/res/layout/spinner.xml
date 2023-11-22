@@ -8,5 +8,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_TenLoai_spinner"
         android:text="abc"
-        android:padding="5dp"/>
+        android:textSize="15sp"
+        android:textStyle="bold"/>
 </LinearLayout>

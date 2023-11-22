@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class CreateDrinkActivity extends AppCompatActivity {
     private ActivityCreateDrinkBinding binding;
     private String encodeImage;
@@ -50,6 +52,7 @@ public class CreateDrinkActivity extends AppCompatActivity {
         selectLoaiDoUong();
     }
     private void setListener() {
+        binding.rdoMoi.setChecked(true);
         binding.btnBack.setOnClickListener(view -> onBackPressed());
         binding.btnAdd.setOnClickListener(view -> {
             if(isValidDetails()){
@@ -68,39 +71,54 @@ public class CreateDrinkActivity extends AppCompatActivity {
         String id = databaseReference.push().getKey();
         String name = binding.edTen.getText().toString();
         String gia = binding.edGia.getText().toString();
+        String mota = binding.edMoTa.getText().toString();
         String trangThai = "";
         if(binding.rdoDangBan.isChecked()){
             trangThai = "DangBan";
         } else if (binding.rdoHetHang.isChecked()){
             trangThai = "HetHang";
+        } else if (binding.rdoMoi.isChecked()) {
+            trangThai = "Moi";
         }
-       if(id != null){
-           upload(id,maTheLoai,name,gia,trangThai,encodeImage,databaseReference);
+        if(id != null){
+           upload(id,maTheLoai,name,gia,trangThai,encodeImage,mota,databaseReference);
        }else {
-           Toast.makeText(this, "Không thể tạo key", Toast.LENGTH_SHORT).show();
+           new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                   .setTitleText("Oops...")
+                   .setContentText("Key error!")
+                   .show();
            resetFields();
        }
     }
-    private void upload(String id, String maTl, String ten, String gia, String trangThai ,String encodeImage,DatabaseReference databaseReference){
+    private void upload(String id, String maTl, String ten, String gia, String trangThai ,String encodeImage,String mota,DatabaseReference databaseReference){
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("DoUongImages").child(id + ".jpg");
         byte[] imageBytes = Base64.decode(encodeImage, Base64.DEFAULT);
         storageReference.putBytes(imageBytes)
                 .addOnSuccessListener(taskSnapshot -> {
                     storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                        DoUong doUong = new DoUong(id,maTl,ten,gia,trangThai,uri.toString());
-                        databaseReference.child(ten).setValue(doUong)
+                        DoUong doUong = new DoUong(id,maTl,ten,gia,trangThai,uri.toString(),mota);
+                        databaseReference.child(id).setValue(doUong)
                                 .addOnSuccessListener(unused -> {
-                                    Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                                    resetFields();
+                                    new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                                            .setTitleText("Good job!")
+                                            .setContentText("Successful!")
+                                            .show();
+                                    resetFields();;
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Lỗi lưu Realtime Database", Toast.LENGTH_SHORT).show();
+                                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                                            .setTitleText("Oops...")
+                                            .setContentText("Failed!")
+                                            .show();
                                     resetFields();
                                 });
                     });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Lỗi upload ảnh lên Storage", Toast.LENGTH_SHORT).show();
+                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Error uploading image!")
+                            .show();
                     resetFields();
                 });
     }
@@ -135,6 +153,7 @@ public class CreateDrinkActivity extends AppCompatActivity {
     private Boolean isValidDetails() {
         String ten = binding.edTen.getText().toString().trim();
         String gia = binding.edGia.getText().toString().trim();
+        String mota = binding.edMoTa.getText().toString().trim();
         if(encodeImage == null){
             Toast.makeText(this, "Chưa chọn ảnh", Toast.LENGTH_SHORT).show();
             return false;
@@ -144,21 +163,31 @@ public class CreateDrinkActivity extends AppCompatActivity {
         }else if (gia.isEmpty()){
             binding.tilGia.setError("Chưa nhập giá");
             return false;
-        }else {
+        } else if (mota.isEmpty()) {
+            binding.tilMoTaDrink.setError("Chưa nhập mô tả");
+            return false;
+        } else {
             binding.tilGia.setError(null);
             binding.tilNameDrink.setError(null);
             return true;
         }
     }
     private void resetFields(){
-
+        loading(false);
+        encodeImage = null;
+        binding.edTen.setText("");
+        binding.edGia.setText("");
+        binding.edMoTa.setText("");
+        binding.spinerLoai.setSelection(0);
+        binding.groupRdo.clearCheck();
+        binding.imageDrinkCreate.setImageResource(R.drawable.ic_image);
     }
     private String endcodeImage(Bitmap bitmap){
         int previewWidth = 150;
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
         Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap,previewWidth,previewHeight,false);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        previewBitmap.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
         byte[] bytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes,Base64.DEFAULT);
     }

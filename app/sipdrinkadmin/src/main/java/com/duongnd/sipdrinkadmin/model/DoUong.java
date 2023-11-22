@@ -9,6 +9,7 @@ public class DoUong {
     private String gia;
     private String trangThai;
     private String image;
+    private String mota;
 
     public String getIdDoUong() {
         return idDoUong;
@@ -64,16 +65,26 @@ public class DoUong {
         return this;
     }
 
+    public String getMota() {
+        return mota;
+    }
+
+    public DoUong setMota(String mota) {
+        this.mota = mota;
+        return this;
+    }
+
     public DoUong() {
     }
 
-    public DoUong(String idDoUong, String maLoai, String tenDoUong, String gia, String trangThai, String image) {
+    public DoUong(String idDoUong, String maLoai, String tenDoUong, String gia, String trangThai, String image,String mota) {
         this.idDoUong = idDoUong;
         this.maLoai = maLoai;
         this.tenDoUong = tenDoUong;
         this.gia = gia;
         this.trangThai = trangThai;
         this.image = image;
+        this.mota =mota;
     }
     public HashMap<String,Object> convertHashMap(){
         HashMap<String,Object> DoUong = new HashMap<>();
@@ -83,6 +94,7 @@ public class DoUong {
         DoUong.put("gia",gia);
         DoUong.put("trangThai",trangThai);
         DoUong.put("image",image);
+        DoUong.put("mota",mota);
         return DoUong;
     }
 }

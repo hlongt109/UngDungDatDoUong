@@ -14,6 +14,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
+import com.duongnd.sipdrinkadmin.R;
 import com.duongnd.sipdrinkadmin.databinding.ActivityCreateTypeDrinkBinding;
 import com.duongnd.sipdrinkadmin.model.LoaiDoUong;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.UUID;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class CreateTypeDrinkActivity extends AppCompatActivity {
     private ActivityCreateTypeDrinkBinding binding;
@@ -62,7 +65,10 @@ public class CreateTypeDrinkActivity extends AppCompatActivity {
         if(id != null){
             uploadImageToStorage(id,name,encodeImage,databaseReference);
         }else {
-            Toast.makeText(this, "Không thể tạo key", Toast.LENGTH_SHORT).show();
+            new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("Oops...")
+                    .setContentText("Key error!")
+                    .show();
             resetFields();
         }
 
@@ -74,19 +80,28 @@ public class CreateTypeDrinkActivity extends AppCompatActivity {
                 .addOnSuccessListener(taskSnapshot -> {
                     storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
                         LoaiDoUong loaiDoUong = new LoaiDoUong(id, name, uri.toString());
-                        databaseReference.child(name).setValue(loaiDoUong)
+                        databaseReference.child(id).setValue(loaiDoUong)
                                 .addOnSuccessListener(unused -> {
-                                    Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                    new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                                            .setTitleText("Good job!")
+                                            .setContentText("Successful!")
+                                            .show();
                                     resetFields();
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Lỗi lưu Realtime Database", Toast.LENGTH_SHORT).show();
+                                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                                            .setTitleText("Oops...")
+                                            .setContentText("Failed!")
+                                            .show();
                                     resetFields();
                                 });
                     });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Lỗi upload ảnh lên Storage", Toast.LENGTH_SHORT).show();
+                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Error uploading image!")
+                            .show();
                     resetFields();
                 });
     }
@@ -107,7 +122,7 @@ public class CreateTypeDrinkActivity extends AppCompatActivity {
         loading(false);
         encodeImage = null;
         binding.edTenLoai.setText("");
-        binding.imageLoaiCreate.setImageBitmap(null);
+        binding.imageLoaiCreate.setImageResource(R.drawable.ic_image);
     }
 
     private void loading(Boolean isLoading) {
@@ -125,7 +140,7 @@ public class CreateTypeDrinkActivity extends AppCompatActivity {
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
         Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] bytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
