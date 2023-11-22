@@ -35,4 +35,7 @@ public class PersonalFragment extends Fragment {
         });
         return binding.getRoot();
     }
+    public void setData(){
+
+    }
 }

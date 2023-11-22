@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
     tools:context=".fragment.StatisticFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardOrderConfirm"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Chờ xác nhận"
+            android:layout_marginVertical="8dp"
+            android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/tvWaitForConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardDelivering"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Đang giao"
+            android:layout_marginVertical="8dp"
+            android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/tvDelivering"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+    </androidx.cardview.widget.CardView>
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/cardOrderConfirm"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_height="match_parent"/>
+</RelativeLayout>

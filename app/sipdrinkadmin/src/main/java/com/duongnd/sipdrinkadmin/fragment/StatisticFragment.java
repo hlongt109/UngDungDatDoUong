@@ -1,5 +1,6 @@
 package com.duongnd.sipdrinkadmin.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,58 +10,38 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.databinding.FragmentStatisticBinding;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StatisticFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class StatisticFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public StatisticFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StatisticFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StatisticFragment newInstance(String param1, String param2) {
-        StatisticFragment fragment = new StatisticFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    public StatisticFragment() {}
+    private FragmentStatisticBinding binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_statistic, container, false);
+        binding = FragmentStatisticBinding.inflate(inflater,container,false);
+        ArrayList<BarEntry> vistors = new ArrayList<>();
+        vistors.add(new BarEntry(2018,420));
+        vistors.add(new BarEntry(2019,455));
+        vistors.add(new BarEntry(2020,505));
+        vistors.add(new BarEntry(2021,670));
+        vistors.add(new BarEntry(2022,420));
+        vistors.add(new BarEntry(2023,888));
+
+        BarDataSet barDataSet = new BarDataSet(vistors,"Visistors");
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16f);
+
+        BarData barData = new BarData(barDataSet);
+        binding.barChart.setFitBars(true);
+        binding.barChart.setData(barData);
+
+        return binding.getRoot();
     }
 }

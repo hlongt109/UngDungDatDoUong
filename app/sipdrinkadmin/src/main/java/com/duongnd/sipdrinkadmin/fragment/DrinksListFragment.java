@@ -27,9 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetUpdateDrink;
 import com.duongnd.sipdrinkadmin.R;
-import com.duongnd.sipdrinkadmin.Utilities.OnClickDrinkInterface;
 import com.duongnd.sipdrinkadmin.adapter.DoUongAdapter;
 import com.duongnd.sipdrinkadmin.adapter.ListTyeDrinkAdapter;
 import com.duongnd.sipdrinkadmin.dao.LoaiDoUongDAO;
@@ -121,8 +119,6 @@ public class DrinksListFragment extends Fragment {
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             if (menuItem.getItemId() == R.id.nav_Update) {
                 openDiaLogUpdate(doUong);
-//                BottomSheetUpdateDrink bottomSheetUpdateDrink = new BottomSheetUpdateDrink();
-//                bottomSheetUpdateDrink.show(getActivity().getSupportFragmentManager(), "BottomSheetUpdateDrink");
                 return true;
             } else if (menuItem.getItemId() == R.id.nav_Delete) {
                 openDiaLogDelete(doUong);
