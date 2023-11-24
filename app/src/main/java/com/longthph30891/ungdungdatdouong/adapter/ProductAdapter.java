@@ -53,12 +53,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductAdapter.ProductViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.txtNameProduct.setText(product.getTenDoUong());
-        holder.txtPriceProduct.setText(product.getGia());
 
-//        Locale locale = new Locale("vi", "VN");
-//        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-//        String price = numberFormat.format(product.getGia());
-//        holder.txtPriceProduct.setText(price);
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String price = numberFormat.format(product.getGia());
+        holder.txtPriceProduct.setText(price);
 
 
         Picasso.get().load(product.getImage()).into(holder.imgProduct, new Callback() {

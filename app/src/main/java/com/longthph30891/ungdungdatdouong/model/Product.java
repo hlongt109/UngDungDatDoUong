@@ -3,19 +3,20 @@ package com.longthph30891.ungdungdatdouong.model;
 import java.io.Serializable;
 
 public class Product implements Serializable {
-    private String idDoUong, maLoai, tenDoUong, image, gia, moTa, trangThai;
+    private String idDoUong, maLoai, tenDoUong, image, moTa, trangThai;
+    private double gia;
 
     public Product() {
     }
 
-    public Product(String idDoUong, String maLoai, String tenDoUong, String image, String gia, String moTa, String trangThai) {
+    public Product(String idDoUong, String maLoai, String tenDoUong, String image, String moTa, String trangThai, double gia) {
         this.idDoUong = idDoUong;
         this.maLoai = maLoai;
         this.tenDoUong = tenDoUong;
         this.image = image;
-        this.gia = gia;
         this.moTa = moTa;
         this.trangThai = trangThai;
+        this.gia = gia;
     }
 
     public String getIdDoUong() {
@@ -50,14 +51,6 @@ public class Product implements Serializable {
         this.image = image;
     }
 
-    public String getGia() {
-        return gia;
-    }
-
-    public void setGia(String gia) {
-        this.gia = gia;
-    }
-
     public String getMoTa() {
         return moTa;
     }
@@ -74,6 +67,14 @@ public class Product implements Serializable {
         this.trangThai = trangThai;
     }
 
+    public double getGia() {
+        return gia;
+    }
+
+    public void setGia(double gia) {
+        this.gia = gia;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -81,9 +82,9 @@ public class Product implements Serializable {
                 ", maLoai='" + maLoai + '\'' +
                 ", tenDoUong='" + tenDoUong + '\'' +
                 ", image='" + image + '\'' +
-                ", gia='" + gia + '\'' +
                 ", moTa='" + moTa + '\'' +
                 ", trangThai='" + trangThai + '\'' +
+                ", gia=" + gia +
                 '}';
     }
 }

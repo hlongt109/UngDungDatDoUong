@@ -128,8 +128,6 @@ public class HomeFragment extends Fragment {
                 productList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
-
-
                     long endTime = System.currentTimeMillis();
                     long getTime = endTime - startTime;
                     timeLoadingProduct = (int) getTime;

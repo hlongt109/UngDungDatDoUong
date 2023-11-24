@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.databinding.ActivityMainBinding;
+import com.longthph30891.ungdungdatdouong.fragment.main_home.CartFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (item.getItemId() == R.id.nav_customer_home) {
                 replaceFragment(new HomeFragment());
-            } else if (item.getItemId() == R.id.nav_customer_order) {
-                replaceFragment(new HomeFragment());
+            } else if (item.getItemId() == R.id.nav_customer_cart) {
+                replaceFragment(new CartFragment());
             } else if (item.getItemId() == R.id.nav_customer_profile) {
                 replaceFragment(new HomeFragment());
             }
