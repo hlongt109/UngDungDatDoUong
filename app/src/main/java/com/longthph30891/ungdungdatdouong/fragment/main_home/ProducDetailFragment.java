@@ -1,17 +1,22 @@
 package com.longthph30891.ungdungdatdouong.fragment.main_home;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.longthph30891.ungdungdatdouong.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProducDetailBinding;
+import com.longthph30891.ungdungdatdouong.model.Product;
+import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class ProducDetailFragment extends Fragment {
 
@@ -30,6 +35,15 @@ public class ProducDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Product product = (Product) bundle.get("product");
+            if (product != null) {
+                binding.toolbar.setTitle(product.getTenDoUong());
+                Picasso.get().load(product.getImage()).into(binding.imgProductDetail); //Picasso
+            }
+        }
 
 
     }

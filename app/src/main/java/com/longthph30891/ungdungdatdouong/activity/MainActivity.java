@@ -20,6 +20,21 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
+
+
+        binding.bottomNavCustomer.setOnItemSelectedListener(item -> {
+
+            if (item.getItemId() == R.id.nav_customer_home) {
+                replaceFragment(new HomeFragment());
+            } else if (item.getItemId() == R.id.nav_customer_order) {
+                replaceFragment(new HomeFragment());
+            } else if (item.getItemId() == R.id.nav_customer_profile) {
+                replaceFragment(new HomeFragment());
+            }
+
+            return true;
+        });
+
     }
 
     private void replaceFragment(Fragment fragment) {

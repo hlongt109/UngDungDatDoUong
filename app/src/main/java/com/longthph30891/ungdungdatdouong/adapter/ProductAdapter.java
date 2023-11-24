@@ -20,7 +20,9 @@ import com.longthph30891.ungdungdatdouong.model.Product;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
@@ -52,6 +54,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Product product = productList.get(position);
         holder.txtNameProduct.setText(product.getTenDoUong());
         holder.txtPriceProduct.setText(product.getGia());
+
+//        Locale locale = new Locale("vi", "VN");
+//        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+//        String price = numberFormat.format(product.getGia());
+//        holder.txtPriceProduct.setText(price);
 
 
         Picasso.get().load(product.getImage()).into(holder.imgProduct, new Callback() {
