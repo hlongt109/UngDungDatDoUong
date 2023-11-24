@@ -16,12 +16,6 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SplashActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.LoginRegisterActivity"
             android:exported="true">
             <intent-filter>
