@@ -19,15 +19,12 @@ import com.duongnd.sipdrinkadmin.databinding.ActivityCreateTypeDrinkBinding;
 import com.duongnd.sipdrinkadmin.model.LoaiDoUong;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.UUID;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 

@@ -50,6 +50,7 @@ public class LoaiDoUongAdapter extends RecyclerView.Adapter<LoaiDoUongAdapter.vi
         holder.tvTenLoai.setText(list.get(position).getTypeName());
         Glide.with(context).load(loaiDoUong.getTypeImage())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .error(R.drawable.ic_image)
                 .into(holder.imgLoai).getRequest();
         holder.itemView.setOnClickListener(view -> {
             showListDoUong(loaiDoUong);

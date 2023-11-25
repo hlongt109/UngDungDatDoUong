@@ -68,7 +68,7 @@ public class DoUongAdapter extends BaseAdapter {
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(img);
         tvTen.setText(list.get(i).getTenDoUong());
-        tvGia.setText(list.get(i).getGia());
+        tvGia.setText(String.valueOf(list.get(i).getGia()));
         if(list.get(i).getTrangThai().equals("DangBan")){
             tvTrangThai.setText("Còn sản phẩm");
             tvTrangThai.setTextColor(ContextCompat.getColor(context,R.color.green));
@@ -86,7 +86,7 @@ public class DoUongAdapter extends BaseAdapter {
             bundle.putString("id",doUong.getIdDoUong());
             bundle.putString("name",doUong.getTenDoUong());
             bundle.putString("idType",doUong.getMaLoai());
-            bundle.putString("price",doUong.getGia());
+            bundle.putDouble("price",doUong.getGia());
             bundle.putString("status",doUong.getTrangThai());
             bundle.putString("image",doUong.getImage());
             drinksListFragment.setArguments(bundle);

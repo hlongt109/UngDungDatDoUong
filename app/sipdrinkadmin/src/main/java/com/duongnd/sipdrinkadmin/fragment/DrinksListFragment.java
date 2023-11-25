@@ -195,7 +195,7 @@ public class DrinksListFragment extends Fragment {
                 if (encodeImage == null) {
                     Map<String, Object> map = new HashMap<>();
                     map.put("tenDoUong",ten);
-                    map.put("gia",gia);
+                    map.put("gia",Double.parseDouble(gia));
                     map.put("mota",mota);
                     map.put("maLoai",selectedTypeId);
                     map.put("trangThai",tthai);
@@ -225,7 +225,7 @@ public class DrinksListFragment extends Fragment {
                                 storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
                                     Map<String, Object> map = new HashMap<>();
                                     map.put("tenDoUong",ten);
-                                    map.put("gia",gia);
+                                    map.put("gia",Double.parseDouble(gia));
                                     map.put("mota",mota);
                                     map.put("maLoai",selectedTypeId);
                                     map.put("trangThai",tthai);
@@ -270,12 +270,14 @@ public class DrinksListFragment extends Fragment {
         Glide.with(getContext()).load(doUong.getImage())
                 .diskCacheStrategy(DiskCacheStrategy.DATA).into(bindingUpdate.imageDrinkUpdate);
         bindingUpdate.edTen.setText(doUong.getTenDoUong());
-        bindingUpdate.edGia.setText(doUong.getGia());
+        bindingUpdate.edGia.setText(String.valueOf(doUong.getGia()));
         bindingUpdate.edMoTa.setText(doUong.getMota());
         if (doUong.getTrangThai().equals("DangBan")) {
             bindingUpdate.rdoDangBan.setChecked(true);
         } else if (doUong.getTrangThai().equals("HetHang")) {
             bindingUpdate.rdoHetHang.setChecked(true);
+        } else if (doUong.getTrangThai().equals("Moi")) {
+            bindingUpdate.rdoMoi.setChecked(true);
         }
         listTypeDrinks = new ArrayList<>();
         dao = new LoaiDoUongDAO();
@@ -304,6 +306,16 @@ public class DrinksListFragment extends Fragment {
             binding.tilMoTa.setError("Không để trống mô tả");
             return false;
         } else {
+            try {
+                int price = Integer.parseInt(binding.edGia.getText().toString());
+                if(price < 0){
+                    binding.tilGia.setError("Giá phải lớn hơn 0");
+                    return false;
+                }
+            }catch (NumberFormatException e){
+                binding.tilGia.setError("Giá phải là số");
+                return false;
+            }
             binding.tilNameDrink.setError(null);
             binding.tilGia.setError(null);
             binding.tilMoTa.setError(null);

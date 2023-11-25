@@ -96,7 +96,7 @@ public class CreateDrinkActivity extends AppCompatActivity {
         storageReference.putBytes(imageBytes)
                 .addOnSuccessListener(taskSnapshot -> {
                     storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                        DoUong doUong = new DoUong(id,maTl,ten,gia,trangThai,uri.toString(),mota);
+                        DoUong doUong = new DoUong(id,maTl,ten,Integer.parseInt(gia),trangThai,uri.toString(),mota);
                         databaseReference.child(id).setValue(doUong)
                                 .addOnSuccessListener(unused -> {
                                     new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
@@ -167,6 +167,16 @@ public class CreateDrinkActivity extends AppCompatActivity {
             binding.tilMoTaDrink.setError("Chưa nhập mô tả");
             return false;
         } else {
+            try {
+                int price = Integer.parseInt(binding.edGia.getText().toString());
+                if(price < 0){
+                    binding.tilGia.setError("Giá phải lớn hơn 0");
+                    return false;
+                }
+            }catch (NumberFormatException e){
+                binding.tilGia.setError("Giá phải là số");
+                return false;
+            }
             binding.tilGia.setError(null);
             binding.tilNameDrink.setError(null);
             return true;

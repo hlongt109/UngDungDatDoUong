@@ -6,7 +6,7 @@ public class DoUong {
     private String idDoUong;
     private String maLoai;
     private String tenDoUong;
-    private String gia;
+    private double gia;
     private String trangThai;
     private String image;
     private String mota;
@@ -38,11 +38,11 @@ public class DoUong {
         return this;
     }
 
-    public String getGia() {
+    public double getGia() {
         return gia;
     }
 
-    public DoUong setGia(String gia) {
+    public DoUong setGia(double gia) {
         this.gia = gia;
         return this;
     }
@@ -77,7 +77,7 @@ public class DoUong {
     public DoUong() {
     }
 
-    public DoUong(String idDoUong, String maLoai, String tenDoUong, String gia, String trangThai, String image,String mota) {
+    public DoUong(String idDoUong, String maLoai, String tenDoUong, double gia, String trangThai, String image,String mota) {
         this.idDoUong = idDoUong;
         this.maLoai = maLoai;
         this.tenDoUong = tenDoUong;
