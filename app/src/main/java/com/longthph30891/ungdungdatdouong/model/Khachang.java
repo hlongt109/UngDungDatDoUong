@@ -1,17 +1,53 @@
 package com.longthph30891.ungdungdatdouong.model;
 
 public class Khachang {
-    String Id, UserName, Password, FullName, email;
+    String Id, UserName, Password, FullName, email, img, date, phone, diachi;
 
     public Khachang() {
     }
 
-    public Khachang(String id, String userName, String password, String fullName, String email) {
+    public Khachang(String id, String userName, String password, String fullName, String email, String img, String date, String phone, String diachi) {
         Id = id;
         UserName = userName;
         Password = password;
         FullName = fullName;
         this.email = email;
+        this.img = img;
+        this.date = date;
+        this.phone = phone;
+        this.diachi = diachi;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDiachi() {
+        return diachi;
+    }
+
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getEmail() {

@@ -164,14 +164,11 @@ public class RegisterFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     String Id = auth.getCurrentUser().getUid();
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("userName", userStr);
-                    map.put("email", emailStr);
-                    map.put("fullName", nameStr);
-                    map.put("password", passStr);
-                    map.put("userId", Id);
 
-                    reference.child(Id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    Khachang khachang = new Khachang(Id, userStr, passStr, nameStr, emailStr, "", "", "", "");
+
+
+                    reference.child(Id).setValue(khachang).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();

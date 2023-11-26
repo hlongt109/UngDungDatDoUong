@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     android:scrollbars="vertical"
     tools:context=".fragment.LoginFragment">
@@ -84,6 +85,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/bg_edit"
                     android:fontFamily="@font/sen"
+                    android:inputType="textEmailAddress"
                     android:hint="example"
                     android:maxLines="1"
                     android:paddingStart="20dp"
@@ -103,41 +105,43 @@
                     android:textAllCaps="true"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/edt_login_password"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="62dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/txt_login_password"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
+                    android:id="@+id/input"
+                    app:passwordToggleEnabled="true"
+                    app:hintEnabled="false"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_edit"
-                    android:drawableEnd="@drawable/ic_visibility"
-                    android:fontFamily="@font/sen"
-                    android:hint="*******"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:textColor="@color/black"
-                    tools:ignore="RtlSymmetry" />
+                    app:passwordToggleDrawable="@drawable/ic_visibility">
+                    <EditText
+                        android:inputType="textPassword"
+                        android:hint="Mật khẩu . . ."
+                        android:id="@+id/edt_login_password"
+                        android:drawablePadding="6dp"
+                        android:paddingHorizontal="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_edit"
+                        android:fontFamily="@font/sen"
+                        tools:ignore="RtlSymmetry"
+                        android:textColorHint="@color/cardview_dark_background" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
                 <LinearLayout
                     android:id="@+id/layout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/edt_login_password"
+                    android:layout_below="@id/input"
                     android:layout_marginTop="25dp"
                     android:orientation="horizontal">
 
-                    <CheckBox
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/sen"
-                        android:text="Ghi nhớ" />
 
                     <TextView
+                        android:id="@+id/txtforgotPass"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sen"

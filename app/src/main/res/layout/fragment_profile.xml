@@ -5,94 +5,103 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.ProfileFragment">
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_next_2"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_centerInParent="true"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="30dp"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_avata"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:src="@color/cardview_dark_background"
             app:cardCornerRadius="20dp"
-            app:cardElevation="5dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_gravity="center">
-                <ImageView
-                    android:id="@+id/carImg"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_visibility"/>
-            </LinearLayout>
+            app:cardElevation="5dp" />
 
-        </com.google.android.material.card.MaterialCardView>
         <EditText
             android:id="@+id/txt_name"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bg_edit"
             android:hint="Name"
-            android:layout_marginTop="20dp"
-            android:singleLine="true"
-            android:paddingStart="20dp"/>
+            android:paddingStart="20dp"
+            android:singleLine="true" />
+
         <EditText
             android:id="@+id/txt_username"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bg_edit"
             android:hint="user"
-            android:layout_marginTop="20dp"
-            android:singleLine="true"
-            android:paddingStart="20dp"/>
+            android:paddingStart="20dp"
+            android:singleLine="true" />
+
         <EditText
             android:id="@+id/txt_date"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bg_edit"
             android:hint="Date"
-            android:layout_marginTop="20dp"
-            android:singleLine="true"
-            android:paddingStart="20dp"/>
+            android:paddingStart="20dp"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/txt_phone"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bg_edit"
             android:hint="Sđt"
-            android:layout_marginTop="20dp"
-            android:singleLine="true"
-            android:paddingStart="20dp"/>
+            android:paddingStart="20dp"
+            android:singleLine="true" />
 
-        <RelativeLayout
+        <EditText
+            android:id="@+id/txt_email"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/bg_oval"
-            android:layout_marginTop="10dp">
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edit"
+            android:hint="Email"
+            android:paddingStart="20dp"
+            android:singleLine="true" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btnDoiPass"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nhập điạ chỉ của bạn"
-                android:textSize="10pt"
-                android:layout_centerVertical="true"
-                android:paddingStart="20dp"/>
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:padding="10dp"
+                android:text="Đổi Mật Khẩu "/>
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp" />
-        </RelativeLayout>
+                android:src="@drawable/ic_next_2"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"/>
+        </androidx.cardview.widget.CardView>
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/UploadInfo"
@@ -100,10 +109,10 @@
             android:layout_height="40dp"
             android:layout_margin="20dp"
             android:background="@drawable/bg_button"
+            android:backgroundTint="@color/my_light_primary"
             android:text="Upload"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:backgroundTint="@color/my_light_primary"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 </RelativeLayout>

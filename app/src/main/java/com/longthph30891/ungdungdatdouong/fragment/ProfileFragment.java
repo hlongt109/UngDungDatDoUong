@@ -1,83 +1,124 @@
 package com.longthph30891.ungdungdatdouong.fragment;
 
-import android.Manifest;
+
 import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.Firebase;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.longthph30891.ungdungdatdouong.R;
-import com.longthph30891.ungdungdatdouong.databinding.FragmentLoginBinding;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProfileBinding;
-import com.longthph30891.ungdungdatdouong.model.Profile;
+import com.longthph30891.ungdungdatdouong.model.Khachang;
 
-import org.w3c.dom.Document;
+import java.util.HashMap;
 
-import java.io.IOException;
 
 public class ProfileFragment extends Fragment {
-
-    private MaterialCardView Selectphoto;
-    private Uri ImageUri;
-    private Bitmap bitmap;
-    private FirebaseStorage storage;
-    private FirebaseFirestore firebaseStorage;
-    private StorageReference mStoragref;
-    private String PhotoUrl;
-
-    private FirebaseAuth auth;
-
-
     FragmentProfileBinding binding;
+    FirebaseAuth auth;
+    FirebaseUser user;
+    DatabaseReference reference,databaseReference;
+    ProgressDialog dialog;
+    Uri ImgUri;
+    String nameStr, dateStr, phoneStr;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        dialog = new ProgressDialog(getContext());
+        dialog.setTitle("Upload...");
+        dialog.setCancelable(false);
+
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
 
-        firebaseStorage = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
-        mStoragref = storage.getReference();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Khachang khachang = snapshot.getValue(Khachang.class);
+                binding.txtName.setText(khachang.getFullName());
+                binding.txtUsername.setText(khachang.getUserName());
+                binding.txtPhone.setText(khachang.getPhone());
+                binding.txtDate.setText(khachang.getDate());
+                binding.txtEmail.setText(khachang.getEmail());
+
+                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
 
 
-        binding.materialCardView.setOnClickListener(view -> {
+            }
 
-            CheckStoragaPernission();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
         });
+
+
+        binding.imgAvata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PicikImage();
+
+            }
+        });
+
         binding.UploadInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UploadImage();
+                UploadPostFb();
+            }
+        });
+        binding.btnDoiPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPassDialog();
             }
         });
 
@@ -85,104 +126,135 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void CheckStoragaPernission() {
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            }else {
-                PickImgFromGallery();
+    private void showPassDialog(){
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_update_pass, null);
+        EditText passold = view.findViewById(R.id.edt_pass_old);
+        EditText passnew = view.findViewById(R.id.edt_pass_new);
+        Button btnupdate = view.findViewById(R.id.btn_update);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(view);
+
+        AlertDialog dialogPass = builder.create();
+        dialogPass.show();
+        btnupdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String oldPass = passold.getText().toString().trim();
+                String newPass = passnew.getText().toString().trim();
+                if(TextUtils.isEmpty(oldPass)){
+                    Toast.makeText(getContext(), "Vui lòng nhập mật khẩu cũ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!newPass.matches("^(?=.*[A-Z]).{6,}$")){
+                    Toast.makeText(getContext(), "Mật khẩu phải có 5 ký tự trở lên, Ít nhất 1 chữ in hoa và 1 chữ thường !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dialogPass.dismiss();
+                updatePass(oldPass, newPass);
             }
-        }else {
-            PickImgFromGallery();
-        }
+        });
     }
 
-    private void PickImgFromGallery() {
-        Intent intent = new Intent();
-        intent.setType("img/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+    private void updatePass(String oldPass, String newPass) {
+        dialog.show();
+        FirebaseUser user1 = auth.getCurrentUser();
+        AuthCredential credential = EmailAuthProvider.getCredential(user1.getEmail(), oldPass);
+        user1.reauthenticate(credential)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        user1.updatePassword(newPass)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                                        HashMap<String,Object> map = new HashMap<>();
+                                        map.put("password", newPass);
+                                        databaseReference.updateChildren(map);
 
-        launcher.launch(intent);
+                                        dialog.dismiss();
+                                        Toast.makeText(getContext(), "Đổi mật khẩu thành công ", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        dialog.dismiss();
+                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.dismiss();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
-    ActivityResultLauncher<Intent> launcher
-            = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                        if(result.getResultCode() == Activity.RESULT_OK){
-                            Intent data = result.getData();
-                            if(data != null && data.getData() != null){
-                                ImageUri = data.getData();
 
-                                try {
-                                    bitmap = MediaStore.Images.Media.getBitmap(
-                                            getActivity().getContentResolver(),
-                                            ImageUri
-                                    );
-                                }catch (IOException e){
-                                    e.printStackTrace();
-                                }
+    private void UploadPostFb() {
+        dialog.dismiss();
+        nameStr = binding.txtName.getEditableText().toString();
+        dateStr = binding.txtDate.getText().toString();
+        phoneStr= binding.txtPhone.getText().toString();
 
-                                if(ImageUri != null){
-                                    binding.carImg.setImageBitmap(bitmap);
-                                }
+        String file = "Photo/" + "users" + user.getUid();
 
-                            }
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(file);
+        storageReference.putFile(ImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                task.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String img = uri.toString();
+                        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                        HashMap<String,Object> map = new HashMap<>();
+                        map.put("img",img);
+                        map.put("fullName", nameStr);
+                        map.put("date", dateStr);
+                        map.put("phone", phoneStr);
+                        databaseReference.updateChildren(map);
 
-                        }
+                    }
+                });
+            }
+        });
+    }
+
+    private void PicikImage() {
+
+        ImagePicker.with(this)
+                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .createIntent(intent -> {
+                    activityResultLauncher.launch(intent);
+                    return null;
+
+                });
+    }
+
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result ->{
+                Intent data = result.getData();
+                if(data != null &&  result.getResultCode() == Activity.RESULT_OK){
+                    ImgUri = data.getData();
+                    binding.imgAvata.setImageURI(ImgUri);
+                }else {
+                    Toast.makeText(requireActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+                }
             }
     );
 
-    private void  UploadImage(){
-        if(ImageUri != null){
-            final  StorageReference myRef = mStoragref.child("photo/" + ImageUri.getLastPathSegment());
-            myRef.putFile(ImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    myRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            if (uri != null){
-                                PhotoUrl = uri.toString();
-                            }
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
-    }
-
-    private void UploadCarInfor(){
-        String name = binding.txtName.getText().toString().trim();
-        String user = binding.txtUsername.getText().toString().trim();
-        String date = binding.txtDate.getText().toString().trim();
-        String phone = binding.txtPhone.getText().toString().trim();
-        if(TextUtils.isEmpty(name) && TextUtils.isEmpty(user) && TextUtils.isEmpty(date) && TextUtils.isEmpty(phone)){
-            Toast.makeText(getContext(), "ko dc ể trống", Toast.LENGTH_SHORT).show();
-        }else {
-            DocumentReference documentReference = firebaseStorage.collection("CarInfo").document();
-
-            Profile profile = new Profile(name, user, date, phone, PhotoUrl);
 
 
-
-        }
-
-    }
 
 
 }

@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.databinding.ActivityMainBinding;
+import com.longthph30891.ungdungdatdouong.fragment.LoginFragment;
+import com.longthph30891.ungdungdatdouong.fragment.PersonalFragment;
+import com.longthph30891.ungdungdatdouong.fragment.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -18,17 +22,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_main);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_mani, new PersonalFragment());
+        transaction.commit();
 
-        binding.thoat.setOnClickListener(view -> {
-            auth.signOut();
-            Intent intent = new Intent(this, LoginRegisterActivity.class);
-            startActivity(intent);
 
-            // Hiển thị thông báo đăng xuất
-            Toast.makeText(MainActivity.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
-
-        });
+//        binding = ActivityMainBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.fragment_container_view_admin, new LoginFragment());
+//        transaction.commit();
+//
+//        binding.thoat.setOnClickListener(view -> {
+//            auth.signOut();
+//            Intent intent = new Intent(this, LoginRegisterActivity.class);
+//            startActivity(intent);
+//
+//            // Hiển thị thông báo đăng xuất
+//            Toast.makeText(MainActivity.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+//
+//        });
     }
 }
