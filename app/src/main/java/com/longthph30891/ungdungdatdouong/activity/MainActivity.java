@@ -27,21 +27,5 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_mani, new PersonalFragment());
         transaction.commit();
 
-
-//        binding = ActivityMainBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.replace(R.id.fragment_container_view_admin, new LoginFragment());
-//        transaction.commit();
-//
-//        binding.thoat.setOnClickListener(view -> {
-//            auth.signOut();
-//            Intent intent = new Intent(this, LoginRegisterActivity.class);
-//            startActivity(intent);
-//
-//            // Hiển thị thông báo đăng xuất
-//            Toast.makeText(MainActivity.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
-//
-//        });
     }
 }

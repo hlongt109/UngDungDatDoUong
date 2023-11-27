@@ -1,4 +1,4 @@
-package com.longthph30891.ungdungdatdouong.fragment;
+package com.duongnd.sipdrinkadmin.fragment;
 
 
 import android.app.Activity;
@@ -7,14 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +15,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
+import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.databinding.FragmentProfileBinding;
+import com.duongnd.sipdrinkadmin.model.Admin;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,13 +38,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.longthph30891.ungdungdatdouong.R;
-import com.longthph30891.ungdungdatdouong.databinding.FragmentProfileBinding;
-import com.longthph30891.ungdungdatdouong.model.Khachang;
+
 
 import java.util.HashMap;
 
@@ -77,19 +73,19 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Khachang khachang = snapshot.getValue(Khachang.class);
-                binding.txtName.setText(khachang.getFullName());
-                binding.txtUsername.setText(khachang.getUserName());
-                binding.txtPhone.setText(khachang.getPhone());
-                binding.txtDate.setText(khachang.getDate());
-                binding.txtEmail.setText(khachang.getEmail());
+                Admin admin = snapshot.getValue(Admin.class);
+                binding.txtName.setText(admin.getFullName());
+                binding.txtUsername.setText(admin.getUserName());
+                binding.txtPhone.setText(admin.getPhone());
+                binding.txtDate.setText(admin.getDate());
+                binding.txtEmail.setText(admin.getEmail());
 
-                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
+                Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
 
 
             }
@@ -121,10 +117,11 @@ public class ProfileFragment extends Fragment {
                 showPassDialog();
             }
         });
-        binding.imgBack.setOnClickListener(new View.OnClickListener() {
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
+
             }
         });
 
@@ -174,7 +171,7 @@ public class ProfileFragment extends Fragment {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                                        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
                                         HashMap<String,Object> map = new HashMap<>();
                                         map.put("password", newPass);
                                         databaseReference.updateChildren(map);
@@ -208,7 +205,7 @@ public class ProfileFragment extends Fragment {
         dateStr = binding.txtDate.getText().toString();
         phoneStr= binding.txtPhone.getText().toString();
 
-        String file = "Photo/" + "users" + user.getUid();
+        String file = "Photo/" + "admin" + user.getUid();
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(file);
         storageReference.putFile(ImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -219,7 +216,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         String img = uri.toString();
-                        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
                         HashMap<String,Object> map = new HashMap<>();
                         map.put("img",img);
                         map.put("fullName", nameStr);

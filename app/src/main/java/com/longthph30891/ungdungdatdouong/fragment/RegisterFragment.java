@@ -165,7 +165,7 @@ public class RegisterFragment extends Fragment {
                 if(task.isSuccessful()){
                     String Id = auth.getCurrentUser().getUid();
 
-                    Khachang khachang = new Khachang(Id, userStr, passStr, nameStr, emailStr, "", "", "", "");
+                    Khachang khachang = new Khachang(Id, userStr, passStr, nameStr, emailStr, "", "", "");
 
 
                     reference.child(Id).setValue(khachang).addOnCompleteListener(new OnCompleteListener<Void>() {

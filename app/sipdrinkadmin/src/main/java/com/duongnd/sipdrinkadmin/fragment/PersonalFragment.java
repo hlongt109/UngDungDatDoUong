@@ -65,12 +65,20 @@ public class PersonalFragment extends Fragment {
 
         });
         binding.btnQlyNguoiDung.setOnClickListener(view -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_mani, new UserFragment())
+                    .addToBackStack(UserFragment.class.getName())
+                    .commit();
 
         });
         binding.btnQlyVoucher.setOnClickListener(view -> {
 
         });
         binding.btnTaiKoanVaBaoMat.setOnClickListener(view -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_mani, new ProfileFragment())
+                    .addToBackStack(ProfileFragment.class.getName())
+                    .commit();
 
         });
         binding.btnLogout.setOnClickListener(view -> {

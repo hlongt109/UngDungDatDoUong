@@ -1,4 +1,4 @@
-package com.longthph30891.ungdungdatdouong.model;
+package com.duongnd.sipdrinkadmin.model;
 
 public class Khachang {
     String Id, UserName, Password, FullName, email, img, date, phone;
