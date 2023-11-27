@@ -7,25 +7,31 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.duongnd.sipdrinkadmin.databinding.ItemOderBinding;
-import com.duongnd.sipdrinkadmin.model.ChiTietDonHang;
+import com.bumptech.glide.Glide;
+import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.databinding.ItemDrinkOrderBinding;
+import com.duongnd.sipdrinkadmin.model.OrderDetails;
+import com.google.firebase.database.DatabaseReference;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.viewHolder> {
-    private final ArrayList<ChiTietDonHang>list;
+    private final ArrayList<OrderDetails>list;
     private final Context context;
+    DatabaseReference databaseReference;
 
-    public OrderDetailsAdapter(ArrayList<ChiTietDonHang> list, Context context) {
+    public OrderDetailsAdapter(ArrayList<OrderDetails> list, Context context, DatabaseReference databaseReference) {
         this.list = list;
         this.context = context;
-        notifyDataSetChanged();
+        this.databaseReference = databaseReference;
     }
 
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemOderBinding binding = ItemOderBinding.inflate(
+        ItemDrinkOrderBinding binding = ItemDrinkOrderBinding.inflate(
                 LayoutInflater.from(parent.getContext()),parent,false
         );
         return new viewHolder(binding);
@@ -33,7 +39,8 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        holder.setData(list.get(position));
+        OrderDetails orderDetails = list.get(position);
+        holder.setData(orderDetails);
     }
 
     @Override
@@ -42,15 +49,20 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
     }
 
     class viewHolder extends RecyclerView.ViewHolder{
-        ItemOderBinding binding;
-        viewHolder(ItemOderBinding itemDrinkOderDetailsBinding){
+        ItemDrinkOrderBinding binding;
+        viewHolder(ItemDrinkOrderBinding itemDrinkOderDetailsBinding){
             super(itemDrinkOderDetailsBinding.getRoot());
             binding = itemDrinkOderDetailsBinding;
         }
-        void setData(ChiTietDonHang chiTietDonHang){
-            binding.tvNameProduct.setText(chiTietDonHang.getIdDoUong());
-            binding.tvPrice.setText("30000");
-            binding.tvQuantity.setText(chiTietDonHang.getSoLuong());
+        void setData(OrderDetails orderDetails){
+            binding.tvNameProduct.setText(orderDetails.getNameProduct());
+            binding.tvQuantity.setText("x"+orderDetails.getQuantity());
+            Glide.with(context).load(orderDetails.getImageProduct())
+                    .error(R.drawable.ic_image).into(binding.imgProduct);
+            Locale locale = new Locale("vi","VN");
+            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+            String money = numberFormat.format(orderDetails.getPrice());
+            binding.tvPrice.setText(money);
         }
     }
 }

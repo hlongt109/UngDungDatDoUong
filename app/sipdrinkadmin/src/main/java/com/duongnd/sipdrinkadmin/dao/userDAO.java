@@ -17,24 +17,22 @@ public class userDAO {
         void onAddress(String address);
     }
     public void getNameUserById(String idUser,onTenUserListener listener){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.orderByChild("userId").equalTo(idUser).addListenerForSingleValueEvent(new ValueEventListener() {
+        String path = "users/" + idUser + "/fullName";
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(path);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
-                    for (DataSnapshot snd : snapshot.getChildren()){
-                        String nameUser = snd.child("fullName").getValue(String.class);
-                        listener.onTenUser(nameUser);
-                        break;
-                    }
+                    String tenKh = snapshot.getValue(String.class);
+                    listener.onTenUser(tenKh);
                 }else {
-                    listener.onTenUser("Khong tim thay ten");
+                    listener.onTenUser("");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                listener.onTenUser("");
             }
         });
     }

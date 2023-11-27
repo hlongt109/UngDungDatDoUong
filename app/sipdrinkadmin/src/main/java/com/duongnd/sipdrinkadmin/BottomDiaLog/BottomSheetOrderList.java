@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.duongnd.sipdrinkadmin.adapter.OrderAdapter;
+import com.duongnd.sipdrinkadmin.adapter.OrderDrinkAdapter;
 import com.duongnd.sipdrinkadmin.databinding.BottomSheetOrderListBinding;
-import com.duongnd.sipdrinkadmin.model.DonHang;
+import com.duongnd.sipdrinkadmin.model.Order;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,30 +24,32 @@ import java.util.ArrayList;
 public class BottomSheetOrderList extends BottomSheetDialogFragment {
     private BottomSheetOrderListBinding binding;
     private DatabaseReference databaseReference;
-    private ArrayList<DonHang>listDonHang = new ArrayList<>();
-    private OrderAdapter adapter;
+    private ArrayList<Order>list = new ArrayList<>();
+    private OrderDrinkAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = BottomSheetOrderListBinding.inflate(inflater,container,false);
-        databaseReference = FirebaseDatabase.getInstance().getReference("DonHang");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Order");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listDonHang.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    DonHang donHang = dataSnapshot.getValue(DonHang.class);
-                    listDonHang.add(donHang);
+                list.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Order order1 = dataSnapshot.getValue(Order.class);
+                    if (order1 != null && order1.getStatusOrder().equals("choxacnhan")) {
+                        list.add(order1);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-        adapter = new OrderAdapter(listDonHang,getActivity());
+        adapter = new OrderDrinkAdapter(list,getActivity(),databaseReference);
         binding.rcvOderList.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rcvOderList.setAdapter(adapter);
         return binding.getRoot();

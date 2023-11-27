@@ -5,6 +5,7 @@
     <color name="background">#121223</color>
     <color name="red">#BD0040</color>
     <color name="green">#4CAF50</color>
+    <color name="luc">#009688</color>
     <color name="blue">#2196F3</color>
     <color name="my_light_primary">#FF7622</color>
 </resources>

@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">SipDrink Admin</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="id">ID :</string>
+    <string name="ng_y">Ngày :</string>
+    <string name="t_ng_ti_n">Tổng tiền :</string>
+    <string name="tr_ng_th_i">Trạng thái :</string>
+    <string name="total_revenue">Total revenue</string>
+    <string name="ch_x_c_nh_n">Chờ xác nhận</string>
+    <string name="ang_giao">Đang giao</string>
+    <string name="daily">Daily</string>
+    <string name="a_ch_nh_n">Địa chỉ nhận :</string>
+    <string name="s_i_n_tho_i">Số điện thoại :</string>
+    <string name="t_n_kh">Tên KH :</string>
+    <string name="th_i_gian_t_h_ng">Thời gian đặt hàng :</string>
+    <string name="th_nh_ti_n">Thành tiền :</string>
 </resources>
