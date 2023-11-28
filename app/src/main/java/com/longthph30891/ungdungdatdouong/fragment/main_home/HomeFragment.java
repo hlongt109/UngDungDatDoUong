@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.R;
+import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.adapter.CategoryHomeAdapter;
 import com.longthph30891.ungdungdatdouong.adapter.ProductAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentHomeBinding;
@@ -174,10 +175,9 @@ public class HomeFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("categoryId", category);
         productFragment.setArguments(bundle);
-
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_main_view_customer, productFragment)
-                .addToBackStack(ProductFragment.class.getName())
+                .addToBackStack(productFragment.getClass().getName())
                 .commit();
     }
 
@@ -187,10 +187,7 @@ public class HomeFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("product", product);
         productDetailFragment.setArguments(bundle);
-        getParentFragmentManager().beginTransaction()
-                .replace(R.id.fragment_main_view_customer, productDetailFragment)
-                .addToBackStack(ProducDetailFragment.class.getName())
-                .commit();
+        ((MainActivity) requireActivity()).showProductDetail(productDetailFragment);
     }
 
 }

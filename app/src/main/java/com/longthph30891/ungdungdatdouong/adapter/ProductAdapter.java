@@ -1,6 +1,7 @@
 package com.longthph30891.ungdungdatdouong.adapter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +49,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return new ProductViewHolder(view);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ProductViewHolder holder, int position) {
         Product product = productList.get(position);
@@ -58,6 +59,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
         String price = numberFormat.format(product.getGia());
         holder.txtPriceProduct.setText(price);
+
+        switch (product.getTrangThai()) {
+            case "Moi":
+                holder.img_status.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_new));
+                break;
+            case "DangBan":
+                holder.img_sold_out_product.setVisibility(View.GONE);
+                holder.img_status.setVisibility(View.GONE);
+                break;
+            case "HetHang":
+                holder.img_sold_out_product.setImageDrawable(context.getResources().getDrawable(R.drawable.sold_out));
+                float alphaValue = 0.4f;
+                holder.imgProduct.setAlpha(alphaValue);
+                holder.img_status.setVisibility(View.GONE);
+                break;
+        }
 
 
         Picasso.get().load(product.getImage()).into(holder.imgProduct, new Callback() {
@@ -87,7 +104,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public class ProductViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtNameProduct, txtPriceProduct;
-        ImageView imgProduct;
+        ImageView imgProduct, img_status, img_sold_out_product;
         ProgressBar progressBar;
 
         RelativeLayout layout;
@@ -99,6 +116,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             imgProduct = itemView.findViewById(R.id.img_product);
             progressBar = itemView.findViewById(R.id.progress_product);
             layout = itemView.findViewById(R.id.item_product);
+            img_status = itemView.findViewById(R.id.img_status_product);
+            img_sold_out_product = itemView.findViewById(R.id.img_sold_out_product);
         }
     }
 }

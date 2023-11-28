@@ -93,9 +93,7 @@ public class ProductFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("product", product);
         productDetailFragment.setArguments(bundle);
-        getParentFragmentManager().beginTransaction()
-                .replace(R.id.fragment_main_view_customer, productDetailFragment)
-                .addToBackStack(ProducDetailFragment.class.getName())
-                .commit();
+        ((MainActivity) requireActivity()).showProductDetail(productDetailFragment);
     }
+
 }
