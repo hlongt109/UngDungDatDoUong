@@ -6,6 +6,6 @@ public interface CartInterface {
 
     void onDecreaseClick(int position);
 
-    void checkItem(boolean isChecked, int position);
+    void checkItem(int position, boolean isChecked);
 
 }

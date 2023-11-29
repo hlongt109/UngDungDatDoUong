@@ -71,9 +71,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
         });
 
-        holder.checkBox_cart.setOnClickListener(v -> {
+        holder.checkBox_cart.setOnCheckedChangeListener((v, isChecked) -> {
             if (cartInterface != null) {
-                cartInterface.checkItem(holder.checkBox_cart.isChecked(), position);
+                cartInterface.checkItem(position, isChecked);
             }
         });
 
