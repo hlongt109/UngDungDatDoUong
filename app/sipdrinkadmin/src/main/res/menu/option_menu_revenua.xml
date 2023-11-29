@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_DoanhSo"
+        android:title="Doanh số bán hàng" />
+    <item
+        android:id="@+id/nav_TotalRevenua"
+        android:title="Tổng doanh thu" />
+    <item
+        android:id="@+id/nav_ChooseDay"
+        android:title="Doanh thu theo ngày" />
+</menu>

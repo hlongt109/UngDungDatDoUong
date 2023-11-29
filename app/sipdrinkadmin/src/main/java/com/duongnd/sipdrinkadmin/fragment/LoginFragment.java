@@ -1,6 +1,5 @@
 package com.duongnd.sipdrinkadmin.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 

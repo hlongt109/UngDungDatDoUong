@@ -35,41 +35,13 @@ public class PersonalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentPersonalBinding.inflate(inflater,container,false);
-
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Admin admin = snapshot.getValue(Admin.class);
-                binding.tvName.setText(admin.getFullName());
-
-                if(admin.getImg().equals("img")){
-                    binding.imgAvata.setImageResource(R.drawable.profilebkg);
-                }else {
-                    Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
         binding.btnQlyHoaDon.setOnClickListener(view -> {
-
+            BottomSheetBillsList bottomSheetBillsList = new BottomSheetBillsList();
+            bottomSheetBillsList.show(getChildFragmentManager(),"BottomSheetBillsList");
         });
         binding.btnQlyNguoiDung.setOnClickListener(view -> {
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_mani, new UserFragment())
-                    .addToBackStack(UserFragment.class.getName())
-                    .commit();
-
+            BottomSheetUsersList bottomSheetUsersList = new BottomSheetUsersList();
+            bottomSheetUsersList.show(getChildFragmentManager(),"BottomSheetUsersList");
         });
         binding.btnQlyVoucher.setOnClickListener(view -> {
 
