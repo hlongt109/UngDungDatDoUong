@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    tools:context=".fragment.login_register.RegisterFragment"
+    android:background="@color/background">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ellipse_10051" />
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_oval"
+            android:paddingStart="7dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_arrow_back" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/vector_1421" />
+
+        <TextView
+            android:layout_width="155dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:fontFamily="@font/sen_bold"
+            android:gravity="center"
+            android:text="Đăng ký"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="291dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/sen"
+            android:gravity="center"
+            android:text="Vui lòng đăng ký để sử dụng"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="603dp"
+            android:layout_marginTop="150dp"
+            android:background="@drawable/white_card"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp">
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/sen"
+                    android:text="Họ và tên"
+                    android:textAllCaps="true"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edt_name_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/txt_name"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_edit"
+                    android:fontFamily="@font/sen"
+                    android:hint="Nguyen Van A"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/black"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/txt_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edt_name_signup"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/sen"
+                    android:text="Tên đăng nhập"
+                    android:textAllCaps="true"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edt_username_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/txt_username"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_edit"
+                    android:fontFamily="@font/sen"
+                    android:hint="username"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/black"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/txt_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edt_username_signup"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/sen"
+                    android:text="Mật khẩu"
+                    android:textAllCaps="true"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edt_password_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/txt_password"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_edit"
+                    android:drawableEnd="@drawable/ic_visibility_off"
+                    android:fontFamily="@font/sen"
+                    android:hint="*******"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:textColor="@color/black"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/txt_repassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edt_password_signup"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/sen"
+                    android:text="Nhập lại mật khẩu"
+                    android:textAllCaps="true"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edt_repassword_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/txt_repassword"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_edit"
+                    android:drawableEnd="@drawable/ic_visibility_off"
+                    android:fontFamily="@font/sen"
+                    android:hint="*******"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:textColor="@color/black"
+                    tools:ignore="RtlSymmetry" />
+
+
+
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="327dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@id/edt_repassword_signup"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="-2dp"
+                    android:background="@drawable/bg_button"
+                    android:fontFamily="@font/sen"
+                    android:text="Signup"
+                    android:textAllCaps="true" />
+
+                <LinearLayout
+                    android:id="@+id/layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_register"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sen"
+                        android:text="Bạn đã có tài khoản? " />
+
+                    <TextView
+                        android:id="@+id/txt_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sen_bold"
+                        android:text="Đăng nhập"
+                        android:textAllCaps="true" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</androidx.core.widget.NestedScrollView>
