@@ -1,10 +1,13 @@
 package com.duongnd.sipdrinkadmin.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
 import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.fragment.CategoryFragment;
+import com.duongnd.sipdrinkadmin.fragment.LoginFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,5 +15,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new CategoryFragment());
+        transaction.commit();
     }
 }
