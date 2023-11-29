@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 
 import com.duongnd.sipdrinkadmin.R;
 
-public class StatisticsTopDrinkFragment extends Fragment {
-    public StatisticsTopDrinkFragment() {}
+public class DetailsTopDrinkFragment extends Fragment {
+    public DetailsTopDrinkFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

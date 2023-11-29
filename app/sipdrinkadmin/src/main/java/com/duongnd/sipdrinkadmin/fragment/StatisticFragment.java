@@ -1,10 +1,8 @@
 package com.duongnd.sipdrinkadmin.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -12,50 +10,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetDeliveringList;
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetOrderList;
 import com.duongnd.sipdrinkadmin.R;
 import com.duongnd.sipdrinkadmin.databinding.FragmentStatisticBinding;
-import com.duongnd.sipdrinkadmin.fragment.statistics.StatisticsTopDrinkFragment;
 import com.duongnd.sipdrinkadmin.fragment.statistics.TopdrinkFragment;
+import com.duongnd.sipdrinkadmin.fragment.statistics.TotalRevenueByDayFragment;
 import com.duongnd.sipdrinkadmin.fragment.statistics.TotalRevenueFragment;
-import com.duongnd.sipdrinkadmin.model.DoUong;
-import com.duongnd.sipdrinkadmin.model.DonHang;
 import com.duongnd.sipdrinkadmin.model.Order;
 import com.duongnd.sipdrinkadmin.model.OrderDetails;
-import com.duongnd.sipdrinkadmin.model.TestData;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.checkerframework.checker.units.qual.C;
-import org.checkerframework.checker.units.qual.s;
-
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class StatisticFragment extends Fragment {
@@ -98,6 +72,7 @@ public class StatisticFragment extends Fragment {
                 binding.tvRevenue.setText("Tổng doanh thu");
                 replaceFrg(new TotalRevenueFragment());
             } else if (menuItem.getItemId() == R.id.nav_ChooseDay) {
+                replaceFrg(new TotalRevenueByDayFragment());
                 binding.tvRevenue.setText("Doanh thu theo ngày");
 
             }
