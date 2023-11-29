@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import com.duongnd.sipdrinkadmin.R;
 import com.duongnd.sipdrinkadmin.fragment.PersonalFragment;
+import com.duongnd.sipdrinkadmin.fragment.ProfileFragment;
+import com.duongnd.sipdrinkadmin.fragment.StatisticFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, new CategoryFragment());
+        transaction.replace(R.id.fragment_container, new StatisticFragment());
         transaction.commit();
     }
 }

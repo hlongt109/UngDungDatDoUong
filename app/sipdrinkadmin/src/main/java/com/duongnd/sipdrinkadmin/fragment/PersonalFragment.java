@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetBillsList;
+import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetUsersList;
 import com.duongnd.sipdrinkadmin.R;
 import com.duongnd.sipdrinkadmin.activity.LoginRegisterActivity;
 import com.duongnd.sipdrinkadmin.databinding.FragmentPersonalBinding;
@@ -48,7 +50,7 @@ public class PersonalFragment extends Fragment {
         });
         binding.btnTaiKoanVaBaoMat.setOnClickListener(view -> {
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_mani, new ProfileFragment())
+                    .replace(R.id.fragment_container_view_admin, new ProfileFragment())
                     .addToBackStack(ProfileFragment.class.getName())
                     .commit();
 
