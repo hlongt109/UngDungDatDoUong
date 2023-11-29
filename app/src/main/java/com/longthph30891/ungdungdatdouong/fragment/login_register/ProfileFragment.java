@@ -1,4 +1,4 @@
-package com.longthph30891.ungdungdatdouong.fragment;
+package com.longthph30891.ungdungdatdouong.fragment.login_register;
 
 
 import android.app.Activity;

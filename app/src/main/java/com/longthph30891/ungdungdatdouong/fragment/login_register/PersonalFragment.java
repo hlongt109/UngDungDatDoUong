@@ -1,6 +1,5 @@
-package com.longthph30891.ungdungdatdouong.fragment;
+package com.longthph30891.ungdungdatdouong.fragment.login_register;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.activity.LoginRegisterActivity;
-import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentPersonalBinding;
 import com.longthph30891.ungdungdatdouong.model.Khachang;
 

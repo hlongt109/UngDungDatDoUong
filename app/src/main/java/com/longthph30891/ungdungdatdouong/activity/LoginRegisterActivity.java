@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.longthph30891.ungdungdatdouong.R;
-import com.longthph30891.ungdungdatdouong.fragment.LoginFragment;
+import com.longthph30891.ungdungdatdouong.fragment.login_register.LoginFragment;
 
 
 public class LoginRegisterActivity extends AppCompatActivity {

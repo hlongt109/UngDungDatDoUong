@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
-    tools:context=".fragment.RegisterFragment"
+    tools:context=".fragment.login_register.RegisterFragment"
     android:background="@color/background">
 
 
