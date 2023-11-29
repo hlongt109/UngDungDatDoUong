@@ -53,8 +53,7 @@ public class ProfileFragment extends Fragment {
     DatabaseReference reference,databaseReference;
     ProgressDialog dialog;
     Uri ImgUri;
-    String nameStr, dateStr, phoneStr;
-
+    String userStr, nameStr, dateStr, phoneStr;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +107,11 @@ public class ProfileFragment extends Fragment {
         binding.UploadInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UploadPostFb();
+                if(ImgUri != null){
+                    UploadPostFb();
+                }else {
+                    UploadInfor();
+                }
             }
         });
         binding.btnDoiPass.setOnClickListener(new View.OnClickListener() {
@@ -228,6 +231,26 @@ public class ProfileFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private void UploadInfor(){
+        dialog.dismiss();
+        userStr= binding.txtUsername.getEditableText().toString();
+        nameStr = binding.txtName.getEditableText().toString();
+        dateStr = binding.txtDate.getText().toString();
+        phoneStr= binding.txtPhone.getText().toString();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("userName", userStr);
+        map.put("fullName", nameStr);
+        map.put("date", dateStr);
+        map.put("phone", phoneStr);
+        databaseReference.updateChildren(map);
+        Toast.makeText(getContext(), " Update thành công ", Toast.LENGTH_SHORT).show();
+
+
+
     }
 
     private void PicikImage() {

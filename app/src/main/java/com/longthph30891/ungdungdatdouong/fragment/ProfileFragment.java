@@ -3,6 +3,7 @@ package com.longthph30891.ungdungdatdouong.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -57,7 +59,7 @@ public class ProfileFragment extends Fragment {
     DatabaseReference reference,databaseReference;
     ProgressDialog dialog;
     Uri ImgUri;
-    String nameStr, dateStr, phoneStr;
+    String userStr, nameStr, dateStr, phoneStr;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +114,14 @@ public class ProfileFragment extends Fragment {
         binding.UploadInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UploadPostFb();
+                if(validateDate() || validatePhone()){
+                    if(ImgUri != null ){
+                        UploadPostFb();
+                    }else {
+                        UploadInfor();
+                    }
+                }
+
             }
         });
         binding.btnDoiPass.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +140,41 @@ public class ProfileFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+    public Boolean validateDate(){
+        String val = binding.txtDate.getText().toString().trim();
+        if (val.isEmpty()) {
+            binding.txtDate.setError(null);
+            return true;
+        }else {
+            if(!val.matches("^([0-9]{2})\\/([0-9]{2})\\/([0-9]{4})$")) {
+                binding.txtDate.setError("Nhập đúng định dạng ngày sinh");
+                return false;
+            }else {
+                binding.txtDate.setError(null);
+                return true;
+            }
+        }
+
+
+    }
+    public Boolean validatePhone(){
+        String val = binding.txtPhone.getText().toString().trim();
+        if (val.isEmpty()) {
+            binding.txtPhone.setError(null);
+            return true;
+        }else {
+            if(!val.matches("^([0-9]{3})\\-([0-9]{3})\\-([0-9]{4})$")) {
+                binding.txtPhone.setError("Nhập đúng định dạng số điện thoại");
+                return false;
+            }else {
+                binding.txtPhone.setError(null);
+                return true;
+            }
+        }
+
+    }
+
 
     private void showPassDialog(){
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_update_pass, null);
@@ -233,6 +277,27 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    private void UploadInfor(){
+        dialog.dismiss();
+        userStr= binding.txtUsername.getEditableText().toString();
+        nameStr = binding.txtName.getEditableText().toString();
+        dateStr = binding.txtDate.getText().toString();
+        phoneStr= binding.txtPhone.getText().toString();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("userName", userStr);
+        map.put("fullName", nameStr);
+        map.put("date", dateStr);
+        map.put("phone", phoneStr);
+        databaseReference.updateChildren(map);
+        Toast.makeText(getContext(), " Update thành công ", Toast.LENGTH_SHORT).show();
+
+
+
+    }
+
+
     private void PicikImage() {
 
         ImagePicker.with(this)
@@ -258,9 +323,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
     );
-
-
-
+    
 
 
 }

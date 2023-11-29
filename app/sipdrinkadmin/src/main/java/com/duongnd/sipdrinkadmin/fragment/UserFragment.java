@@ -30,7 +30,6 @@ public class UserFragment extends Fragment {
     FragmentUserBinding binding;
     FirebaseDatabase database;
     ArrayList<Khachang> recyclerList;
-    SearchView searchView;
     UserAdapter adapter;
 
 

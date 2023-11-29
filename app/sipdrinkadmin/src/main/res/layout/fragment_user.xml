@@ -24,7 +24,7 @@
             android:textSize="10pt"
             android:gravity="center"
             android:textStyle="bold"
-            android:text="Quản Lý Người dùng"/>
+            android:text="Danh sách gười dùng"/>
 
         <androidx.appcompat.widget.SearchView
             android:layout_width="wrap_content"

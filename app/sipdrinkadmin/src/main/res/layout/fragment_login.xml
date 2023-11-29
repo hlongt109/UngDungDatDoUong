@@ -102,6 +102,7 @@
                     android:layout_marginTop="25dp"
                     android:fontFamily="@font/sen"
                     android:text="Mật khẩu"
+                    android:inputType="textEmailAddress"
                     android:textAllCaps="true"
                     android:textSize="16sp" />
 

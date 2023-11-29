@@ -20,7 +20,7 @@
             android:textSize="17sp"
             android:background="@drawable/bg_oval"
             android:textColor="@color/black"
-            android:drawableLeft="@drawable/ic_visibility"
+            android:drawableLeft="@drawable/baseline_lock_person_24"
             android:drawablePadding="8dp"
             app:layout_constraintTop_toTopOf="parent"/>
         <TextView
