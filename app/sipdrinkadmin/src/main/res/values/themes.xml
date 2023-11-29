@@ -5,6 +5,11 @@
          <item name="colorPrimary">@color/my_light_primary</item>
 <!--        <item name="android:windowTranslucentStatus">true</item>-->
     </style>
-
+    <style name="mytheme1" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+    <style name="mytheme" parent="Theme.Material3.DayNight.NoActionBar"/>
     <style name="Theme.UngDungDatDoUong" parent="Base.Theme.UngDungDatDoUong" />
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_out</item>
+    </style>
 </resources>
