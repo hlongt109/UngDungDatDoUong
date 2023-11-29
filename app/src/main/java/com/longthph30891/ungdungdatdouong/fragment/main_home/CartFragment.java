@@ -2,7 +2,6 @@ package com.longthph30891.ungdungdatdouong.fragment.main_home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,7 @@ import com.longthph30891.ungdungdatdouong.adapter.CartAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentCartBinding;
 import com.longthph30891.ungdungdatdouong.interfaces.CartInterface;
 import com.longthph30891.ungdungdatdouong.model.Cart;
+import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -41,6 +41,8 @@ public class CartFragment extends Fragment {
     Cart cart;
     private CartAdapter cartAdapter;
 
+    SessionManager sessionManager;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,7 @@ public class CartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sessionManager = new SessionManager(getContext());
         cartArrayList = new ArrayList<>();
 
         cartAdapter = new CartAdapter(getContext(), cartArrayList);
@@ -96,7 +99,40 @@ public class CartFragment extends Fragment {
             ((MainActivity) requireActivity()).replaceFragment(new HomeFragment());
         });
 
-        getDataCart();
+//        getDataCart();
+        getDataCartByIdKhachHang();
+    }
+
+    private void getDataCartByIdKhachHang() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart");
+        String idKhachHang = sessionManager.getLoggedInCustomerId();
+        Query query = databaseReference.orderByChild("idKhachHang").equalTo(idKhachHang);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cartArrayList.clear();
+                for (DataSnapshot cartSnapshot : snapshot.getChildren()) {
+                    Cart cart = cartSnapshot.getValue(Cart.class);
+                    cartArrayList.add(cart);
+                }
+                if (cartArrayList.isEmpty()) {
+                    binding.layoutCartNull.setVisibility(View.VISIBLE);
+                    binding.cardTotalPrice.setVisibility(View.GONE);
+                    binding.btnDatHang.setVisibility(View.GONE);
+                } else {
+                    binding.layoutCartNull.setVisibility(View.GONE);
+                    binding.cardTotalPrice.setVisibility(View.VISIBLE);
+                    binding.btnDatHang.setVisibility(View.VISIBLE);
+                }
+                binding.recyclerViewCart.setAdapter(cartAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Cart", "onCancelled: " + error.getMessage());
+            }
+        });
     }
 
     private void getDataCart() {

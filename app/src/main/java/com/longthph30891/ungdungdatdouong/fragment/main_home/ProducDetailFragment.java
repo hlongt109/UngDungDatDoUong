@@ -23,6 +23,7 @@ import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProducDetailBinding;
 import com.longthph30891.ungdungdatdouong.model.Cart;
 import com.longthph30891.ungdungdatdouong.model.Product;
+import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
@@ -38,6 +39,7 @@ public class ProducDetailFragment extends Fragment {
     private FragmentProducDetailBinding binding;
 
     private List<Cart> selectedItems = new ArrayList<>();
+    SessionManager sessionManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +52,8 @@ public class ProducDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        sessionManager = new SessionManager(getContext());
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -89,6 +93,7 @@ public class ProducDetailFragment extends Fragment {
 
                     Cart cart = new Cart();
                     String idCart = databaseReference.push().getKey();
+                    String idKhachHang = sessionManager.getLoggedInCustomerId();
 
                     if (!checkDuplicateIds(idCart, product.getIdDoUong())) {
                         Toast.makeText(getContext(), "Sản phẩm đã có trong giỏ hàng1", Toast.LENGTH_SHORT).show();
@@ -96,7 +101,7 @@ public class ProducDetailFragment extends Fragment {
 //                        updateQuantityCart(cart);
                     } else {
                         cart.setIdGioHang(idCart);
-                        cart.setIdKhachHang("1");
+                        cart.setIdKhachHang(idKhachHang);
                         cart.setIdDoUong(product.getIdDoUong());
                         cart.setProductName(product.getTenDoUong());
                         cart.setProductPrice(product.getGia());

@@ -26,6 +26,7 @@ import com.longthph30891.ungdungdatdouong.interfaces.CategoryInterface;
 import com.longthph30891.ungdungdatdouong.interfaces.ProductInterface;
 import com.longthph30891.ungdungdatdouong.model.Category;
 import com.longthph30891.ungdungdatdouong.model.Product;
+import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment {
 
     private int timeLoadingCategory;
     private int timeLoadingProduct;
+    SessionManager sessionManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

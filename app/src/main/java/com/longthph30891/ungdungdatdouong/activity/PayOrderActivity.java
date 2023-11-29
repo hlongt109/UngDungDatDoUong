@@ -13,17 +13,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.adapter.PayOrderAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.ActivityPayOrderBinding;
 import com.longthph30891.ungdungdatdouong.model.Cart;
+import com.longthph30891.ungdungdatdouong.model.Khachang;
 import com.longthph30891.ungdungdatdouong.model.Order;
 import com.longthph30891.ungdungdatdouong.model.OrderDetail;
+import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -41,13 +47,14 @@ public class PayOrderActivity extends AppCompatActivity {
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH) + 1;
     int day = calendar.get(Calendar.DAY_OF_MONTH);
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPayOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        sessionManager = new SessionManager(this);
 
         binding.recyclerViewOrder.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         Intent intent = getIntent();
@@ -63,6 +70,8 @@ public class PayOrderActivity extends AppCompatActivity {
             String address = binding.edtOrderAddress.getText().toString().trim();
             showConfirmOrderDialog(name, phone, address);
         });
+
+        getUserInfo();
 
     }
 
@@ -90,11 +99,12 @@ public class PayOrderActivity extends AppCompatActivity {
 
         String status = "choxacnhan";
         String currentDateAndTime = String.format("%02d/%02d/%04d", day, month, year);
+        String idUser = sessionManager.getLoggedInCustomerId();
 
         btnConfirm.setOnClickListener(v -> {
             Order order = new Order();
             order.setorderId(String.valueOf(generateRandomOrderId()));
-            order.setIdUser("1");
+            order.setIdUser(idUser);
             order.setnameCustomer(name);
             order.setphoneNumber(phone);
             order.setaddress(address);
@@ -162,19 +172,39 @@ public class PayOrderActivity extends AppCompatActivity {
     }
 
     public void txtToTal() {
-//        int Sl = payOrderAdapter.getTotalQuantity();
         binding.txtTotal.setText("Tổng tiền: ");
-
         for (Cart item : selectedItems) {
             int quantity = item.getSoLuong();
             double price = item.getProductPrice();
             totalPrice += quantity * price;
         }
-
         Locale locale = new Locale("vi", "VN");
         NumberFormat format = NumberFormat.getCurrencyInstance(locale);
         String price = format.format(totalPrice);
         binding.txtTotal.setText(price);
+    }
+
+
+    private void getUserInfo() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("users").child(sessionManager.getLoggedInCustomerId());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Khachang khachang = snapshot.getValue(Khachang.class);
+                    binding.edtOrderName.setText(khachang.getFullName());
+                    binding.edtOrderPhone.setText(khachang.getPhone());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private int generateRandomOrderId() {
