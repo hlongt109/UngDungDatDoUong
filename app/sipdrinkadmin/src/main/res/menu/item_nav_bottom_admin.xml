@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_thongKe"
+        android:icon="@drawable/ic_bar_chart"
+        android:title="Thống Kê" />
+    <item
+        android:id="@+id/nav_danhMuc"
+        android:icon="@drawable/ic_category"
+        android:title="Danh Mục" />
+
+    <item
+        android:id="@+id/nav_addProduct"
+        android:title="" />
+
+    <item
+        android:id="@+id/nav_thongBao"
+        android:icon="@drawable/ic_notifications"
+        android:title="Thông Báo" />
+
+    <item
+        android:id="@+id/nav_thongTin"
+        android:icon="@drawable/ic_person"
+        android:title="Thông Tin" />
+</menu>
