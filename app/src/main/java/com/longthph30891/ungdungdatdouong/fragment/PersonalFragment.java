@@ -76,7 +76,7 @@ public class PersonalFragment extends Fragment {
         });
         binding.btnTaiKoanVaBaoMat.setOnClickListener(view -> {
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_mani, new ProfileFragment())
+                    .replace(R.id.fragment_main_view_customer, new ProfileFragment())
                     .addToBackStack(ProfileFragment.class.getName())
                     .commit();
 
