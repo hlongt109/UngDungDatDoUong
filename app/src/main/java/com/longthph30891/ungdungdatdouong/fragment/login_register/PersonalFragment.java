@@ -50,7 +50,7 @@ public class PersonalFragment extends Fragment {
                 if(khachang.getImg().equals("img")){
                     binding.imgAvata.setImageResource(R.drawable.pagebkg);
                 }else {
-                    Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
+//                    Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
                 }
 
             }

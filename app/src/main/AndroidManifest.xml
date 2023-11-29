@@ -16,9 +16,6 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.SplashActivity"
             android:exported="false" />
         <activity
@@ -32,12 +29,6 @@
         </activity>
         <activity
             android:name=".activity.PayOrderActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.LoginRegisterActivity"
             android:exported="false" />
     </application>
 
