@@ -74,6 +74,9 @@ public class OrderDetailsFragment extends Fragment {
         } else if (statusOrder.equals("dahuy")) {
             binding.tvTrangThaiOrder.setText("Đơn hàng đã hủy");
             binding.tvTrangThaiOrder.setTextColor(ContextCompat.getColor(getContext(),R.color.red));
+        }else if (statusOrder.equals("dathanhtoan")) {
+            binding.tvTrangThaiOrder.setText("Giao hàng thành công");
+            binding.tvTrangThaiOrder.setTextColor(ContextCompat.getColor(getContext(),R.color.green));
         }
         binding.tvTime.setText(dateOrder);
         binding.tvTenKh.setText(nameCustomer);
@@ -114,6 +117,9 @@ public class OrderDetailsFragment extends Fragment {
         binding.btnXacNhanOrder.setOnClickListener(view -> {
             updateStatus("danggiao","Đã xác nhận đơn hàng");
         });
+        binding.btnDaThanhToan.setOnClickListener(view -> {
+            updateStatus("dathanhtoan","Giao hàng thành công");
+        });
         binding.btnHuyOrder.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setIcon(R.drawable.ic_warning);
@@ -125,7 +131,6 @@ public class OrderDetailsFragment extends Fragment {
                 dialogInterface.dismiss();
             });
             builder.create().show();
-
         });
     }
     private void updateStatus(String status,String tb) {
@@ -137,7 +142,6 @@ public class OrderDetailsFragment extends Fragment {
                     new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
                             .setContentText(tb)
                             .show();
-                    getActivity().onBackPressed();
                 })
                 .addOnFailureListener(e -> {
                     new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetBillsList;
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetUsersList;
 import com.duongnd.sipdrinkadmin.databinding.FragmentPersonalBinding;
 
@@ -20,7 +21,8 @@ public class PersonalFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentPersonalBinding.inflate(inflater,container,false);
         binding.btnQlyHoaDon.setOnClickListener(view -> {
-
+            BottomSheetBillsList bottomSheetBillsList = new BottomSheetBillsList();
+            bottomSheetBillsList.show(getChildFragmentManager(),"BottomSheetBillsList");
         });
         binding.btnQlyNguoiDung.setOnClickListener(view -> {
             BottomSheetUsersList bottomSheetUsersList = new BottomSheetUsersList();
@@ -36,8 +38,5 @@ public class PersonalFragment extends Fragment {
 
         });
         return binding.getRoot();
-    }
-    public void setData(){
-
     }
 }

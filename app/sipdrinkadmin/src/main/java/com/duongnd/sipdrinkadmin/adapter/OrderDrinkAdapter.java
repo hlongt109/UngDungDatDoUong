@@ -16,7 +16,9 @@ import com.duongnd.sipdrinkadmin.fragment.OrderDetailsFragment;
 import com.duongnd.sipdrinkadmin.model.Order;
 import com.google.firebase.database.DatabaseReference;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class OrderDrinkAdapter extends RecyclerView.Adapter<OrderDrinkAdapter.myViewHolder> {
     private ArrayList<Order> list;
@@ -60,12 +62,21 @@ public class OrderDrinkAdapter extends RecyclerView.Adapter<OrderDrinkAdapter.my
         void setDataOnView(Order order,Context context) {
             binding.tvIdOder.setText(order.getOrderId());
             binding.tvNgayOrder.setText(order.getDateOrder());
-            binding.tvTotalPrice.setText(String.valueOf(order.getTotalPrice()));
+            Locale locale = new Locale("vi","VN");
+            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+            String tongTien = numberFormat.format(order.getTotalPrice());
+            binding.tvTotalPrice.setText(tongTien);
             if (order.getStatusOrder().equals("choxacnhan")) {
                 binding.tvStatus.setText("Đang chờ xác nhận");
             } else if (order.getStatusOrder().equals("danggiao")) {
                 binding.tvStatus.setText("Đang giao hàng");
-                binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.luc));
+                binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.green));
+            }else if (order.getStatusOrder().equals("dathanhtoan")) {
+                binding.tvStatus.setText("Giao hàng thành công");
+                binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.green));
+            }else if (order.getStatusOrder().equals("dahuy")) {
+                binding.tvStatus.setText("Đơn hàng đã hủy");
+                binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.red));
             }
         }
     }
