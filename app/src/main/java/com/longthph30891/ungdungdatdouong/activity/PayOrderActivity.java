@@ -23,6 +23,7 @@ import com.longthph30891.ungdungdatdouong.adapter.PayOrderAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.ActivityPayOrderBinding;
 import com.longthph30891.ungdungdatdouong.model.Cart;
 import com.longthph30891.ungdungdatdouong.model.Order;
+import com.longthph30891.ungdungdatdouong.model.OrderDetail;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -128,12 +129,35 @@ public class PayOrderActivity extends AppCompatActivity {
         DatabaseReference databaseReference = firebaseDatabase.getReference("Order");
         databaseReference.child(order.getorderId()).setValue(order).addOnCompleteListener(task -> {
             if (task.isComplete()) {
-                Toast.makeText(this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Đặt hàng thất bại", Toast.LENGTH_SHORT).show();
+                for (Cart item : selectedItems) {
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setIdOrderDetail(String.valueOf(generateRandomOrderId()));
+                    orderDetail.setOrderId(order.getorderId());
+                    orderDetail.setIdProduct(item.getIdDoUong());
+                    orderDetail.setQuantity(item.getSoLuong());
+                    orderDetail.setNameProduct(item.getProductName());
+                    orderDetail.setPrice(item.getProductPrice());
+                    orderDetail.setImageProduct(item.getProductImage());
+                    addOrderDetail(orderDetail);
+                }
             }
         }).addOnFailureListener(e -> {
             Log.d("TAG", "addOrder: " + e.getMessage());
+        });
+    }
+
+    private void addOrderDetail(OrderDetail orderDetail) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("OrderDetails");
+        String id = databaseReference.getKey().toString();
+        databaseReference.child(orderDetail.getIdOrderDetail()).setValue(orderDetail).addOnCompleteListener(task -> {
+           if (task.isComplete()){
+               Toast.makeText(this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+           } else {
+               Toast.makeText(this, "Đặt hàng thất bại", Toast.LENGTH_SHORT).show();
+           }
+        }).addOnFailureListener(e -> {
+            Log.e("TAG", "addOrderDetail: " + e.getMessage());
         });
     }
 
