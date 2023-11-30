@@ -98,7 +98,6 @@ public class ProducDetailFragment extends Fragment {
                     if (!checkDuplicateIds(idCart, product.getIdDoUong())) {
                         Toast.makeText(getContext(), "Sản phẩm đã có trong giỏ hàng1", Toast.LENGTH_SHORT).show();
                         cart.setSoLuong(cart.getSoLuong() + 1);
-//                        updateQuantityCart(cart);
                     } else {
                         cart.setIdGioHang(idCart);
                         cart.setIdKhachHang(idKhachHang);
@@ -108,7 +107,7 @@ public class ProducDetailFragment extends Fragment {
                         cart.setProductImage(product.getImage());
                         cart.setSoLuong(1);
 
-                        databaseReference.child(idCart).setValue(cart).addOnSuccessListener(command -> {
+                        databaseReference.child(idKhachHang).child(idCart).setValue(cart).addOnSuccessListener(command -> {
                             SweetAlertDialog dialog = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
                             dialog.setTitleText("Thêm vào giỏ hàng thành công");
                             dialog.show();

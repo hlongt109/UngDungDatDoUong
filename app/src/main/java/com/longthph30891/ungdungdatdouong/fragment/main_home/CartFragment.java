@@ -58,8 +58,9 @@ public class CartFragment extends Fragment {
 
         sessionManager = new SessionManager(getContext());
         cartArrayList = new ArrayList<>();
-
         cartAdapter = new CartAdapter(getContext(), cartArrayList);
+        getDataCartByIdKhachHang();
+
         cartAdapter.cartClick(new CartInterface() {
             @Override
             public void onIncreaseClick(int position) {
@@ -92,53 +93,19 @@ public class CartFragment extends Fragment {
         });
 
         binding.muasp.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Mua sản phẩm đi", Toast.LENGTH_SHORT).show();
+            ((MainActivity) requireActivity()).replaceFragment(new HomeFragment());
         });
 
         binding.imgBackCart.setOnClickListener(v -> {
             ((MainActivity) requireActivity()).replaceFragment(new HomeFragment());
         });
 
-//        getDataCart();
-        getDataCartByIdKhachHang();
     }
 
     private void getDataCartByIdKhachHang() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart");
         String idKhachHang = sessionManager.getLoggedInCustomerId();
-        Query query = databaseReference.orderByChild("idKhachHang").equalTo(idKhachHang);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                cartArrayList.clear();
-                for (DataSnapshot cartSnapshot : snapshot.getChildren()) {
-                    Cart cart = cartSnapshot.getValue(Cart.class);
-                    cartArrayList.add(cart);
-                }
-                if (cartArrayList.isEmpty()) {
-                    binding.layoutCartNull.setVisibility(View.VISIBLE);
-                    binding.cardTotalPrice.setVisibility(View.GONE);
-                    binding.btnDatHang.setVisibility(View.GONE);
-                } else {
-                    binding.layoutCartNull.setVisibility(View.GONE);
-                    binding.cardTotalPrice.setVisibility(View.VISIBLE);
-                    binding.btnDatHang.setVisibility(View.VISIBLE);
-                }
-                binding.recyclerViewCart.setAdapter(cartAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Cart", "onCancelled: " + error.getMessage());
-            }
-        });
-    }
-
-    private void getDataCart() {
-
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(idKhachHang);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -164,18 +131,6 @@ public class CartFragment extends Fragment {
                 Log.e("Cart", "onCancelled: " + error.getMessage());
             }
         });
-
-        binding.recyclerViewCart.setAdapter(cartAdapter);
-
-        if (cartArrayList.isEmpty()) {
-            binding.layoutCartNull.setVisibility(View.VISIBLE);
-            binding.cardTotalPrice.setVisibility(View.GONE);
-            binding.btnDatHang.setVisibility(View.GONE);
-        } else {
-            binding.layoutCartNull.setVisibility(View.GONE);
-            binding.cardTotalPrice.setVisibility(View.VISIBLE);
-            binding.btnDatHang.setVisibility(View.VISIBLE);
-        }
     }
 
     private void updateTotalPrice() {
@@ -250,10 +205,10 @@ public class CartFragment extends Fragment {
         });
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ((MainActivity) requireActivity()).showBottomNavOnBackPressed();
     }
+
 }

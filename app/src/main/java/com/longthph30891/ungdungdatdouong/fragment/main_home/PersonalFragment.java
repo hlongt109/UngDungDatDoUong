@@ -1,4 +1,4 @@
-package com.longthph30891.ungdungdatdouong.fragment.login_register;
+package com.longthph30891.ungdungdatdouong.fragment.main_home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import com.google.firebase.firestore.auth.User;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.activity.LoginRegisterActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentPersonalBinding;
+import com.longthph30891.ungdungdatdouong.fragment.login_register.ProfileFragment;
 import com.longthph30891.ungdungdatdouong.model.Khachang;
 
 
