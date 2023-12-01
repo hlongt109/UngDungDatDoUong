@@ -1,10 +1,21 @@
 package com.duongnd.sipdrinkadmin.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetAddNew;
 import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.Service.OrderListenService;
+import com.duongnd.sipdrinkadmin.databinding.ActivityMainBinding;
+import com.duongnd.sipdrinkadmin.fragment.CategoryFragment;
+import com.duongnd.sipdrinkadmin.fragment.NotificationFragment;
+import com.duongnd.sipdrinkadmin.fragment.PersonalFragment;
+import com.duongnd.sipdrinkadmin.fragment.StatisticFragment;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
      private ActivityMainBinding binding;
