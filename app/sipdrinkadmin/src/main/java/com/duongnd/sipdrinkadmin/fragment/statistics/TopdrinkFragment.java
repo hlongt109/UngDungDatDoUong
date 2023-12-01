@@ -6,18 +6,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.duongnd.sipdrinkadmin.R;
 import com.duongnd.sipdrinkadmin.databinding.FragmentTopdrinkBinding;
 import com.duongnd.sipdrinkadmin.model.DrinkDataOnBarChart;
 import com.duongnd.sipdrinkadmin.model.Order;
 import com.duongnd.sipdrinkadmin.model.OrderDetails;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -31,11 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TopdrinkFragment extends Fragment {
     public TopdrinkFragment() {
@@ -93,7 +83,6 @@ public class TopdrinkFragment extends Fragment {
     }
 
     private void displayDataOnBarChart(ArrayList<DrinkDataOnBarChart> listDrinkData) {
-        Toast.makeText(getActivity(), "Số lượng drink data "+listDrinkData.size(), Toast.LENGTH_SHORT).show();
         ArrayList<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0,10));
         entries.add(new BarEntry(1,20));
