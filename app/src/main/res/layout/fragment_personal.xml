@@ -41,7 +41,7 @@
                 android:textSize="18sp"
                 android:layout_marginLeft="15dp"
                 android:padding="10dp"
-                android:text="Quản lý hóa đơn"/>
+                android:text="Lịch sử mua hàng"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,32 +49,13 @@
                 android:layout_gravity="end"
                 android:layout_margin="10dp"/>
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/btnQlyNguoiDung"
-            android:layout_marginTop="1dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnQlyHoaDon">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginLeft="15dp"
-                android:padding="10dp"
-                android:text="Quản lý người dùng"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_next_2"
-                android:layout_gravity="end"
-                android:layout_margin="10dp"/>
-        </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/btnQlyVoucher"
             android:layout_marginTop="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnQlyNguoiDung">
+            android:layout_below="@id/btnQlyHoaDon">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

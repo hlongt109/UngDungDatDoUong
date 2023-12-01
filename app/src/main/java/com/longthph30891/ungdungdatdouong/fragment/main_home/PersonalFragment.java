@@ -66,9 +66,6 @@ public class PersonalFragment extends Fragment {
         binding.btnQlyHoaDon.setOnClickListener(view -> {
 
         });
-        binding.btnQlyNguoiDung.setOnClickListener(view -> {
-
-        });
         binding.btnQlyVoucher.setOnClickListener(view -> {
 
         });
