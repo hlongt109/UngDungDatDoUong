@@ -19,7 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
-import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
+import com.longthph30891.ungdungdatdouong.adapter.PayOrderActivity;
+import com.longthph30891.ungdungdatdouong.adapter.PayOrderAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProducDetailBinding;
 import com.longthph30891.ungdungdatdouong.model.Cart;
 import com.longthph30891.ungdungdatdouong.model.Product;
@@ -35,7 +36,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ProducDetailFragment extends Fragment {
 
-
+    PayOrderAdapter adapter;
     private FragmentProducDetailBinding binding;
 
     private List<Cart> selectedItems = new ArrayList<>();

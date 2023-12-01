@@ -1,4 +1,4 @@
-package com.longthph30891.ungdungdatdouong.activity;
+package com.longthph30891.ungdungdatdouong.adapter;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.R;
-import com.longthph30891.ungdungdatdouong.adapter.PayOrderAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.ActivityPayOrderBinding;
 import com.longthph30891.ungdungdatdouong.model.Cart;
 import com.longthph30891.ungdungdatdouong.model.Khachang;
