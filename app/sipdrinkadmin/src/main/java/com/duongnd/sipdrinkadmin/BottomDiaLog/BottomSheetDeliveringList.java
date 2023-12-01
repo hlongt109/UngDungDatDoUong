@@ -53,6 +53,7 @@ public class BottomSheetDeliveringList extends BottomSheetDialogFragment {
         adapter = new OrderDrinkAdapter(list,getActivity(),databaseReference);
         binding.rcvDeliveringList.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rcvDeliveringList.setAdapter(adapter);
+
         return binding.getRoot();
     }
 }

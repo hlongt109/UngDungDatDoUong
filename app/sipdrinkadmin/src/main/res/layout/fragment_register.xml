@@ -23,7 +23,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/bg_oval"
             android:paddingStart="7dp"
             android:scaleType="center"
@@ -39,7 +39,7 @@
             android:layout_width="155dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="118dp"
             android:fontFamily="@font/sen_bold"
             android:gravity="center"
             android:text="Đăng ký"
@@ -51,7 +51,7 @@
             android:layout_width="291dp"
             android:layout_height="26dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="160dp"
             android:fontFamily="@font/sen"
             android:gravity="center"
             android:text="Vui lòng đăng ký để sử dụng"
@@ -60,8 +60,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="603dp"
-            android:layout_marginTop="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="233dp"
             android:background="@drawable/white_card"
             android:orientation="vertical">
 
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginEnd="25dp">
 
                 <TextView
@@ -81,12 +81,12 @@
                     android:fontFamily="@font/sen"
                     android:text="Họ và tên"
                     android:textAllCaps="true"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/edt_name_signup"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="62dp"
                     android:layout_below="@id/txt_name"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
@@ -106,16 +106,16 @@
                     android:layout_below="@id/edt_name_signup"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="25dp"
                     android:fontFamily="@font/sen"
                     android:text="Tên đăng nhập"
                     android:textAllCaps="true"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/edt_username_signup"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="62dp"
                     android:layout_below="@id/txt_username"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
@@ -134,16 +134,16 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/edt_username_signup"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="25dp"
                     android:fontFamily="@font/sen"
                     android:text="Mật khẩu"
                     android:textAllCaps="true"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/edt_password_signup"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="62dp"
                     android:layout_below="@id/txt_password"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
@@ -159,61 +159,27 @@
                     android:textColor="@color/black"
                     tools:ignore="RtlSymmetry" />
 
-                <TextView
-                    android:id="@+id/txt_repassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edt_password_signup"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/sen"
-                    android:text="Nhập lại mật khẩu"
-                    android:textAllCaps="true"
-                    android:textSize="14sp" />
-
-                <EditText
-                    android:id="@+id/edt_repassword_signup"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_below="@id/txt_repassword"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_edit"
-                    android:drawableEnd="@drawable/ic_visibility_off"
-                    android:fontFamily="@font/sen"
-                    android:hint="*******"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:textColor="@color/black"
-                    tools:ignore="RtlSymmetry" />
-
-
-
 
                 <Button
                     android:id="@+id/btn_register"
                     android:layout_width="327dp"
-                    android:layout_height="60dp"
-                    android:layout_below="@id/edt_repassword_signup"
+                    android:layout_height="62dp"
+                    android:layout_below="@id/edt_password_signup"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="2dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginEnd="-2dp"
                     android:background="@drawable/bg_button"
                     android:fontFamily="@font/sen"
                     android:text="Signup"
                     android:textAllCaps="true" />
+
 
                 <LinearLayout
                     android:id="@+id/layout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btn_register"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="50dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
