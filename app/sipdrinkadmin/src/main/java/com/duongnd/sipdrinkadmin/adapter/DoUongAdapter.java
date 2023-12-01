@@ -26,9 +26,7 @@ import com.duongnd.sipdrinkadmin.fragment.DrinksListFragment;
 import com.duongnd.sipdrinkadmin.model.DoUong;
 import com.google.firebase.database.DatabaseReference;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class DoUongAdapter extends BaseAdapter {
     private final Context context;
@@ -70,10 +68,7 @@ public class DoUongAdapter extends BaseAdapter {
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(img);
         tvTen.setText(list.get(i).getTenDoUong());
-        Locale locale = new Locale("vi","VN");
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-        String money = numberFormat.format(list.get(i).getGia());
-        tvGia.setText(money);
+        tvGia.setText(String.valueOf(list.get(i).getGia()));
         if(list.get(i).getTrangThai().equals("DangBan")){
             tvTrangThai.setText("Còn sản phẩm");
             tvTrangThai.setTextColor(ContextCompat.getColor(context,R.color.green));
