@@ -1,4 +1,4 @@
-package com.duongnd.sipdrinkadmin.model;
+package com.duongnd.sipdrinkadmin.Model;
 
 public class Admin {
     String AdminId, UserName, Password, FullName, email, img, date, phone;
