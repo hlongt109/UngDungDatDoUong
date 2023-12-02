@@ -9,14 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.databinding.FragmentTopdrinkBinding;
 
 public class DetailsTopDrinkFragment extends Fragment {
     public DetailsTopDrinkFragment() {}
+    private FragmentTopdrinkBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentTopdrinkBinding.inflate(getLayoutInflater());
 
-        return inflater.inflate(R.layout.fragment_statistics_top_drink, container, false);
+        return binding.getRoot();
     }
 }

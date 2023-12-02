@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +48,9 @@ public class TopdrinkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTopdrinkBinding.inflate(inflater, container, false);
+        binding.tvViewDetails.setOnClickListener(view -> {
+            replaceFrg(new DetailsTopDrinkFragment());
+        });
         DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference("Order");
         orderReference.orderByChild("statusOrder").equalTo("dathanhtoan").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -91,7 +95,10 @@ public class TopdrinkFragment extends Fragment {
         });
         return binding.getRoot();
     }
-
+    public void replaceFrg(Fragment frg) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.fragment_container_view_admin, frg).commit();
+    }
     private void displayDataOnBarChart(ArrayList<DrinkDataOnBarChart> listDrinkData) {
         Toast.makeText(getActivity(), "Số lượng drink data "+listDrinkData.size(), Toast.LENGTH_SHORT).show();
         ArrayList<BarEntry> entries = new ArrayList<>();

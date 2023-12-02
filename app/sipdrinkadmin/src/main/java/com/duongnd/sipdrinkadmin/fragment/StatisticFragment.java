@@ -74,7 +74,6 @@ public class StatisticFragment extends Fragment {
             } else if (menuItem.getItemId() == R.id.nav_ChooseDay) {
                 replaceFrg(new TotalRevenueByDayFragment());
                 binding.tvRevenue.setText("Doanh thu theo ngày");
-
             }
             return true;
         });
