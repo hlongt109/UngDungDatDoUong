@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,14 +9,23 @@
 
     <TextView
         android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:text="SipDrink"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:textColor="#7C8FFA"
+        android:fontFamily="@font/sen"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
+    <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="400dp"
-        android:text="Màn hình chào"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:lottie_autoPlay="true"
+        android:layout_centerVertical="true"
+        app:lottie_speed="1"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/anim2"
+        android:id="@+id/lottieAnimation"/>
+</RelativeLayout>
