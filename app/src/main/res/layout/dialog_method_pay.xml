@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+
+    <Button
+        android:id="@+id/btn_pay_qr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#03A9F4"
+        android:gravity="center"
+        android:text="Thanh toán bằng mã QR code"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_pay_cash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#03A9F4"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Thanh toán khi nhận hàng"
+        android:textStyle="bold" />
+
+</LinearLayout>

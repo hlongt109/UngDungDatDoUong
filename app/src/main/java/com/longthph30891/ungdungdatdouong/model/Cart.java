@@ -130,4 +130,18 @@ public class Cart implements Parcelable {
         dest.writeDouble(productPrice);
         dest.writeByte((byte) (isChecked ? 1 : 0));
     }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "idGioHang='" + idGioHang + '\'' +
+                ", idDoUong='" + idDoUong + '\'' +
+                ", idKhachHang='" + idKhachHang + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productImage='" + productImage + '\'' +
+                ", soLuong=" + soLuong +
+                ", productPrice=" + productPrice +
+                ", isChecked=" + isChecked +
+                '}';
+    }
 }
