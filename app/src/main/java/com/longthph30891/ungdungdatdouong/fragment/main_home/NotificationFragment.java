@@ -15,7 +15,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import com.longthph30891.ungdungdatdouong.Adapter.NotifyAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentNotificationBinding;
 import com.longthph30891.ungdungdatdouong.model.Order;
@@ -39,14 +38,14 @@ public class NotificationFragment extends Fragment {
         binding = FragmentNotificationBinding.inflate(inflater, container, false);
         sessionManager = new SessionManager(getActivity());
         String idKhachHang = sessionManager.getLoggedInCustomerId();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Order").child(idKhachHang);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Order");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Order order = dataSnapshot.getValue(Order.class);
-                    if (order != null && order.getStatusOrder().equals("danggiao")) {
+                    if (order != null && order.getStatusOrder().equals("danggiao") && order.getIdUser().equals(idKhachHang)) {
                         list.add(order);
                     }
                 }
