@@ -23,6 +23,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Cập nhật đồ uống"
+            android:fontFamily="@font/sen"
             android:textSize="30dp"
             android:textStyle="bold" />
         <LinearLayout
