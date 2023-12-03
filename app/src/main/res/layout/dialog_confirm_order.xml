@@ -17,7 +17,7 @@
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:background="#03A9F4"
+            android:background="@color/my_light_primary"
             android:gravity="center"
             android:text="Xác nhận đơn hàng"
             android:textColor="@color/white"
@@ -30,6 +30,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
+            android:textColor="@color/black"
             android:layout_marginRight="20dp"
             android:hint="Tên "
             android:textSize="18dp"
@@ -42,6 +43,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
+            android:textColor="@color/black"
             android:layout_marginRight="20dp"
             android:hint="Số điện thoại"
             android:textSize="18dp" />
@@ -54,6 +56,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
             android:hint="Địa chỉ"
+            android:textColor="@color/black"
             android:textSize="18dp" />
 
         <TextView
@@ -63,8 +66,22 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
+            android:textColor="@color/black"
             android:hint="Tổng tiền đơn hàng"
             android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txt_method_payment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:hint="Thanh toán khi nhận hàng"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
 
         <Button
             android:id="@+id/btn_confirm_order"
@@ -74,7 +91,6 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="10dp"
-            android:backgroundTint="#03A9F4"
             android:gravity="center"
             android:text="Xác nhận"
             android:textStyle="bold" />

@@ -20,6 +20,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
+import com.longthph30891.ungdungdatdouong.adapter.ProductAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProducDetailBinding;
 import com.longthph30891.ungdungdatdouong.model.Cart;
 import com.longthph30891.ungdungdatdouong.model.Product;
@@ -34,6 +35,8 @@ import java.util.Locale;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ProducDetailFragment extends Fragment {
+
+    String TAG = "ProducDetailFragment";
 
 
     SessionManager sessionManager;
@@ -115,9 +118,11 @@ public class ProducDetailFragment extends Fragment {
 
 
                 });
+
             }
         }
     }
+
 
     private void addToCart(Cart cart) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
