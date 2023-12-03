@@ -6,12 +6,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +29,9 @@ import com.longthph30891.ungdungdatdouong.model.Khachang;
 import com.longthph30891.ungdungdatdouong.model.Order;
 import com.longthph30891.ungdungdatdouong.model.OrderDetail;
 import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
+import com.longthph30891.ungdungdatdouong.utilities.api.CreateOrder;
+
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -36,8 +39,15 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPayError;
+import vn.zalopay.sdk.ZaloPaySDK;
+import vn.zalopay.sdk.listeners.PayOrderListener;
+
 public class PayOrderActivity extends AppCompatActivity {
 
+    SessionManager sessionManager;
     private ActivityPayOrderBinding binding;
     private PayOrderAdapter payOrderAdapter;
     private ArrayList<Cart> selectedItems;
@@ -46,13 +56,22 @@ public class PayOrderActivity extends AppCompatActivity {
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH) + 1;
     int day = calendar.get(Calendar.DAY_OF_MONTH);
-    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPayOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // zalo pay
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        // ZaloPay SDK Init
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
+
+
         sessionManager = new SessionManager(this);
 
         binding.recyclerViewOrder.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -68,6 +87,10 @@ public class PayOrderActivity extends AppCompatActivity {
             String phone = binding.edtOrderPhone.getText().toString().trim();
             String address = binding.edtOrderAddress.getText().toString().trim();
             showConfirmOrderDialog(name, phone, address);
+        });
+
+        binding.txtMethodPay.setOnClickListener(v -> {
+
         });
 
         getUserInfo();
@@ -110,7 +133,7 @@ public class PayOrderActivity extends AppCompatActivity {
             order.setStatusOrder(status);
             order.setTotalPrice(totalPrice);
             order.setDateOrder(currentDateAndTime);
-            addOrder(order);
+            requestZaloPay(order);
             dialog.dismiss();
         });
         txtCancel.setOnClickListener(v -> {
@@ -159,12 +182,34 @@ public class PayOrderActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("OrderDetails");
         String id = databaseReference.getKey().toString();
+        SweetAlertDialog dialog = new SweetAlertDialog(this);
         databaseReference.child(orderDetail.getIdOrderDetail()).setValue(orderDetail).addOnCompleteListener(task -> {
-           if (task.isComplete()){
-               Toast.makeText(this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
-           } else {
-               Toast.makeText(this, "Đặt hàng thất bại", Toast.LENGTH_SHORT).show();
-           }
+            if (task.isComplete()) {
+                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                dialog.setTitleText("Đặt hàng thành công");
+                dialog.setContentText("Đơn hàng đã được đặt");
+                dialog.setConfirmText("Xem đơn hàng");
+                dialog.setCancelText("Quay lại");
+                dialog.setConfirmClickListener(v -> {
+                    dialog.dismiss();
+                    for (Cart item : selectedItems) {
+                        DatabaseReference cartRef = firebaseDatabase.getReference("Cart").child(sessionManager.getLoggedInCustomerId()).child(item.getIdGioHang());
+                        cartRef.removeValue().addOnSuccessListener(command -> {
+                            Log.d("TAG", "addOrderDetail: " + command);
+                        }).addOnFailureListener(e -> {
+                            Log.d("TAG", "addOrderDetail: " + e.getMessage());
+                        });
+                    }
+                    Intent intent = new Intent(PayOrderActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
+                dialog.show();
+            } else {
+                dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                dialog.setTitleText("Đặt hàng thất bại");
+                dialog.show();
+            }
         }).addOnFailureListener(e -> {
             Log.e("TAG", "addOrderDetail: " + e.getMessage());
         });
@@ -213,9 +258,51 @@ public class PayOrderActivity extends AppCompatActivity {
         return random.nextInt(maxOrderId - minOrderId + 1) + minOrderId;
     }
 
+
+    private void requestZaloPay(Order order) {
+        CreateOrder orderApi = new CreateOrder();
+        String price = String.valueOf(order.getTotalPrice());
+        Log.d("TAG", "requestZaloPay price: " + price);
+        try {
+            JSONObject data = orderApi.createOrder("10000");
+            String code = data.getString("return_code");
+            Log.d("TAG", "requestZaloPay: " + code);
+            if (code.equals("1")) {
+                String token = data.getString("zp_trans_token");
+                Log.d("TAG", "requestZaloPay token: " + token);
+                ZaloPaySDK.getInstance().payOrder(PayOrderActivity.this, token, "demozpdk://app", new PayOrderListener() {
+                    @Override
+                    public void onPaymentSucceeded(String s, String s1, String s2) {
+                        addOrder(order);
+                    }
+
+                    @Override
+                    public void onPaymentCanceled(String s, String s1) {
+
+                    }
+
+                    @Override
+                    public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+
+                    }
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         selectedItems.clear();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        ZaloPaySDK.getInstance().onResult(intent);
     }
 }

@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.adapter.CategoryHomeAdapter;
@@ -60,6 +64,7 @@ public class HomeFragment extends Fragment {
 
         getListCategory();
         getListProduct();
+        getListImage();
 
 
         adapter.clickCategory(new CategoryInterface() {
@@ -98,7 +103,7 @@ public class HomeFragment extends Fragment {
         }, timeLoadingCategory);
 
 
-        getNamCustomerById(sessionManager.getLoggedInCustomerId());
+//        getNamCustomerById(sessionManager.getLoggedInCustomerId());
 
         return binding.getRoot();
     }
@@ -203,7 +208,7 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Khachang customer = dataSnapshot.getValue(Khachang.class);
-                    binding.userNameHome.setText(customer.getFullName());
+//                    binding.userNameHome.setText(customer.getFullName());
                 }
             }
 
@@ -211,6 +216,23 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("TAG", "onCancelled: " + error.getMessage());
             }
+        });
+    }
+
+
+    private void getListImage() {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        ArrayList<SlideModel> imageList = new ArrayList<>();
+        storageRef.child("DoUongImages").listAll().addOnSuccessListener(listResult -> {
+            for (StorageReference item : listResult.getItems()) {
+                item.getDownloadUrl().addOnSuccessListener(uri -> {
+                    imageList.add(new SlideModel(uri.toString(), ScaleTypes.FIT));
+                    binding.imageSlider.setImageList(imageList);
+                });
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("TAG", "onFailure: " + e.getMessage());
         });
     }
 
