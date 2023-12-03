@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Intent serviceIntent = new Intent(this, OrderListenService.class);
-        startForegroundService(serviceIntent);
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        Intent serviceIntent = new Intent(this, OrderListenService.class);
+//        startForegroundService(serviceIntent);
+//    }
 }
