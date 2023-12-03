@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="10dp"
-        android:text="Thanh toán bằng ZaloPay"
+        android:text="@string/thanh_toan_bang_zalopay"
         android:textSize="18sp" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="10dp"
-        android:text="Thanh toán bằng MoMo"
+        android:text="@string/thanh_toan_bang_momo"
         android:textSize="18sp" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="10dp"
-        android:text="Thanh toán bằng Paypal"
+        android:text="@string/thanh_toan_bang_paypal"
         android:textSize="18sp" />
 
     <TextView
@@ -38,18 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="10dp"
-        android:text="Thanh toán khi nhận hàng"
+        android:text="@string/thanh_toan_khi_nhan_hang"
         android:textSize="18sp" />
-
-
-    <!-- Agree Button -->
-    <Button
-        android:id="@+id/buttonAgree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Đồng ý"
-        android:visibility="gone" />
 
 </LinearLayout>

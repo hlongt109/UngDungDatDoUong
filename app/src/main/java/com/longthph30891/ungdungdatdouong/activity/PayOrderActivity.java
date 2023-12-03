@@ -199,7 +199,7 @@ public class PayOrderActivity extends AppCompatActivity {
                 new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Vui lòng chọn phương thức thanh toán!")
                         .show();
-            } else if (methodPay.equals("Thanh toán khi nhân hàng")) {
+            } else if (methodPay.equals("Thanh toán khi nhận hàng")) {
                 addOrder(order);
             } else if (methodPay.equals("Thanh toán bằng ZaloPay")) {
                 paymentWithZaloPay(order);
