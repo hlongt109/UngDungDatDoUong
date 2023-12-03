@@ -41,7 +41,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @NonNull
     @Override
     public CartAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(context, R.layout.item_cart, null);
+        View view = View.inflate(context, R.layout.layout_cart, null);
         return new ViewHolder(view);
     }
 
@@ -92,13 +92,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_cart_name_product = itemView.findViewById(R.id.txt_cart_name_product);
-            txt_cart_count_product = itemView.findViewById(R.id.txt_cart_count_product);
-            txt_cart_price_product = itemView.findViewById(R.id.txt_cart_price_product);
+            txt_cart_name_product = itemView.findViewById(R.id.txtProductName);
+            txt_cart_count_product = itemView.findViewById(R.id.txtQuantity);
+            txt_cart_price_product = itemView.findViewById(R.id.txtProductPrice);
             imgCartProduct = itemView.findViewById(R.id.img_cart_product);
-            img_cong = itemView.findViewById(R.id.img_cong);
-            img_tru = itemView.findViewById(R.id.img_tru);
-            checkBox_cart = itemView.findViewById(R.id.checkBox_cart);
+            img_cong = itemView.findViewById(R.id.imgIncrease);
+            img_tru = itemView.findViewById(R.id.imgDecrease);
+            checkBox_cart = itemView.findViewById(R.id.checkBoxCart);
         }
     }
 }

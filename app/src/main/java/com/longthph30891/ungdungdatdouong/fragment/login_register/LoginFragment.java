@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentLoginBinding;
+import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 
 public class LoginFragment extends Fragment {
 
@@ -27,6 +28,7 @@ public class LoginFragment extends Fragment {
     FirebaseAuth auth;
     ProgressDialog dialog;
     String emailStr, passStr;
+    SessionManager sessionManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        sessionManager = new SessionManager(getContext());
         return binding.getRoot();
     }
 
@@ -117,6 +120,7 @@ public class LoginFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     dialog.dismiss();
+                    sessionManager.setLoggedInCustomer(auth.getCurrentUser().getUid());
                     startActivity(new Intent(getContext(), MainActivity.class));
                     getActivity().finish();
                 }

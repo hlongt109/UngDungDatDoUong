@@ -6,17 +6,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.adapter.CategoryHomeAdapter;
@@ -25,7 +28,9 @@ import com.longthph30891.ungdungdatdouong.databinding.FragmentHomeBinding;
 import com.longthph30891.ungdungdatdouong.interfaces.CategoryInterface;
 import com.longthph30891.ungdungdatdouong.interfaces.ProductInterface;
 import com.longthph30891.ungdungdatdouong.model.Category;
+import com.longthph30891.ungdungdatdouong.model.Khachang;
 import com.longthph30891.ungdungdatdouong.model.Product;
+import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,7 @@ public class HomeFragment extends Fragment {
 
     private int timeLoadingCategory;
     private int timeLoadingProduct;
+    SessionManager sessionManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,12 +58,13 @@ public class HomeFragment extends Fragment {
         adapter = new CategoryHomeAdapter(getContext(), categoryList);
         productAdapter = new ProductAdapter(getContext(), productList);
         binding.recyclerView.setAdapter(adapter);
-
+        sessionManager = new SessionManager(getContext());
 
         binding.recyclerViewProduct.setAdapter(productAdapter);
 
         getListCategory();
         getListProduct();
+        getListImage();
 
 
         adapter.clickCategory(new CategoryInterface() {
@@ -95,6 +102,8 @@ public class HomeFragment extends Fragment {
             }
         }, timeLoadingCategory);
 
+
+//        getNamCustomerById(sessionManager.getLoggedInCustomerId());
 
         return binding.getRoot();
     }
@@ -188,6 +197,43 @@ public class HomeFragment extends Fragment {
         bundle.putSerializable("product", product);
         productDetailFragment.setArguments(bundle);
         ((MainActivity) requireActivity()).showProductDetail(productDetailFragment);
+    }
+
+    private void getNamCustomerById(String customerId) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+        Query query = myRef.orderByChild("id").equalTo(customerId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Khachang customer = dataSnapshot.getValue(Khachang.class);
+//                    binding.userNameHome.setText(customer.getFullName());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("TAG", "onCancelled: " + error.getMessage());
+            }
+        });
+    }
+
+
+    private void getListImage() {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        ArrayList<SlideModel> imageList = new ArrayList<>();
+        storageRef.child("DoUongImages").listAll().addOnSuccessListener(listResult -> {
+            for (StorageReference item : listResult.getItems()) {
+                item.getDownloadUrl().addOnSuccessListener(uri -> {
+                    imageList.add(new SlideModel(uri.toString(), ScaleTypes.FIT));
+                    binding.imageSlider.setImageList(imageList);
+                });
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("TAG", "onFailure: " + e.getMessage());
+        });
     }
 
 }

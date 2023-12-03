@@ -1,83 +1,76 @@
-package com.duongnd.sipdrinkadmin.model;
+package com.duongnd.sipdrinkadmin.Model;
+
+import java.util.HashMap;
 
 public class Admin {
-    String AdminId, UserName, Password, FullName, email, img, date, phone;
-
-    public Admin(String adminId, String userName, String password, String fullName, String email, String img, String date, String phone) {
-        AdminId = adminId;
-        UserName = userName;
-        Password = password;
-        FullName = fullName;
-        this.email = email;
-        this.img = img;
-        this.date = date;
-        this.phone = phone;
-    }
+    private String id;
+    private String username;
+    private String password;
+    private String fullName;
+    private String email;
 
     public Admin() {
     }
 
-    public String getDate() {
-        return date;
+    public Admin(String id, String username, String password, String fullName, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getId() {
+        return id;
     }
 
-    public String getPhone() {
-        return phone;
+    public Admin setId(String id) {
+        this.id = id;
+        return this;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public String getUsername() {
+        return username;
     }
 
-    public String getAdminId() {
-        return AdminId;
-    }
-
-    public void setAdminId(String adminId) {
-        AdminId = adminId;
-    }
-
-    public String getUserName() {
-        return UserName;
-    }
-
-    public void setUserName(String userName) {
-        UserName = userName;
+    public Admin setUsername(String username) {
+        this.username = username;
+        return this;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
-    public void setPassword(String password) {
-        Password = password;
+    public Admin setPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     public String getFullName() {
-        return FullName;
+        return fullName;
     }
 
-    public void setFullName(String fullName) {
-        FullName = fullName;
+    public Admin setFullName(String fullName) {
+        this.fullName = fullName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public Admin setEmail(String email) {
         this.email = email;
+        return this;
     }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
+    public HashMap<String, Object> convertHashMap(){
+        HashMap<String,Object> Admin = new HashMap<>();
+        Admin.put("id",id);
+        Admin.put("username",username);
+        Admin.put("password",password);
+        Admin.put("fullName",fullName);
+        Admin.put("email",email);
+        return Admin;
     }
 }

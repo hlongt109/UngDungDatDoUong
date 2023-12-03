@@ -23,6 +23,7 @@ import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProducDetailBinding;
 import com.longthph30891.ungdungdatdouong.model.Cart;
 import com.longthph30891.ungdungdatdouong.model.Product;
+import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
@@ -35,8 +36,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class ProducDetailFragment extends Fragment {
 
 
+    SessionManager sessionManager;
     private FragmentProducDetailBinding binding;
-
     private List<Cart> selectedItems = new ArrayList<>();
 
     @Override
@@ -50,6 +51,8 @@ public class ProducDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        sessionManager = new SessionManager(getContext());
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -89,29 +92,26 @@ public class ProducDetailFragment extends Fragment {
 
                     Cart cart = new Cart();
                     String idCart = databaseReference.push().getKey();
+                    String idKhachHang = sessionManager.getLoggedInCustomerId();
 
-                    if (!checkDuplicateIds(idCart, product.getIdDoUong())) {
-                        Toast.makeText(getContext(), "Sản phẩm đã có trong giỏ hàng1", Toast.LENGTH_SHORT).show();
-                        cart.setSoLuong(cart.getSoLuong() + 1);
-//                        updateQuantityCart(cart);
-                    } else {
-                        cart.setIdGioHang(idCart);
-                        cart.setIdKhachHang("1");
-                        cart.setIdDoUong(product.getIdDoUong());
-                        cart.setProductName(product.getTenDoUong());
-                        cart.setProductPrice(product.getGia());
-                        cart.setProductImage(product.getImage());
-                        cart.setSoLuong(1);
+                    cart.setIdGioHang(idCart);
+                    cart.setIdKhachHang(idKhachHang);
+                    cart.setIdDoUong(product.getIdDoUong());
+                    cart.setProductName(product.getTenDoUong());
+                    cart.setProductPrice(product.getGia());
+                    cart.setProductImage(product.getImage());
+                    cart.setSoLuong(1);
 
-                        databaseReference.child(idCart).setValue(cart).addOnSuccessListener(command -> {
-                            SweetAlertDialog dialog = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
-                            dialog.setTitleText("Thêm vào giỏ hàng thành công");
-                            dialog.show();
-                        }).addOnFailureListener(e -> {
-                            Toast.makeText(getContext(), "Thêm vào giỏ hàng thất bại", Toast.LENGTH_SHORT).show();
-                            Log.e("Cart", "Catch error:" + e.getMessage());
-                        });
-                    }
+                    addToCart(cart);
+
+//                    databaseReference.child(idKhachHang).child(product.getTenDoUong()).setValue(cart).addOnSuccessListener(command -> {
+//                        SweetAlertDialog dialog = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
+//                        dialog.setTitleText("Thêm vào giỏ hàng thành công");
+//                        dialog.show();
+//                    }).addOnFailureListener(e -> {
+//                        Toast.makeText(getContext(), "Thêm vào giỏ hàng thất bại", Toast.LENGTH_SHORT).show();
+//                        Log.e("Cart", "Catch error:" + e.getMessage());
+//                    });
 
 
                 });
@@ -121,7 +121,28 @@ public class ProducDetailFragment extends Fragment {
 
     private void addToCart(Cart cart) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(sessionManager.getLoggedInCustomerId()).child(cart.getProductName());
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Cart cartInfo = snapshot.getValue(Cart.class);
+                    cartInfo.setSoLuong(cartInfo.getSoLuong() + cart.getSoLuong());
+                    databaseReference.setValue(cartInfo);
+                } else {
+                    databaseReference.setValue(cart).addOnSuccessListener(command -> {
+                        SweetAlertDialog dialog = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
+                        dialog.setTitleText("Thêm vào giỏ hàng thành công");
+                        dialog.show();
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("TAG", "add to cart: " + error.getMessage());
+            }
+        });
     }
 
     private boolean checkDuplicateIds(String cartId, String productId) {

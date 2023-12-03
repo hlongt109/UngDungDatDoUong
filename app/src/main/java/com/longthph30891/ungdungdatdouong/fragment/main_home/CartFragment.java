@@ -2,7 +2,6 @@ package com.longthph30891.ungdungdatdouong.fragment.main_home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,37 +11,38 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
 import com.longthph30891.ungdungdatdouong.adapter.CartAdapter;
 
-
 import com.longthph30891.ungdungdatdouong.databinding.FragmentCartBinding;
 import com.longthph30891.ungdungdatdouong.interfaces.CartInterface;
 import com.longthph30891.ungdungdatdouong.model.Cart;
+import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class CartFragment extends Fragment {
 
+    Cart cart;
+    SessionManager sessionManager;
     private FragmentCartBinding binding;
-
     private ArrayList<Cart> cartArrayList;
     private List<Cart> selectedItems = new ArrayList<>();
-
-    Cart cart;
     private CartAdapter cartAdapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,9 +56,14 @@ public class CartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sessionManager = new SessionManager(getContext());
         cartArrayList = new ArrayList<>();
-
         cartAdapter = new CartAdapter(getContext(), cartArrayList);
+
+        binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        binding.recyclerViewCart.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        getDataCartByIdKhachHang();
+
         cartAdapter.cartClick(new CartInterface() {
             @Override
             public void onIncreaseClick(int position) {
@@ -91,20 +96,52 @@ public class CartFragment extends Fragment {
         });
 
         binding.muasp.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Mua sản phẩm đi", Toast.LENGTH_SHORT).show();
+            ((MainActivity) requireActivity()).replaceFragment(new HomeFragment());
         });
 
         binding.imgBackCart.setOnClickListener(v -> {
             ((MainActivity) requireActivity()).replaceFragment(new HomeFragment());
         });
 
-        getDataCart();
+        binding.imgDeleteCart.setOnClickListener(v -> {
+            if (selectedItems.isEmpty()) {
+                Toast.makeText(getContext(), "Vui lòng chọn sản phẩm", Toast.LENGTH_SHORT).show();
+            } else {
+                (selectedItems).forEach(this::deleteCart);
+            }
+        });
+
     }
 
-    private void getDataCart() {
-
+    private void deleteCart(Cart cart) {
+        String idKhachHang = sessionManager.getLoggedInCustomerId();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(idKhachHang).child(cart.getProductName());
+        SweetAlertDialog sDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+        sDialog.setTitleText("Bạn muốn xóa sản phẩm?");
+        sDialog.setConfirmText("Có");
+        sDialog.setConfirmClickListener(sDialog1 -> {
+            sDialog1.dismissWithAnimation();
+            databaseReference.removeValue().addOnSuccessListener(command -> {
+                binding.imgDeleteCart.setVisibility(View.GONE);
+                binding.txtTotalPrice.setText("0đ");
+            }).addOnFailureListener(e -> {
+                Log.e("Cart", "onFailure: " + e.getMessage());
+            });
+        });
+        sDialog.setCancelText("Không");
+        sDialog.setCancelClickListener(sDialog1 -> {
+            sDialog1.dismissWithAnimation();
+            sDialog.dismiss();
+        });
+        sDialog.show();
+
+    }
+
+    private void getDataCartByIdKhachHang() {
+        String idKhachHang = sessionManager.getLoggedInCustomerId();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(idKhachHang);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -130,18 +167,6 @@ public class CartFragment extends Fragment {
                 Log.e("Cart", "onCancelled: " + error.getMessage());
             }
         });
-
-        binding.recyclerViewCart.setAdapter(cartAdapter);
-
-        if (cartArrayList.isEmpty()) {
-            binding.layoutCartNull.setVisibility(View.VISIBLE);
-            binding.cardTotalPrice.setVisibility(View.GONE);
-            binding.btnDatHang.setVisibility(View.GONE);
-        } else {
-            binding.layoutCartNull.setVisibility(View.GONE);
-            binding.cardTotalPrice.setVisibility(View.VISIBLE);
-            binding.btnDatHang.setVisibility(View.VISIBLE);
-        }
     }
 
     private void updateTotalPrice() {
@@ -162,7 +187,7 @@ public class CartFragment extends Fragment {
         int quantity = cart.getSoLuong();
         quantity++;
         cart.setSoLuong(quantity);
-        updateQuantityCart(cart);
+        updateQuantityCartByIdCustomer(cart);
         cartAdapter.notifyDataSetChanged();
         updateTotalPrice();
     }
@@ -173,7 +198,7 @@ public class CartFragment extends Fragment {
         if (quantity > 1) {
             quantity--;
             cart.setSoLuong(quantity);
-            updateQuantityCart(cart);
+            updateQuantityCartByIdCustomer(cart);
             cartAdapter.notifyDataSetChanged();
             updateTotalPrice();
         } else {
@@ -185,41 +210,35 @@ public class CartFragment extends Fragment {
         cart = cartArrayList.get(position);
         cart.setChecked(isChecked);
 
+
+        String idKhachHang = sessionManager.getLoggedInCustomerId();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Cart").child(idKhachHang).child(cart.getIdGioHang());
         if (isChecked) {
             selectedItems.add(cart);
-            Log.d("TAG", "isCheckItem: " + cartArrayList.size());
+            Log.d("TAG", "isCheckItem: " + cart.isChecked());
         } else {
             selectedItems.remove(cart);
-            Log.d("TAG", "isCheckItem: " + cartArrayList.size());
+            Log.d("TAG", "isCheckItem: " + cart.isChecked());
+        }
+        if (selectedItems.isEmpty()) {
+            binding.imgDeleteCart.setVisibility(View.GONE);
+        } else {
+            binding.imgDeleteCart.setVisibility(View.VISIBLE);
         }
         updateTotalPrice();
     }
 
-
-    private void updateQuantityCart(Cart cart) {
+    private void updateQuantityCartByIdCustomer(Cart cart) {
+        String idKhachHang = sessionManager.getLoggedInCustomerId();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart");
-        databaseReference.child(cart.getIdGioHang()).setValue(cart).addOnSuccessListener(command -> {
-            Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> {
-            Log.e("Cart", "Catch error:" + e.getMessage());
-        });
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(idKhachHang).child(cart.getProductName()).child("soLuong");
+        databaseReference.setValue(cart.getSoLuong());
     }
-
-    private void updateCheckedCart(Cart cart) {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart");
-        databaseReference.child(cart.getIdGioHang()).setValue(cart).addOnSuccessListener(command -> {
-            Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> {
-            Log.e("Cart", "Catch error:" + e.getMessage());
-        });
-    }
-
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ((MainActivity) requireActivity()).showBottomNavOnBackPressed();
     }
+
 }

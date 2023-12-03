@@ -38,6 +38,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-database:20.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation fileTree(dir: '/home/duongnd/Documents/DuAn1/UngDungDatDoUong/app/lib', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -66,4 +67,14 @@ dependencies {
     implementation 'com.github.AgnaldoNP:AGSkeletonLoading:1.2'
 
     implementation 'com.github.AbhisheKundalia:sweet-alert-dialog:v2.0.0'
+
+
+    implementation 'com.airbnb.android:lottie:6.0.0'
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
+
+    // zalo pay
+    implementation("com.squareup.okhttp3:okhttp:4.9.2")
+    implementation("commons-codec:commons-codec:1.15")
+
+
 }
