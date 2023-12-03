@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        FirebaseMessaging.getInstance().subscribeToTopic("News")
+        FirebaseMessaging.getInstance().subscribeToTopic("Customer_device")
                         .addOnCompleteListener(task -> {
                             String msg = "Done";
                             if(!task.isSuccessful()){

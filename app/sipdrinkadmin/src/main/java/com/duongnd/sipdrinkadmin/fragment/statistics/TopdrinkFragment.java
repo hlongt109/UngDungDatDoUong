@@ -46,14 +46,17 @@ public class TopdrinkFragment extends Fragment {
         binding.tvViewDetails.setOnClickListener(view -> {
             replaceFrg(new DetailsTopDrinkFragment());
         });
-        getDrinkChart();
+        getDrinkOnChart();
         return binding.getRoot();
     }
+
     public void replaceFrg(Fragment frg) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_container, frg).commit();
-    }private void getDrinkChart() {
-        ArrayList<DrinkDataOnBarChart>list = new ArrayList<>();
+    }
+
+    private void getDrinkOnChart() {
+        ArrayList<DrinkDataOnBarChart> list = new ArrayList<>();
         DatabaseReference referenceOrder = FirebaseDatabase.getInstance().getReference("Order");
         DatabaseReference referenceDetails = FirebaseDatabase.getInstance().getReference("OrderDetails");
 
@@ -61,6 +64,7 @@ public class TopdrinkFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Order order = dataSnapshot.getValue(Order.class);
                     String orderId;
@@ -69,21 +73,30 @@ public class TopdrinkFragment extends Fragment {
                         referenceDetails.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshotDetails) {
-                                int orderTotalQuantity = 0;
-                                String nameProduct = "";
                                 for (DataSnapshot dataSnapshotDetails : snapshotDetails.getChildren()) {
                                     OrderDetails orderDetails = dataSnapshotDetails.getValue(OrderDetails.class);
 
                                     if (orderDetails != null) {
-                                        nameProduct = orderDetails.getNameProduct();
+                                        String productName = orderDetails.getNameProduct();
                                         int quantity = orderDetails.getQuantity();
-                                        //
-                                        orderTotalQuantity += quantity;
+                                        boolean productExists = false;
+                                        for (DrinkDataOnBarChart existingProduct : list) {
+                                            if (existingProduct.getName().equals(productName)) {
+                                                existingProduct.setTotalQuantity(existingProduct.getTotalQuantity() + quantity);
+                                                productExists = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!productExists) {
+                                            DrinkDataOnBarChart data = new DrinkDataOnBarChart(productName, quantity);
+                                            list.add(data);
+                                        }
                                     }
                                 }
-                                list.add(new DrinkDataOnBarChart(nameProduct,orderTotalQuantity));
                                 displayDataOnBarChart(list);
+
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
                             }
@@ -91,12 +104,13 @@ public class TopdrinkFragment extends Fragment {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
     }
+
     private void displayDataOnBarChart(ArrayList<DrinkDataOnBarChart> listDrinkData) {
         ArrayList<BarEntry> entries = new ArrayList<>();
 

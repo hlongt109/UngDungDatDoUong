@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.checkerframework.checker.units.qual.s;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DetailsTopDrinkFragment extends Fragment {
     public DetailsTopDrinkFragment() {
@@ -58,6 +59,7 @@ public class DetailsTopDrinkFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Order order = dataSnapshot.getValue(Order.class);
                     String orderId;
@@ -66,27 +68,38 @@ public class DetailsTopDrinkFragment extends Fragment {
                         referenceDetails.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshotDetails) {
-                                double orderTotalRevenue = 0;
-                                int orderTotalQuantity = 0;
-                                String imageProduct ="";
-                                String nameProduct = "";
-
                                 for (DataSnapshot dataSnapshotDetails : snapshotDetails.getChildren()) {
                                     OrderDetails orderDetails = dataSnapshotDetails.getValue(OrderDetails.class);
 
                                     if (orderDetails != null) {
-                                        imageProduct = orderDetails.getImageProduct();
-                                        nameProduct = orderDetails.getNameProduct();
+                                        String productName = orderDetails.getNameProduct();
                                         int quantity = orderDetails.getQuantity();
                                         double price = orderDetails.getPrice();
-                                        //
-                                        orderTotalQuantity += quantity;
-                                        orderTotalRevenue += quantity * price;
+
+                                        // Kiểm tra xem sản phẩm đã tồn tại trong danh sách chưa
+                                        boolean productExists = false;
+                                        for (DrinkTop existingProduct : list) {
+                                            if (existingProduct.getName().equals(productName)) {
+                                                // Nếu đã tồn tại, cập nhật thông tin sản phẩm
+                                                existingProduct.setQuantity(existingProduct.getQuantity() + quantity);
+                                                existingProduct.setTotalRevenue(existingProduct.getTotalRevenue() + quantity * price);
+                                                productExists = true;
+                                                break;
+                                            }
+                                        }
+
+                                        // Nếu sản phẩm chưa tồn tại, thêm sản phẩm mới vào danh sách
+                                        if (!productExists) {
+                                            String imageProduct = orderDetails.getImageProduct();
+                                            DrinkTop newProduct = new DrinkTop(productName, quantity, quantity * price, imageProduct);
+                                            list.add(newProduct);
+                                        }
                                     }
                                 }
-                                list.add(new DrinkTop(nameProduct, orderTotalQuantity, orderTotalRevenue, imageProduct));
+
                                 adapter.notifyDataSetChanged();
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
                             }
@@ -94,6 +107,7 @@ public class DetailsTopDrinkFragment extends Fragment {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }

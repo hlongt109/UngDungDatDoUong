@@ -138,7 +138,7 @@ public class StatisticFragment extends Fragment {
         saveFakeData(orderReference, "1", "user1", "26/11/2023", "John Doe", "123456789", "123 Main St", "choxacnhan", 1025000);
         saveFakeData(orderReference, "2", "user2", "27/11/2023", "Jane David", "987654321", "456 Main St", "choxacnhan", 84000);
         saveFakeData(orderReference, "3", "user3", "28/11/2023", "Bob Smith", "555555555", "789 Main St", "choxacnhan", 54000);
-        saveFakeData(orderReference, "4", "user4", "29/11/2023", "Bob Smithy", "555555555", "789 Main St", "dathanhtoan", 1000000);
+        saveFakeData(orderReference, "4", "user4", "03/12/2023", "Bob Smithy", "555555555", "789 Main St", "dathanhtoan", 1000000);
     }
     private void saveFakeData(DatabaseReference orderReference, String orderId, String idUser, String dateOrder,
                               String nameCustomer, String phoneNumber, String address, String statusOrder, double totalPrice) {

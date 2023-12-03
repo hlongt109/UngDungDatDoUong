@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -33,17 +35,20 @@ import java.util.Map;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class OrderDetailsFragment extends Fragment {
-    public OrderDetailsFragment() {}
+    public OrderDetailsFragment() {
+    }
+
     private FragmentWaitingConfirmationBinding binding;
     private DatabaseReference databaseReference;
     private OrderDetailsAdapter adapter;
-    private ArrayList<OrderDetails>list = new ArrayList<>();
-    private String orderId = "", idUser = "",dateOrder = "",nameCustomer = "",phoneNumber = "",address = "",statusOrder ="";
+    private ArrayList<OrderDetails> list = new ArrayList<>();
+    private String orderId = "", idUser = "", dateOrder = "", nameCustomer = "", phoneNumber = "", address = "", statusOrder = "";
     private double totalPrice = 0.0;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null){
+        if (getArguments() != null) {
             orderId = getArguments().getString("orderId");
             idUser = getArguments().getString("idUser");
             dateOrder = getArguments().getString("dateOrder");
@@ -54,29 +59,31 @@ public class OrderDetailsFragment extends Fragment {
             totalPrice = getArguments().getDouble("totalPrice");
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentWaitingConfirmationBinding.inflate(inflater,container,false);
+        binding = FragmentWaitingConfirmationBinding.inflate(inflater, container, false);
         binding.btnBack.setOnClickListener(view -> getActivity().onBackPressed());
         setData();
         return binding.getRoot();
     }
+
     private void setData() {
-        if(statusOrder.equals("choxacnhan")){
+        if (statusOrder.equals("choxacnhan")) {
             binding.tvTrangThaiOrder.setText("Đơn hàng đang chờ xác nhận");
             binding.btnXacNhanOrder.setVisibility(View.VISIBLE);
             binding.btnHuyOrder.setVisibility(View.VISIBLE);
         } else if (statusOrder.equals("danggiao")) {
             binding.tvTrangThaiOrder.setText("Đang giao hàng");
-            binding.tvTrangThaiOrder.setTextColor(ContextCompat.getColor(getContext(),R.color.green));
+            binding.tvTrangThaiOrder.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
             binding.btnDaThanhToan.setVisibility(View.VISIBLE);
         } else if (statusOrder.equals("dahuy")) {
             binding.tvTrangThaiOrder.setText("Đơn hàng đã hủy");
-            binding.tvTrangThaiOrder.setTextColor(ContextCompat.getColor(getContext(),R.color.red));
-        }else if (statusOrder.equals("dathanhtoan")) {
+            binding.tvTrangThaiOrder.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        } else if (statusOrder.equals("dathanhtoan")) {
             binding.tvTrangThaiOrder.setText("Giao hàng thành công");
-            binding.tvTrangThaiOrder.setTextColor(ContextCompat.getColor(getContext(),R.color.green));
+            binding.tvTrangThaiOrder.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
         }
         binding.tvTime.setText(dateOrder);
         binding.tvTenKh.setText(nameCustomer);
@@ -99,43 +106,46 @@ public class OrderDetailsFragment extends Fragment {
                         totalMoney += orderDetails.getPrice() * orderDetails.getQuantity();
                     }
                 }
-                Locale locale = new Locale("vi","VN");
+                Locale locale = new Locale("vi", "VN");
                 NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
                 String tongTien = numberFormat.format(totalMoney);
-                binding.tvTotalQuantity.setText(totalQuantity +" sản phẩm");
+                binding.tvTotalQuantity.setText(totalQuantity + " sản phẩm");
                 binding.tvTotalPrice.setText(tongTien);
                 adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-        adapter = new OrderDetailsAdapter(list,getActivity(),databaseReference);
+        adapter = new OrderDetailsAdapter(list, getActivity(), databaseReference);
         binding.rcvDrinkOder.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rcvDrinkOder.setAdapter(adapter);
         //
         binding.btnXacNhanOrder.setOnClickListener(view -> {
-            updateStatus("danggiao","Đã xác nhận đơn hàng");
+            updateStatus("danggiao", "Đã xác nhận đơn hàng");
+            senNotificationToCustomer("Đơn hàng #"+orderId+" đang trên đường giao đến bạn");
         });
         binding.btnDaThanhToan.setOnClickListener(view -> {
-            updateStatus("dathanhtoan","Giao hàng thành công");
+            updateStatus("dathanhtoan", "Giao hàng thành công");
         });
         binding.btnHuyOrder.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setIcon(R.drawable.ic_warning);
             builder.setTitle("Thông báo !");
             builder.setMessage("Bạn có chắc muốn hủy đơn hàng này không ?");
-            builder.setNegativeButton("Không",null);
+            builder.setNegativeButton("Không", null);
             builder.setPositiveButton("Có", (dialogInterface, i) -> {
-                updateStatus("dahuy","Đã hủy đơn hàng");
+                updateStatus("dahuy", "Đã hủy đơn hàng");
                 dialogInterface.dismiss();
             });
             builder.create().show();
         });
     }
-    private void updateStatus(String status,String tb) {
+
+    private void updateStatus(String status, String tb) {
         Map<String, Object> map = new HashMap<>();
-        map.put("statusOrder",status);
+        map.put("statusOrder", status);
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("Order");
         databaseReference1.child(orderId).updateChildren(map)
                 .addOnSuccessListener(unused -> {
@@ -148,6 +158,20 @@ public class OrderDetailsFragment extends Fragment {
                             .setTitleText("Oops...")
                             .setContentText("Lỗi !")
                             .show();
+                });
+    }
+
+    private void senNotificationToCustomer(String message) {
+        FirebaseMessaging.getInstance().subscribeToTopic("Customer_device")
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        RemoteMessage.Builder builder = new RemoteMessage.Builder("Customer_device");
+                        builder.setMessageId(Integer.toString(0));
+                        builder.addData("message", message);
+                        FirebaseMessaging.getInstance().send(builder.build());
+                    }else {
+
+                    }
                 });
     }
 }
