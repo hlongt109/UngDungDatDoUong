@@ -164,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(this, OrderListenerSv.class));
-        }
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(new Intent(this, OrderListenerSv.class));
+//        }
+//    }
 }
