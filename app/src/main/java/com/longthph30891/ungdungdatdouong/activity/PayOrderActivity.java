@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -48,7 +50,11 @@ import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class PayOrderActivity extends AppCompatActivity {
 
+
+    String TAG = "PayOrderActivity";
+
     SessionManager sessionManager;
+    String methodPay = "";
     private ActivityPayOrderBinding binding;
     private PayOrderAdapter payOrderAdapter;
     private ArrayList<Cart> selectedItems;
@@ -87,18 +93,70 @@ public class PayOrderActivity extends AppCompatActivity {
             String name = binding.edtOrderName.getText().toString().trim();
             String phone = binding.edtOrderPhone.getText().toString().trim();
             String address = binding.edtOrderAddress.getText().toString().trim();
-            showConfirmOrderDialog(name, phone, address);
+            if (name.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+                new SweetAlertDialog(PayOrderActivity.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Vui lòng điền đầy đủ thông tin")
+                        .setConfirmText("Đóng")
+                        .show();
+            } else if (!phone.matches("0\\d{9}")) {
+                new SweetAlertDialog(PayOrderActivity.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Số điện thoại không đúng định dạng")
+                        .setConfirmText("Đóng")
+                        .show();
+            } else if (methodPay.isEmpty()) {
+                new SweetAlertDialog(PayOrderActivity.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Vui lòng chọn phương thức thanh toán")
+                        .setConfirmText("Đóng")
+                        .show();
+            } else {
+                showConfirmOrderDialog(name, phone, address, methodPay);
+            }
+            Log.d(TAG, "payMethod: " + methodPay);
         });
 
-        binding.txtMethodPay.setOnClickListener(v -> {
+        binding.layoutMethodPay.setOnClickListener(v -> {
+            AlertDialog builder = new AlertDialog.Builder(this).create();
+            View view = getLayoutInflater().inflate(R.layout.dialog_method_pay, null);
+            builder.setTitle("Chọn phương thức thanh toán");
+            builder.setView(view);
 
+            TextView txtZaloPay = view.findViewById(R.id.txt_payment_ZaloPay);
+            TextView txtMoMo = view.findViewById(R.id.txt_payment_MoMo);
+            TextView txtPaypal = view.findViewById(R.id.txt_payment_Paypal);
+            TextView txtOffline = view.findViewById(R.id.txt_payment_offline);
+
+            txtZaloPay.setOnClickListener(v1 -> {
+                binding.txtMethodPay.setText(txtZaloPay.getText().toString());
+                methodPay = txtZaloPay.getText().toString();
+                builder.dismiss();
+            });
+
+            txtMoMo.setOnClickListener(v1 -> {
+                binding.txtMethodPay.setText(txtMoMo.getText().toString());
+                methodPay = txtMoMo.getText().toString();
+                builder.dismiss();
+            });
+
+            txtPaypal.setOnClickListener(v1 -> {
+                binding.txtMethodPay.setText(txtPaypal.getText().toString());
+                methodPay = txtPaypal.getText().toString();
+                builder.dismiss();
+            });
+
+            txtOffline.setOnClickListener(v1 -> {
+                binding.txtMethodPay.setText(txtOffline.getText().toString());
+                methodPay = txtOffline.getText().toString();
+                builder.dismiss();
+            });
+            builder.show();
         });
 
         getUserInfo();
 
     }
 
-    private void showConfirmOrderDialog(String name, String phone, String address) {
+
+    private void showConfirmOrderDialog(String name, String phone, String address, String methodPay) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_confirm_order);
         Window window = dialog.getWindow();
@@ -111,14 +169,16 @@ public class PayOrderActivity extends AppCompatActivity {
         TextView txtTotal = dialog.findViewById(R.id.txt_total_price_order);
         Button btnConfirm = dialog.findViewById(R.id.btn_confirm_order);
         TextView txtCancel = dialog.findViewById(R.id.txt_cancel_order);
+        TextView txtMethodPayment = dialog.findViewById(R.id.txt_method_payment);
 
         txtName.setText("Tên khách hàng: " + name);
         txtPhone.setText("Số điện thoại: " + phone);
         txtAddress.setText("Địa chỉ: " + address);
+        txtMethodPayment.setText(methodPay);
         Locale locale = new Locale("vi", "VN");
         NumberFormat format = NumberFormat.getCurrencyInstance(locale);
         String price = format.format(totalPrice);
-        txtTotal.setText("Tổng tiền: " + price);
+        txtTotal.setText("Tổng thanh toán: " + price);
 
         String status = "choxacnhan";
         String currentDateAndTime = String.format("%02d/%02d/%04d", day, month, year);
@@ -134,7 +194,24 @@ public class PayOrderActivity extends AppCompatActivity {
             order.setStatusOrder(status);
             order.setTotalPrice(totalPrice);
             order.setDateOrder(currentDateAndTime);
-            requestZaloPay(order);
+
+            if (methodPay.isEmpty()) {
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Vui lòng chọn phương thức thanh toán!")
+                        .show();
+            } else if (methodPay.equals("Thanh toán khi nhận hàng")) {
+                addOrder(order);
+            } else if (methodPay.equals("Thanh toán bằng ZaloPay")) {
+                paymentWithZaloPay(order);
+            } else if (methodPay.equals("Thanh toán bằng MoMo")) {
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Chức năng thanh toán bằng MoMo đang phát triển, vui lòng chọn phương thức khác!")
+                        .show();
+            } else if (methodPay.equals("Thanh toán bằng Paypal")) {
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Chức năng thanh toán bằng Paypal đang phát triển, vui lòng chọn phương thức khác!")
+                        .show();
+            }
             dialog.dismiss();
         });
         txtCancel.setOnClickListener(v -> {
@@ -175,7 +252,7 @@ public class PayOrderActivity extends AppCompatActivity {
                 }
             }
         }).addOnFailureListener(e -> {
-            Log.d("TAG", "addOrder: " + e.getMessage());
+            Log.d(TAG, "addOrder: " + e.getMessage());
         });
     }
 
@@ -196,9 +273,9 @@ public class PayOrderActivity extends AppCompatActivity {
                     for (Cart item : selectedItems) {
                         DatabaseReference cartRef = firebaseDatabase.getReference("Cart").child(sessionManager.getLoggedInCustomerId()).child(item.getIdGioHang());
                         cartRef.removeValue().addOnSuccessListener(command -> {
-                            Log.d("TAG", "addOrderDetail: " + command);
+                            Log.d(TAG, "addOrderDetail: " + command);
                         }).addOnFailureListener(e -> {
-                            Log.d("TAG", "addOrderDetail: " + e.getMessage());
+                            Log.d(TAG, "addOrderDetail: " + e.getMessage());
                         });
                     }
                     Intent intent = new Intent(PayOrderActivity.this, MainActivity.class);
@@ -212,7 +289,7 @@ public class PayOrderActivity extends AppCompatActivity {
                 dialog.show();
             }
         }).addOnFailureListener(e -> {
-            Log.e("TAG", "addOrderDetail: " + e.getMessage());
+            Log.e(TAG, "addOrderDetail: " + e.getMessage());
         });
     }
 
@@ -246,7 +323,7 @@ public class PayOrderActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         });
 
@@ -260,17 +337,17 @@ public class PayOrderActivity extends AppCompatActivity {
     }
 
 
-    private void requestZaloPay(Order order) {
+    private void paymentWithZaloPay(Order order) {
         CreateOrder orderApi = new CreateOrder();
         String price = String.valueOf(order.getTotalPrice());
-        Log.d("TAG", "requestZaloPay price: " + price);
+        Log.d(TAG, "paymentWithZaloPay: " + price);
         try {
             JSONObject data = orderApi.createOrder("10000");
             String code = data.getString("return_code");
-            Log.d("TAG", "requestZaloPay: " + code);
+            Log.d(TAG, "requestZaloPay: " + code);
             if (code.equals("1")) {
                 String token = data.getString("zp_trans_token");
-                Log.d("TAG", "requestZaloPay token: " + token);
+                Log.d(TAG, "requestZaloPay token: " + token);
                 ZaloPaySDK.getInstance().payOrder(PayOrderActivity.this, token, "demozpdk://app", new PayOrderListener() {
                     @Override
                     public void onPaymentSucceeded(String s, String s1, String s2) {
@@ -292,6 +369,10 @@ public class PayOrderActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void paymentWithOffline(Order order) {
+        addOrder(order);
     }
 
 
