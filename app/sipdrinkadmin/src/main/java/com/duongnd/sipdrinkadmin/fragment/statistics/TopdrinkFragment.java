@@ -6,19 +6,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.adapter.DrinkTopAdapter;
 import com.duongnd.sipdrinkadmin.databinding.FragmentTopdrinkBinding;
 import com.duongnd.sipdrinkadmin.model.DrinkDataOnBarChart;
+import com.duongnd.sipdrinkadmin.model.DrinkTop;
 import com.duongnd.sipdrinkadmin.model.Order;
 import com.duongnd.sipdrinkadmin.model.OrderDetails;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -32,11 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TopdrinkFragment extends Fragment {
     public TopdrinkFragment() {
@@ -51,61 +46,73 @@ public class TopdrinkFragment extends Fragment {
         binding.tvViewDetails.setOnClickListener(view -> {
             replaceFrg(new DetailsTopDrinkFragment());
         });
-        DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference("Order");
-        orderReference.orderByChild("statusOrder").equalTo("dathanhtoan").addListenerForSingleValueEvent(new ValueEventListener() {
+        getDrinkOnChart();
+        return binding.getRoot();
+    }
+
+    public void replaceFrg(Fragment frg) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.fragment_container, frg).commit();
+    }
+
+    private void getDrinkOnChart() {
+        ArrayList<DrinkDataOnBarChart> list = new ArrayList<>();
+        DatabaseReference referenceOrder = FirebaseDatabase.getInstance().getReference("Order");
+        DatabaseReference referenceDetails = FirebaseDatabase.getInstance().getReference("OrderDetails");
+
+        referenceOrder.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<DrinkDataOnBarChart> orderDrinkDataList = new ArrayList<>();
+                list.clear();
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Order order = dataSnapshot.getValue(Order.class);
-                    String orderId = order.getOrderId();
-                    //truy vấn OrderDetails
-                    DatabaseReference orderDetailsReference = FirebaseDatabase.getInstance().getReference("OrderDetails");
-                    orderDetailsReference.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
-                                OrderDetails orderDetails = dataSnapshot1.getValue(OrderDetails.class);
-                                if (orderDetails != null) {
-                                    for (DrinkDataOnBarChart drinkDataOnBarChart : orderDrinkDataList) {
-                                        if (drinkDataOnBarChart.getName().equals(orderDetails.getNameProduct())) {
-                                            drinkDataOnBarChart.addQuantity(orderDetails.getQuantity());
+                    String orderId;
+                    if (order.getStatusOrder().equals("dathanhtoan")) {
+                        orderId = order.getOrderId();
+                        referenceDetails.orderByChild("orderId").equalTo(orderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshotDetails) {
+                                for (DataSnapshot dataSnapshotDetails : snapshotDetails.getChildren()) {
+                                    OrderDetails orderDetails = dataSnapshotDetails.getValue(OrderDetails.class);
 
-                                            break;
+                                    if (orderDetails != null) {
+                                        String productName = orderDetails.getNameProduct();
+                                        int quantity = orderDetails.getQuantity();
+                                        boolean productExists = false;
+                                        for (DrinkDataOnBarChart existingProduct : list) {
+                                            if (existingProduct.getName().equals(productName)) {
+                                                existingProduct.setTotalQuantity(existingProduct.getTotalQuantity() + quantity);
+                                                productExists = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!productExists) {
+                                            DrinkDataOnBarChart data = new DrinkDataOnBarChart(productName, quantity);
+                                            list.add(data);
                                         }
                                     }
-                                }else {
-                                    orderDrinkDataList.add(new DrinkDataOnBarChart(orderDetails.getNameProduct(), orderDetails.getQuantity()));
                                 }
-                            }
-                            displayDataOnBarChart(orderDrinkDataList);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                                displayDataOnBarChart(list);
 
-                        }
-                    });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-        return binding.getRoot();
     }
-    public void replaceFrg(Fragment frg) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.fragment_container_view_admin, frg).commit();
-    }
+
     private void displayDataOnBarChart(ArrayList<DrinkDataOnBarChart> listDrinkData) {
-        Toast.makeText(getActivity(), "Số lượng drink data "+listDrinkData.size(), Toast.LENGTH_SHORT).show();
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0,10));
-        entries.add(new BarEntry(1,20));
-        entries.add(new BarEntry(2,12));
-        entries.add(new BarEntry(3,9));
 
         for (int i = 0; i < listDrinkData.size(); i++) {
             DrinkDataOnBarChart ddobc = listDrinkData.get(i);

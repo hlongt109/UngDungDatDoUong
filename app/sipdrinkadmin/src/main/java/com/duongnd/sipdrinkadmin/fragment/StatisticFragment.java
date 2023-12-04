@@ -35,7 +35,6 @@ import java.util.Locale;
 public class StatisticFragment extends Fragment {
     public StatisticFragment() {
     }
-
     private FragmentStatisticBinding binding;
 
     @Override
@@ -81,7 +80,7 @@ public class StatisticFragment extends Fragment {
     }
 
     private void totalRevenueForTheDay() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String currentDate = simpleDateFormat.format(new Date());
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Order");
         databaseReference.orderByChild("statusOrder").equalTo("dathanhtoan").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,51 +105,9 @@ public class StatisticFragment extends Fragment {
             }
         });
     }
-
-    private void totalRevenueInRange(String startDate, String endDate) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Order");
-        databaseReference.orderByChild("statusOrder").equalTo("dathanhtoan").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                double totalRevenua = 0;
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Order order2 = dataSnapshot.getValue(Order.class);
-                    if ("dathanhtoan".equals(order2.getStatusOrder()) && isDateInRange(order2.getDateOrder(), startDate, endDate)) {
-                        totalRevenua += order2.getTotalPrice();
-                    }
-                }
-                Locale locale = new Locale("vi", "VN");
-                NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-                String money = numberFormat.format(totalRevenua);
-                binding.tvTotalRevenue.setText(money);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private boolean isDateInRange(String getDate, String startDate, String endDate) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date targetDateTime = dateFormat.parse(getDate);
-            Date startDateTime = dateFormat.parse(startDate);
-            Date endDateTime = dateFormat.parse(endDate);
-            return targetDateTime != null && startDateTime != null && endDateTime != null &&
-                    (targetDateTime.equals(startDateTime)) || (targetDateTime.after(startDateTime)) &&
-                    (targetDateTime.equals(endDateTime)) || (targetDateTime.before(endDateTime));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public void getQuantity() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Order");
-        databaseReference.orderByChild("statusOrder").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.orderByChild("statusOrder").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int slsp = 0;
@@ -177,10 +134,10 @@ public class StatisticFragment extends Fragment {
     public void fakeData() {
         DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference("Order");
         // Create and save sample orders
-        saveFakeData(orderReference, "1", "user1", "2023-11-26", "John Doe", "123456789", "123 Main St", "choxacnhan", 50.0);
-        saveFakeData(orderReference, "2", "user2", "2023-11-27", "Jane Doe", "987654321", "456 Main St", "choxacnhan", 30.0);
-        saveFakeData(orderReference, "3", "user3", "2023-11-28", "Bob Smith", "555555555", "789 Main St", "choxacnhan", 25.0);
-        saveFakeData(orderReference, "4", "user4", "2023-11-29", "Bob Smithy", "555555555", "789 Main St", "dathanhtoan", 25.0);
+        saveFakeData(orderReference, "1", "user1", "26/11/2023", "John Doe", "123456789", "123 Main St", "choxacnhan", 1025000);
+        saveFakeData(orderReference, "2", "user2", "27/11/2023", "Jane David", "987654321", "456 Main St", "choxacnhan", 84000);
+        saveFakeData(orderReference, "3", "user3", "28/11/2023", "Bob Smith", "555555555", "789 Main St", "choxacnhan", 54000);
+        saveFakeData(orderReference, "4", "user4", "03/12/2023", "Bob Smithy", "555555555", "789 Main St", "dathanhtoan", 1000000);
     }
     private void saveFakeData(DatabaseReference orderReference, String orderId, String idUser, String dateOrder,
                               String nameCustomer, String phoneNumber, String address, String statusOrder, double totalPrice) {

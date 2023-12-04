@@ -1,76 +1,45 @@
-package com.duongnd.sipdrinkadmin.Model;
-
-import java.util.HashMap;
+package com.duongnd.sipdrinkadmin.model;
 
 public class Admin {
-    private String id;
-    private String username;
-    private String password;
-    private String fullName;
-    private String email;
-
+    String Id, UserName, Password, FullName;
     public Admin() {
     }
-
-    public Admin(String id, String username, String password, String fullName, String email) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
+    public Admin(String id, String userName, String password, String fullName) {
+        Id = id;
+        UserName = userName;
+        Password = password;
+        FullName = fullName;
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
-    public Admin setId(String id) {
-        this.id = id;
-        return this;
+    public void setId(String id) {
+        Id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return UserName;
     }
 
-    public Admin setUsername(String username) {
-        this.username = username;
-        return this;
+    public void setUserName(String userName) {
+        UserName = userName;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
-    public Admin setPassword(String password) {
-        this.password = password;
-        return this;
+    public void setPassword(String password) {
+        Password = password;
     }
 
     public String getFullName() {
-        return fullName;
+        return FullName;
     }
 
-    public Admin setFullName(String fullName) {
-        this.fullName = fullName;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Admin setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-    public HashMap<String, Object> convertHashMap(){
-        HashMap<String,Object> Admin = new HashMap<>();
-        Admin.put("id",id);
-        Admin.put("username",username);
-        Admin.put("password",password);
-        Admin.put("fullName",fullName);
-        Admin.put("email",email);
-        return Admin;
+    public void setFullName(String fullName) {
+        FullName = fullName;
     }
 }
