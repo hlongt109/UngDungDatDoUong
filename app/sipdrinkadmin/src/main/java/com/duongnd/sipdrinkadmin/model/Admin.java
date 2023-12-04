@@ -1,4 +1,4 @@
-package com.duongnd.sipdrinkadmin.Model;
+package com.duongnd.sipdrinkadmin.model;
 
 import java.util.HashMap;
 
@@ -9,61 +9,68 @@ public class Admin {
     private String fullName;
     private String email;
 
+    private String image;
+
     public Admin() {
     }
 
-    public Admin(String id, String username, String password, String fullName, String email) {
+    public Admin(String id, String username, String password, String fullName, String email, String image) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.fullName = fullName;
         this.email = email;
+        this.image = image;
     }
 
     public String getId() {
         return id;
     }
 
-    public Admin setId(String id) {
+    public void setId(String id) {
         this.id = id;
-        return this;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public Admin setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
-        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public Admin setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return this;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public Admin setFullName(String fullName) {
+    public void setFullName(String fullName) {
         this.fullName = fullName;
-        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public Admin setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-        return this;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public HashMap<String, Object> convertHashMap(){
         HashMap<String,Object> Admin = new HashMap<>();
         Admin.put("id",id);

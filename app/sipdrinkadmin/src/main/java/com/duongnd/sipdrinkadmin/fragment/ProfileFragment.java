@@ -49,10 +49,23 @@ public class ProfileFragment extends Fragment {
     FragmentProfileBinding binding;
     FirebaseAuth auth;
     FirebaseUser user;
-    DatabaseReference reference,databaseReference;
+    DatabaseReference reference, databaseReference;
     ProgressDialog dialog;
     Uri ImgUri;
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent data = result.getData();
+                if (data != null && result.getResultCode() == Activity.RESULT_OK) {
+                    ImgUri = data.getData();
+                    binding.imgAvata.setImageURI(ImgUri);
+                } else {
+                    Toast.makeText(requireActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
     String userStr, nameStr, dateStr, phoneStr;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +75,6 @@ public class ProfileFragment extends Fragment {
         dialog.setCancelable(false);
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,12 +90,10 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Admin admin = snapshot.getValue(Admin.class);
                 binding.txtName.setText(admin.getFullName());
-                binding.txtUsername.setText(admin.getUserName());
-                binding.txtPhone.setText(admin.getPhone());
-                binding.txtDate.setText(admin.getDate());
+                binding.txtUsername.setText(admin.getUsername());
                 binding.txtEmail.setText(admin.getEmail());
 
-                Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
+                Glide.with(getContext()).load(admin.getImage()).error(R.drawable.profilebkg).into(binding.imgAvata);
 
 
             }
@@ -106,9 +116,9 @@ public class ProfileFragment extends Fragment {
         binding.UploadInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ImgUri != null){
+                if (ImgUri != null) {
                     UploadPostFb();
-                }else {
+                } else {
                     UploadInfor();
                 }
             }
@@ -131,7 +141,7 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void showPassDialog(){
+    private void showPassDialog() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_update_pass, null);
         EditText passold = view.findViewById(R.id.edt_pass_old);
         EditText passnew = view.findViewById(R.id.edt_pass_new);
@@ -147,11 +157,11 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 String oldPass = passold.getText().toString().trim();
                 String newPass = passnew.getText().toString().trim();
-                if(TextUtils.isEmpty(oldPass)){
+                if (TextUtils.isEmpty(oldPass)) {
                     Toast.makeText(getContext(), "Vui lòng nhập mật khẩu cũ", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!newPass.matches("^(?=.*[A-Z]).{6,}$")){
+                if (!newPass.matches("^(?=.*[A-Z]).{6,}$")) {
                     Toast.makeText(getContext(), "Mật khẩu phải có 5 ký tự trở lên, Ít nhất 1 chữ in hoa và 1 chữ thường !", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -174,7 +184,7 @@ public class ProfileFragment extends Fragment {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-                                        HashMap<String,Object> map = new HashMap<>();
+                                        HashMap<String, Object> map = new HashMap<>();
                                         map.put("password", newPass);
                                         databaseReference.updateChildren(map);
 
@@ -205,7 +215,7 @@ public class ProfileFragment extends Fragment {
         dialog.dismiss();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
-        phoneStr= binding.txtPhone.getText().toString();
+        phoneStr = binding.txtPhone.getText().toString();
 
         String file = "Photo/" + "admin" + user.getUid();
 
@@ -219,8 +229,8 @@ public class ProfileFragment extends Fragment {
                     public void onSuccess(Uri uri) {
                         String img = uri.toString();
                         databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-                        HashMap<String,Object> map = new HashMap<>();
-                        map.put("img",img);
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("img", img);
                         map.put("fullName", nameStr);
                         map.put("date", dateStr);
                         map.put("phone", phoneStr);
@@ -232,15 +242,15 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void UploadInfor(){
+    private void UploadInfor() {
         dialog.dismiss();
-        userStr= binding.txtUsername.getEditableText().toString();
+        userStr = binding.txtUsername.getEditableText().toString();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
-        phoneStr= binding.txtPhone.getText().toString();
+        phoneStr = binding.txtPhone.getText().toString();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("userName", userStr);
         map.put("fullName", nameStr);
         map.put("date", dateStr);
@@ -249,37 +259,20 @@ public class ProfileFragment extends Fragment {
         Toast.makeText(getContext(), " Update thành công ", Toast.LENGTH_SHORT).show();
 
 
-
     }
 
     private void PicikImage() {
 
         ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .crop()                    //Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
                 .createIntent(intent -> {
                     activityResultLauncher.launch(intent);
                     return null;
 
                 });
     }
-
-    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result ->{
-                Intent data = result.getData();
-                if(data != null &&  result.getResultCode() == Activity.RESULT_OK){
-                    ImgUri = data.getData();
-                    binding.imgAvata.setImageURI(ImgUri);
-                }else {
-                    Toast.makeText(requireActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
-                }
-            }
-    );
-
-
-
 
 
 }

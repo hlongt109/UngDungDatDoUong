@@ -25,16 +25,15 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class PersonalFragment extends Fragment {
-    private FragmentPersonalBinding binding;
     FirebaseAuth auth;
     FirebaseUser user;
     DatabaseReference reference;
-
+    private FragmentPersonalBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentPersonalBinding.inflate(inflater,container,false);
+        binding = FragmentPersonalBinding.inflate(inflater, container, false);
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -46,10 +45,10 @@ public class PersonalFragment extends Fragment {
                 Admin admin = snapshot.getValue(Admin.class);
                 binding.tvName.setText(admin.getFullName());
 
-                if(admin.getImg().equals("img")){
+                if (admin.getImage().equals("img")) {
                     binding.imgAvata.setImageResource(R.drawable.profilebkg);
-                }else {
-                    Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
+                } else {
+                    Glide.with(getContext()).load(admin.getImage()).error(R.drawable.profilebkg).into(binding.imgAvata);
                 }
 
             }
@@ -92,8 +91,6 @@ public class PersonalFragment extends Fragment {
         });
         return binding.getRoot();
     }
-
-
 
 
 }

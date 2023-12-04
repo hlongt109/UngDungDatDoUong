@@ -162,7 +162,11 @@ public class RegisterFragment extends Fragment {
                 if(task.isSuccessful()){
                     String Id = auth.getCurrentUser().getUid();
 
-                    Admin admin = new Admin(Id, userStr, passStr, nameStr, emailStr, "", "", "");
+                    Admin admin = new Admin();
+                    admin.setId(Id);
+                    admin.setUsername(userStr);
+                    admin.setFullName(nameStr);
+                    admin.setEmail(emailStr);
 
 
                     reference.child(Id).setValue(admin).addOnCompleteListener(new OnCompleteListener<Void>() {
