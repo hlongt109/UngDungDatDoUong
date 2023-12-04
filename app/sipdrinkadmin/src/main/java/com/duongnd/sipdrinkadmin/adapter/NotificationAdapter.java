@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,12 +50,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Order notification = list.get(position);
         holder.setDataOnView(notification);
         holder.itemView.setOnClickListener(view -> {
-            StatisticFragment statisticFragment = new StatisticFragment();
-            FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container,statisticFragment).commit();
-
-
+           replaceFrg(new StatisticFragment(),context);
         });
     }
 
@@ -78,5 +74,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             binding.tvOrderId.setText(notification.getOrderId());
             binding.tvDate.setText(notification.getDateOrder());
         }
+    }
+    public void replaceFrg(Fragment frg,Context context) {
+        FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.fragment_container, frg).commit();
     }
 }

@@ -1,5 +1,8 @@
 package com.duongnd.sipdrinkadmin.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetBillsList;
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetUsersList;
+import com.duongnd.sipdrinkadmin.activity.LoginRegisterActivity;
 import com.duongnd.sipdrinkadmin.databinding.FragmentPersonalBinding;
 
 public class PersonalFragment extends Fragment {
@@ -35,7 +39,14 @@ public class PersonalFragment extends Fragment {
 
         });
         binding.btnLogout.setOnClickListener(view -> {
-
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Bạn có chắn muốn đăng xuất không ?");
+            builder.setNegativeButton("Trở lại",null);
+            builder.setPositiveButton("Có", (dialogInterface, i) -> {
+                startActivity( new Intent(getActivity(), LoginRegisterActivity.class));
+                getActivity().finish();
+            });
+            builder.create().show();
         });
         return binding.getRoot();
     }

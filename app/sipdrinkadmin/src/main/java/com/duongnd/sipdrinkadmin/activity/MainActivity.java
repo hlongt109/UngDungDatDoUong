@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        FirebaseMessaging.getInstance().subscribeToTopic("News")
+        FirebaseMessaging.getInstance().subscribeToTopic("Customer_device")
                         .addOnCompleteListener(task -> {
                             String msg = "Done";
                             if(!task.isSuccessful()){
@@ -59,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Intent serviceIntent = new Intent(this, OrderListenService.class);
-        startForegroundService(serviceIntent);
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        Intent serviceIntent = new Intent(this, OrderListenService.class);
+//        startForegroundService(serviceIntent);
+//    }
 }
