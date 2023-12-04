@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ddd"
+    tools:context=".fragment.main_home.NotificationFragment">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Thông Báo"
+        android:background="#fff"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvThongBao"
+        android:layout_marginTop="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"/>
+</LinearLayout>

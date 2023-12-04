@@ -1,5 +1,7 @@
 package com.longthph30891.ungdungdatdouong.activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,11 +16,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.databinding.ActivityMainBinding;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.CartFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.HomeFragment;
+import com.longthph30891.ungdungdatdouong.fragment.main_home.NotificationFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.PersonalFragment;
+import com.longthph30891.ungdungdatdouong.model.Order;
+import com.longthph30891.ungdungdatdouong.servicies.OrderListenerSv;
 import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,11 +55,21 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.nav_customer_profile) {
                 replaceFragment(new PersonalFragment());
                 return true;
+            } else if (item.getItemId() == R.id.nav_customer_notification) {
+                replaceFragment(new NotificationFragment());
             }
             return true;
         });
 
         showQuantityCart();
+        showQuantityNotification();
+        FirebaseMessaging.getInstance().subscribeToTopic("Customer_device")
+                .addOnCompleteListener(task -> {
+                    String msg = "Done";
+                    if(!task.isSuccessful()){
+                        msg = "Failed";
+                    }
+                });
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -108,7 +124,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    public void showQuantityNotification(){
+        String idKhachHang = sessionManager.getLoggedInCustomerId();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Order").child(idKhachHang);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long count = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Order order = dataSnapshot.getValue(Order.class);
+                    if (order != null && "danggiao".equals(order.getStatusOrder())) {
+                        count++;
+                    }
+                }
+                if (count > 0) {
+                    binding.bottomNavCustomer.getOrCreateBadge(R.id.nav_customer_notification).setNumber((int) count);
+                } else {
+                    binding.bottomNavCustomer.removeBadge(R.id.nav_customer_notification);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Cart", "onCancelled: " + error.getMessage());
+            }
+        });
+    }
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
@@ -117,4 +159,12 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(new Intent(this, OrderListenerSv.class));
+//        }
+//    }
 }
