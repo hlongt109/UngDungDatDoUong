@@ -1,15 +1,13 @@
 package com.duongnd.sipdrinkadmin.activity;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetAddNew;
 import com.duongnd.sipdrinkadmin.R;
-import com.duongnd.sipdrinkadmin.Service.OrderListenService;
 import com.duongnd.sipdrinkadmin.databinding.ActivityMainBinding;
 import com.duongnd.sipdrinkadmin.fragment.CategoryFragment;
 import com.duongnd.sipdrinkadmin.fragment.NotificationFragment;
@@ -18,7 +16,7 @@ import com.duongnd.sipdrinkadmin.fragment.StatisticFragment;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
-     private ActivityMainBinding binding;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +24,17 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         FirebaseMessaging.getInstance().subscribeToTopic("Customer_device")
-                        .addOnCompleteListener(task -> {
-                            String msg = "Done";
-                            if(!task.isSuccessful()){
-                                msg = "Failed";
-                            }
-                        });
+                .addOnCompleteListener(task -> {
+                    String msg = "Done";
+                    if (!task.isSuccessful()) {
+                        msg = "Failed";
+                    }
+                });
         setMenu();
     }
-    private void setMenu(){
-        binding.bottomNavigation.setOnItemSelectedListener(v->{
+
+    private void setMenu() {
+        binding.bottomNavigation.setOnItemSelectedListener(v -> {
             if (v.getItemId() == R.id.nav_danhMuc) {
                 replace(new CategoryFragment());
             } else if (v.getItemId() == R.id.nav_thongKe) {
@@ -47,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-        binding.bottomNavigation.setSelectedItemId(R.id.nav_danhMuc);
+        binding.bottomNavigation.setSelectedItemId(R.id.nav_thongKe);
         binding.btnAddNew.setOnClickListener(view -> {
             BottomSheetAddNew bottomSheetAddNew = new BottomSheetAddNew();
-            bottomSheetAddNew.show(getSupportFragmentManager(),"BottomSheetLayout");
+            bottomSheetAddNew.show(getSupportFragmentManager(), "BottomSheetLayout");
         });
     }
-    private void replace(Fragment fragment){
+
+    private void replace(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();

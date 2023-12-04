@@ -35,7 +35,7 @@ public class LoginFragment extends Fragment {
 
         dialog= new ProgressDialog(getContext());
         dialog.setCancelable(false);
-        dialog.setMessage("loading...");
+        dialog.setMessage("Đang đăng nhâp...");
         if(auth.getCurrentUser() != null){
             startActivity(new Intent(getContext(), MainActivity.class));
             getActivity().finish();
@@ -73,7 +73,7 @@ public class LoginFragment extends Fragment {
     public Boolean validateUsername(){
         String val = binding.edtLoginUsername.getText().toString().trim();
         if(val.isEmpty()){
-            binding.edtLoginUsername.setError("Tên đăng nhập không được để trống");
+            binding.edtLoginUsername.setError("Email không được để trống");
             return false;
         }else if(!val.matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+){1,2}$")) {
             binding.edtLoginUsername.setError("Nhập đúng định dạng email");
