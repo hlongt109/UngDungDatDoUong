@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
                 binding.txtDate.setText(khachang.getDate());
                 binding.txtEmail.setText(khachang.getEmail());
 
-                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.pagebkg).into(binding.imgAvata);
+//                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.pagebkg).into(binding.imgAvata);
 
 
             }
