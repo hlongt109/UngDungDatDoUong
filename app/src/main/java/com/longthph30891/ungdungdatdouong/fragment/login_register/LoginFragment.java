@@ -37,7 +37,7 @@ public class LoginFragment extends Fragment {
 
         dialog= new ProgressDialog(getContext());
         dialog.setCancelable(false);
-        dialog.setMessage("loading...");
+        dialog.setMessage("Đăng đăng nhập, vui lòng chờ...");
         if(auth.getCurrentUser() != null){
             startActivity(new Intent(getContext(), MainActivity.class));
             getActivity().finish();
@@ -74,15 +74,15 @@ public class LoginFragment extends Fragment {
 
 
     public Boolean validateUsername(){
-        String val = binding.edtLoginUsername.getText().toString().trim();
+        String val = binding.edtLoginEmail.getText().toString().trim();
         if(val.isEmpty()){
-            binding.edtLoginUsername.setError("Tên đăng nhập không được để trống");
+            binding.edtLoginEmail.setError("Tên đăng nhập không được để trống");
             return false;
         }else if(!val.matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+){1,2}$")) {
-            binding.edtLoginUsername.setError("Nhập đúng định dạng email");
+            binding.edtLoginEmail.setError("Nhập đúng định dạng email");
             return false;
         }else {
-            binding.edtLoginUsername.setError(null);
+            binding.edtLoginEmail.setError(null);
             return true;
         }
 
@@ -105,14 +105,14 @@ public class LoginFragment extends Fragment {
 
         }
 
-        emailStr = binding.edtLoginUsername.getText().toString();
+        emailStr = binding.edtLoginEmail.getText().toString();
         passStr = binding.edtLoginPassword.getText().toString();
         dialog.show();
 
         logInUsers(emailStr, passStr);
     }
     private void logInUsers(String emailStr, String passStr) {
-        emailStr = binding.edtLoginUsername.getText().toString();
+        emailStr = binding.edtLoginEmail.getText().toString();
         passStr = binding.edtLoginPassword.getText().toString();
         dialog.show();
         auth.signInWithEmailAndPassword(emailStr, passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

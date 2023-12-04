@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.databinding.ActivityMainBinding;
+import com.longthph30891.ungdungdatdouong.fragment.login_register.ProfileFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.CartFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.HomeFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.NotificationFragment;
@@ -93,6 +94,14 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_main_view_customer, fragment)
                 .addToBackStack(null)
+                .commit();
+    }
+
+    public void showChangeProfile() {
+        hideBottomNav();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_main_view_customer, new ProfileFragment())
+                .addToBackStack(ProfileFragment.class.getName())
                 .commit();
     }
 

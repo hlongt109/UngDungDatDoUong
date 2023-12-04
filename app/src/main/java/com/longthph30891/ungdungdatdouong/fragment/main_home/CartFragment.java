@@ -116,7 +116,7 @@ public class CartFragment extends Fragment {
     private void deleteCart(Cart cart) {
         String idKhachHang = sessionManager.getLoggedInCustomerId();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(idKhachHang).child(cart.getProductName());
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(idKhachHang).child(cart.getIdDoUong());
         SweetAlertDialog sDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
         sDialog.setTitleText("Bạn muốn xóa sản phẩm?");
         sDialog.setConfirmText("Có");
@@ -231,7 +231,7 @@ public class CartFragment extends Fragment {
     private void updateQuantityCartByIdCustomer(Cart cart) {
         String idKhachHang = sessionManager.getLoggedInCustomerId();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(idKhachHang).child(cart.getProductName()).child("soLuong");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(idKhachHang).child(cart.getIdDoUong()).child("soLuong");
         databaseReference.setValue(cart.getSoLuong());
     }
 

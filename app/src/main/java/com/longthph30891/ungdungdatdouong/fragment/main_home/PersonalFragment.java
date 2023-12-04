@@ -23,9 +23,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.activity.LoginRegisterActivity;
+import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentPersonalBinding;
 import com.longthph30891.ungdungdatdouong.fragment.login_register.ProfileFragment;
 import com.longthph30891.ungdungdatdouong.model.Khachang;
+
+import java.util.Objects;
 
 
 public class PersonalFragment extends Fragment {
@@ -72,25 +75,18 @@ public class PersonalFragment extends Fragment {
 
         });
         binding.btnTaiKoanVaBaoMat.setOnClickListener(view -> {
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_main_view_customer, new ProfileFragment())
-                    .addToBackStack(ProfileFragment.class.getName())
-                    .commit();
-
+            ((MainActivity) requireActivity()).showChangeProfile();
         });
         binding.btnLogout.setOnClickListener(view -> {
             auth.signOut();
             Intent intent = new Intent(getContext(), LoginRegisterActivity.class);
             startActivity(intent);
-
+            ((AppCompatActivity) requireActivity()).finish();
             // Hiển thị thông báo đăng xuất
             Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();
 
         });
         return binding.getRoot();
     }
-
-
-
 
 }

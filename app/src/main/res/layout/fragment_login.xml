@@ -71,12 +71,12 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:fontFamily="@font/sen"
-                    android:text="Tên đăng nhập"
+                    android:text="Email"
                     android:textAllCaps="true"
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/edt_login_username"
+                    android:id="@+id/edt_login_email"
                     android:layout_width="match_parent"
                     android:layout_height="62dp"
                     android:layout_below="@id/txt_login_username"
@@ -86,7 +86,7 @@
                     android:background="@drawable/bg_edit"
                     android:fontFamily="@font/sen"
                     android:inputType="textEmailAddress"
-                    android:hint="example"
+                    android:hint="example@gmail.com"
                     android:maxLines="1"
                     android:paddingStart="20dp"
                     android:textColor="@color/black"
@@ -97,7 +97,7 @@
                     android:id="@+id/txt_login_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/edt_login_username"
+                    android:layout_below="@id/edt_login_email"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="25dp"
                     android:fontFamily="@font/sen"
@@ -116,7 +116,7 @@
                     app:passwordToggleDrawable="@drawable/ic_visibility">
                     <EditText
                         android:inputType="textPassword"
-                        android:hint="Mật khẩu . . ."
+                        android:hint="*******"
                         android:id="@+id/edt_login_password"
                         android:drawablePadding="6dp"
                         android:paddingHorizontal="12dp"
@@ -124,8 +124,7 @@
                         android:layout_height="56dp"
                         android:background="@drawable/bg_edit"
                         android:fontFamily="@font/sen"
-                        tools:ignore="RtlSymmetry"
-                        android:textColorHint="@color/cardview_dark_background" />
+                        tools:ignore="RtlSymmetry" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
