@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.login_register.ProfileFragment">
+    tools:context=".fragment.login_register.UserPassFragment">
 
     <ImageButton
         android:id="@+id/img_back"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_back"
         android:layout_marginLeft="30dp"
-        android:background="@drawable/bg_button"
+        android:background="@drawable/bg_boder"
         android:layout_marginTop="20dp" />
 
     <LinearLayout
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
         android:gravity="center"
         android:orientation="vertical">
@@ -59,7 +59,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_edit"
-            android:hint="Date"
+            android:hint="Ngày sinh"
             android:paddingStart="20dp"
             android:singleLine="true" />
 
@@ -69,7 +69,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_edit"
-            android:hint="Sđt"
+            android:hint="Số điện thoại"
             android:paddingStart="20dp"
             android:singleLine="true" />
 
@@ -87,7 +87,8 @@
             android:id="@+id/btnDoiPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="15dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -97,12 +98,6 @@
                 android:text="Đổi Mật Khẩu "
                 android:textSize="18sp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_next_2" />
         </androidx.cardview.widget.CardView>
 
 
@@ -111,10 +106,9 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="20dp"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/bg_boder"
+            android:text="Cập nhật"
             android:backgroundTint="@color/my_light_primary"
-            android:text="Upload"
-            android:textColor="@color/white"
             android:textStyle="bold" />
 
     </LinearLayout>

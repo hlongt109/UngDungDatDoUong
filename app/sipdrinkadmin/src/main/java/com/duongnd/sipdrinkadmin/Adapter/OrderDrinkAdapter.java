@@ -33,13 +33,13 @@ public class OrderDrinkAdapter extends RecyclerView.Adapter<OrderDrinkAdapter.my
 
     @NonNull
     @Override
-    public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OrderDrinkAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemOrderBinding itemOrderBinding = ItemOrderBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new myViewHolder(itemOrderBinding);
+        return new OrderDrinkAdapter.myViewHolder(itemOrderBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderDrinkAdapter.myViewHolder holder, int position) {
         Order order = list.get(position);
         holder.setDataOnView(order,context);
         holder.itemView.setOnClickListener(view -> {
@@ -70,7 +70,7 @@ public class OrderDrinkAdapter extends RecyclerView.Adapter<OrderDrinkAdapter.my
                 binding.tvStatus.setText("Đang chờ xác nhận");
             } else if (order.getStatusOrder().equals("danggiao")) {
                 binding.tvStatus.setText("Đang giao hàng");
-                binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.green));
+                binding.tvStatus.setTextColor(ContextCompat.getColor(context, R.color.green));
             }else if (order.getStatusOrder().equals("dathanhtoan")) {
                 binding.tvStatus.setText("Giao hàng thành công");
                 binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.green));

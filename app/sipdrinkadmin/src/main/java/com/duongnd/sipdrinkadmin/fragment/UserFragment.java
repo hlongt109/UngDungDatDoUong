@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.duongnd.sipdrinkadmin.Adapter.UserAdapter;
+import com.duongnd.sipdrinkadmin.adapter.UserAdapter;
 import com.duongnd.sipdrinkadmin.databinding.FragmentUserBinding;
 import com.duongnd.sipdrinkadmin.model.Khachang;
 import com.google.firebase.database.DataSnapshot;

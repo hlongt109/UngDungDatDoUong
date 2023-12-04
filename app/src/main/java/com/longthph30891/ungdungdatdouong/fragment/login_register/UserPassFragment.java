@@ -3,7 +3,6 @@ package com.longthph30891.ungdungdatdouong.fragment.login_register;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,17 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,14 +42,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.longthph30891.ungdungdatdouong.R;
-import com.longthph30891.ungdungdatdouong.databinding.FragmentProfileBinding;
+
+import com.longthph30891.ungdungdatdouong.databinding.FragmentUserpassBinding;
 import com.longthph30891.ungdungdatdouong.model.Khachang;
 
 import java.util.HashMap;
 
 
-public class ProfileFragment extends Fragment {
-    FragmentProfileBinding binding;
+public class UserPassFragment extends Fragment {
+    FragmentUserpassBinding binding;
     FirebaseAuth auth;
     FirebaseUser user;
     DatabaseReference reference,databaseReference;
@@ -66,7 +63,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         dialog = new ProgressDialog(getContext());
-        dialog.setTitle("Upload...");
+        dialog.setTitle("đang tải...");
         dialog.setCancelable(false);
 
     }
@@ -76,7 +73,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentProfileBinding.inflate(getLayoutInflater());
+        binding = FragmentUserpassBinding.inflate(getLayoutInflater());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
@@ -91,7 +88,7 @@ public class ProfileFragment extends Fragment {
                 binding.txtDate.setText(khachang.getDate());
                 binding.txtEmail.setText(khachang.getEmail());
 
-//                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.pagebkg).into(binding.imgAvata);
+                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.sold_out).into(binding.imgAvata);
 
 
             }
@@ -247,7 +244,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void UploadPostFb() {
-        dialog.dismiss();
+        dialog.show();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
         phoneStr= binding.txtPhone.getText().toString();
@@ -270,6 +267,7 @@ public class ProfileFragment extends Fragment {
                         map.put("date", dateStr);
                         map.put("phone", phoneStr);
                         databaseReference.updateChildren(map);
+                        dialog.dismiss();
 
                     }
                 });
@@ -278,7 +276,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void UploadInfor(){
-        dialog.dismiss();
+        dialog.show();
         userStr= binding.txtUsername.getEditableText().toString();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
@@ -291,7 +289,8 @@ public class ProfileFragment extends Fragment {
         map.put("date", dateStr);
         map.put("phone", phoneStr);
         databaseReference.updateChildren(map);
-        Toast.makeText(getContext(), " Update thành công ", Toast.LENGTH_SHORT).show();
+        dialog.dismiss();
+        Toast.makeText(getContext(), " Cập nhật thành công ", Toast.LENGTH_SHORT).show();
 
 
 
