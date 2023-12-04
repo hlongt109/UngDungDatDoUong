@@ -156,7 +156,7 @@ public class RegisterFragment extends Fragment {
                 if(task.isSuccessful()){
                     String Id = auth.getCurrentUser().getUid();
 
-                    Admin admin = new Admin(Id, userStr, passStr, nameStr, emailStr, "", "", "");
+                    Admin admin = new Admin(Id, emailStr, passStr, nameStr);
 
 
                     reference.child(Id).setValue(admin).addOnCompleteListener(new OnCompleteListener<Void>() {
