@@ -46,6 +46,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.longthph30891.ungdungdatdouong.R;
+import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProfileBinding;
 import com.longthph30891.ungdungdatdouong.model.Khachang;
 
@@ -66,7 +67,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         dialog = new ProgressDialog(getContext());
-        dialog.setTitle("Upload...");
+        dialog.setTitle("Đang đăng ký, vui lòng chờ...");
         dialog.setCancelable(false);
 
     }
@@ -86,7 +87,6 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Khachang khachang = snapshot.getValue(Khachang.class);
                 binding.txtName.setText(khachang.getFullName());
-                binding.txtUsername.setText(khachang.getUserName());
                 binding.txtPhone.setText(khachang.getPhone());
                 binding.txtDate.setText(khachang.getDate());
                 binding.txtEmail.setText(khachang.getEmail());
@@ -279,7 +279,6 @@ public class ProfileFragment extends Fragment {
 
     private void UploadInfor(){
         dialog.dismiss();
-        userStr= binding.txtUsername.getEditableText().toString();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
         phoneStr= binding.txtPhone.getText().toString();
@@ -323,7 +322,10 @@ public class ProfileFragment extends Fragment {
                 }
             }
     );
-    
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) requireActivity()).showBottomNavOnBackPressed();
+    }
 }

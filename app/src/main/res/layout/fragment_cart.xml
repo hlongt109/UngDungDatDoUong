@@ -106,7 +106,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="11dp"
-                    android:backgroundTint="#03A9F4"
                     android:padding="10dp"
                     android:text="Mua hàng ngay!"
                     android:textAllCaps="false"

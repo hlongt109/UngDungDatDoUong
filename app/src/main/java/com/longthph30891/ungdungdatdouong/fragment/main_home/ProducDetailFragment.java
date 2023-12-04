@@ -57,6 +57,10 @@ public class ProducDetailFragment extends Fragment {
 
         sessionManager = new SessionManager(getContext());
 
+        binding.imgBackDetail.setOnClickListener(v -> {
+            ((MainActivity) requireActivity()).replaceFragment(new HomeFragment());
+        });
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             Product product = (Product) bundle.get("product");
@@ -126,7 +130,7 @@ public class ProducDetailFragment extends Fragment {
 
     private void addToCart(Cart cart) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(sessionManager.getLoggedInCustomerId()).child(cart.getProductName());
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Cart").child(sessionManager.getLoggedInCustomerId()).child(cart.getIdDoUong());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

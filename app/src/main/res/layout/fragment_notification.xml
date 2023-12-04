@@ -8,11 +8,12 @@
     tools:context=".fragment.main_home.NotificationFragment">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?actionBarSize"
         android:padding="10dp"
         android:text="Thông Báo"
-        android:background="#fff"
-        android:textSize="20dp"
+        android:background="@color/my_light_primary"
+        android:textSize="20sp"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:gravity="center"/>
     <androidx.recyclerview.widget.RecyclerView
