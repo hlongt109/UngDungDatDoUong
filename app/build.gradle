@@ -68,7 +68,7 @@ dependencies {
     implementation 'com.github.AgnaldoNP:AGSkeletonLoading:1.2'
 
     implementation 'com.github.AbhisheKundalia:sweet-alert-dialog:v2.0.0'
-    implementation "com.airbnb.android:lottie:6.2.0"
+    implementation "com.airbnb.android:lottie:6.0.0"
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
 
     // zalo pay
