@@ -1,21 +1,18 @@
-package com.duongnd.sipdrinkadmin.fragment;
+package com.longthph30891.ungdungdatdouong.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.duongnd.sipdrinkadmin.activity.MainActivity;
-import com.duongnd.sipdrinkadmin.databinding.FragmentRegisterBinding;
-import com.duongnd.sipdrinkadmin.model.Admin;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,9 +24,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.longthph30891.ungdungdatdouong.activity.MainActivity;
+import com.longthph30891.ungdungdatdouong.databinding.FragmentRegisterBinding;
+import com.longthph30891.ungdungdatdouong.model.Khachang;
 
+import java.util.HashMap;
 
 public class RegisterFragment extends Fragment {
+
     FragmentRegisterBinding binding;
     private  String userStr, emailStr, passStr, repassStr, nameStr;
     ProgressDialog dialog;
@@ -127,7 +129,7 @@ public class RegisterFragment extends Fragment {
 
 
     private void registerUser() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("admin");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
         final FirebaseUser user = auth.getCurrentUser();
 
         nameStr = binding.edtNameSignup.getText().toString().trim();
@@ -156,17 +158,17 @@ public class RegisterFragment extends Fragment {
     }
 
     private void signUpUser(FirebaseUser user, String userStr, String nameStr, String emailStr, String passStr) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("admin");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
         auth.createUserWithEmailAndPassword(emailStr, passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     String Id = auth.getCurrentUser().getUid();
 
-                    Admin admin = new Admin(Id, userStr, passStr, nameStr, emailStr, "", "", "");
+                    Khachang khachang = new Khachang(Id, userStr, passStr, nameStr, emailStr, "", "", "");
 
 
-                    reference.child(Id).setValue(admin).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    reference.child(Id).setValue(khachang).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
