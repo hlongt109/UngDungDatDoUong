@@ -1,12 +1,14 @@
 package com.duongnd.sipdrinkadmin.model;
 
 public class Admin {
-    String Id, UserName, Password, FullName;
+    private String Id, Email, Password, FullName;
+
     public Admin() {
     }
-    public Admin(String id, String userName, String password, String fullName) {
+
+    public Admin(String id, String email, String password, String fullName) {
         Id = id;
-        UserName = userName;
+        Email = email;
         Password = password;
         FullName = fullName;
     }
@@ -19,12 +21,12 @@ public class Admin {
         Id = id;
     }
 
-    public String getUserName() {
-        return UserName;
+    public String getEmail() {
+        return Email;
     }
 
-    public void setUserName(String userName) {
-        UserName = userName;
+    public void setEmail(String email) {
+        Email = email;
     }
 
     public String getPassword() {
