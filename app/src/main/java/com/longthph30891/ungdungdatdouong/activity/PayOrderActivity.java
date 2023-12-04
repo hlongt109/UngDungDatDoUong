@@ -36,6 +36,7 @@ import com.longthph30891.ungdungdatdouong.utilities.api.CreateOrder;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -339,10 +340,13 @@ public class PayOrderActivity extends AppCompatActivity {
 
     private void paymentWithZaloPay(Order order) {
         CreateOrder orderApi = new CreateOrder();
-        String price = String.valueOf(order.getTotalPrice());
+
+        DecimalFormat decimalFormat = new DecimalFormat("0.#");
+        String price = decimalFormat.format(order.getTotalPrice());
         Log.d(TAG, "paymentWithZaloPay: " + price);
+
         try {
-            JSONObject data = orderApi.createOrder("10000");
+            JSONObject data = orderApi.createOrder(price);
             String code = data.getString("return_code");
             Log.d(TAG, "requestZaloPay: " + code);
             if (code.equals("1")) {
