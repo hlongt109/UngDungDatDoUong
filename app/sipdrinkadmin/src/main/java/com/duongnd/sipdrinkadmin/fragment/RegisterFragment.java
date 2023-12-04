@@ -77,13 +77,11 @@ public class RegisterFragment extends Fragment {
 
     public  Boolean validate(){
         nameStr = binding.edtNameSignup.getText().toString().trim();
-        userStr = binding.edtUsernameSignup.getText().toString().trim();
         passStr = binding.edtPasswordSignup.getText().toString().trim();
         repassStr = binding.edtRepasswordSignup.getText().toString().trim();
         emailStr = binding.edtEmailSignup.getText().toString().trim();
         if (nameStr.isEmpty() || userStr.isEmpty() || repassStr.isEmpty() || passStr.isEmpty() || emailStr.isEmpty()){
             binding.edtNameSignup.setError("Tên không được để trống");
-            binding.edtUsernameSignup.setError("UserName không được để trống");
             binding.edtPasswordSignup.setError("Mật khẩu không được để trống");
             binding.edtRepasswordSignup.setError("Nhập lại mật khẩu không được để trống");
             binding.edtEmailSignup.setError("Email không được để trống");
@@ -91,9 +89,6 @@ public class RegisterFragment extends Fragment {
 
         }else if (nameStr.isEmpty()) {
             binding.edtNameSignup.setError("Tên không được để trống");
-            return false;
-        }else if(userStr.isEmpty() ) {
-            binding.edtUsernameSignup.setError("UserName không được để trống");
             return false;
         }else if(passStr.isEmpty()) {
             binding.edtPasswordSignup.setError("Mật khẩu không được để trống");
@@ -115,7 +110,6 @@ public class RegisterFragment extends Fragment {
             return false;
         }else {
             binding.edtNameSignup.setError(null);
-            binding.edtUsernameSignup.setError(null);
             binding.edtPasswordSignup.setError(null);
             binding.edtRepasswordSignup.setError(null);
             binding.edtEmailSignup.setError(null);
@@ -131,7 +125,6 @@ public class RegisterFragment extends Fragment {
         final FirebaseUser user = auth.getCurrentUser();
 
         nameStr = binding.edtNameSignup.getText().toString().trim();
-        userStr = binding.edtUsernameSignup.getText().toString().trim();
         passStr = binding.edtPasswordSignup.getText().toString().trim();
         repassStr = binding.edtRepasswordSignup.getText().toString().trim();
         emailStr = binding.edtEmailSignup.getText().toString().trim();

@@ -27,17 +27,16 @@ public class LoginFragment extends Fragment {
     FirebaseAuth auth;
     ProgressDialog dialog;
     String emailStr, passStr;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(getLayoutInflater());
         auth = FirebaseAuth.getInstance();
 
-        dialog = new ProgressDialog(getContext());
+        dialog= new ProgressDialog(getContext());
         dialog.setCancelable(false);
-        dialog.setMessage("loading...");
-        if (auth.getCurrentUser() != null) {
+        dialog.setMessage("Đang đăng nhâp...");
+        if(auth.getCurrentUser() != null){
             startActivity(new Intent(getContext(), MainActivity.class));
             getActivity().finish();
         }
@@ -71,27 +70,26 @@ public class LoginFragment extends Fragment {
     }
 
 
-    public Boolean validateUsername() {
+    public Boolean validateUsername(){
         String val = binding.edtLoginUsername.getText().toString().trim();
-        if (val.isEmpty()) {
-            binding.edtLoginUsername.setError("Tên đăng nhập không được để trống");
+        if(val.isEmpty()){
+            binding.edtLoginUsername.setError("Email không được để trống");
             return false;
-        } else if (!val.matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+){1,2}$")) {
+        }else if(!val.matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+){1,2}$")) {
             binding.edtLoginUsername.setError("Nhập đúng định dạng email");
             return false;
-        } else {
+        }else {
             binding.edtLoginUsername.setError(null);
             return true;
         }
 
     }
-
-    public Boolean validatePass() {
+    public Boolean validatePass(){
         String val = binding.edtLoginPassword.getText().toString().trim();
-        if (val.isEmpty()) {
+        if(val.isEmpty()){
             binding.edtLoginPassword.setError("Mật khẩu không được để trống");
             return false;
-        } else {
+        }else {
             binding.edtLoginPassword.setError(null);
             return true;
         }
@@ -99,7 +97,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void logInUser() {
-        if (!validateUsername() || !validatePass()) {
+        if(!validateUsername() || !validatePass()){
             return;
 
         }
@@ -110,7 +108,6 @@ public class LoginFragment extends Fragment {
 
         logInUsers(emailStr, passStr);
     }
-
     private void logInUsers(String emailStr, String passStr) {
         emailStr = binding.edtLoginUsername.getText().toString();
         passStr = binding.edtLoginPassword.getText().toString();
@@ -118,7 +115,7 @@ public class LoginFragment extends Fragment {
         auth.signInWithEmailAndPassword(emailStr, passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
+                if(task.isSuccessful()){
                     dialog.dismiss();
                     startActivity(new Intent(getContext(), MainActivity.class));
                     getActivity().finish();
