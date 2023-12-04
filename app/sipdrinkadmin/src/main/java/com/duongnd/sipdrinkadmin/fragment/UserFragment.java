@@ -30,7 +30,6 @@ public class UserFragment extends Fragment {
     UserAdapter adapter;
 
 
-
     public UserFragment() {
 
     }
@@ -47,10 +46,10 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentUserBinding.inflate( inflater, container, false);
+        binding = FragmentUserBinding.inflate(inflater, container, false);
 
-        adapter = new UserAdapter(recyclerList,getContext());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
+        adapter = new UserAdapter(recyclerList, getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerUser.setLayoutManager(layoutManager);
         binding.recyclerUser.setNestedScrollingEnabled(false);
         binding.recyclerUser.setAdapter(adapter);
@@ -59,8 +58,8 @@ public class UserFragment extends Fragment {
         database.getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Khachang model = dataSnapshot.getValue(Khachang.class);
 
                         recyclerList.add(model);
@@ -98,12 +97,14 @@ public class UserFragment extends Fragment {
 
         return binding.getRoot();
     }
-    public void seachList(String text){
-        ArrayList <Khachang> seachList = new ArrayList<>();
-        for (Khachang khachang: recyclerList){
-            if (khachang.getFullName().toLowerCase().contains(text.toLowerCase())){
+
+    public void seachList(String text) {
+        ArrayList<Khachang> seachList = new ArrayList<>();
+        for (Khachang khachang : recyclerList) {
+            if (khachang.getFullName().toLowerCase().contains(text.toLowerCase())) {
                 seachList.add(khachang);
             }
-        }adapter.seachDatalist(seachList);
+        }
+        adapter.seachDatalist(seachList);
     }
 }
