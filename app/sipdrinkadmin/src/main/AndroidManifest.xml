@@ -13,7 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.UngDungDatDoUong">
+        <activity android:name=".activity.CreateTypeDrinkActivity"
+            android:exported="false">
 
+        </activity>
+        <activity android:name=".activity.CreateDrinkActivity"
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".activity.LoginRegisterActivity"
             android:exported="true" >
