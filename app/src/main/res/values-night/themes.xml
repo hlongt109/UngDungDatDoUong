@@ -2,6 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.UngDungDatDoUong" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+         <item name="colorPrimary">@color/my_dark_primary_dark</item>
     </style>
+
+    <color name="my_dark_primary_dark" tools:ignore="MissingDefaultResource">#FF7622</color>
 </resources>

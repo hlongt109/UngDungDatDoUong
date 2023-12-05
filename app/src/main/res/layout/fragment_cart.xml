@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:text="Giỏ hàng"
             android:layout_marginStart="20dp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
         <ImageView
