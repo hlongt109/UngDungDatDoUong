@@ -44,6 +44,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import vn.zalopay.sdk.Environment;
 import vn.zalopay.sdk.ZaloPayError;
 import vn.zalopay.sdk.ZaloPaySDK;
 import vn.zalopay.sdk.listeners.PayOrderListener;
@@ -77,7 +78,7 @@ public class PayOrderActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         // ZaloPay SDK Init
-//        ZaloPaySDK.init(2553, Environment.SANDBOX);
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
 
 
         sessionManager = new SessionManager(this);
