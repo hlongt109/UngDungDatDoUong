@@ -1,5 +1,6 @@
 package com.longthph30891.ungdungdatdouong.fragment.main_home;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,7 +57,7 @@ public class PersonalFragment extends Fragment {
                 if(khachang.getImg().equals("img")){
                     binding.imgAvata.setImageResource(R.drawable.pagebkg);
                 }else {
-//                    Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
+                    Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.pagebkg).into(binding.imgAvata);
                 }
 
             }
@@ -69,22 +70,25 @@ public class PersonalFragment extends Fragment {
 
 
         binding.btnQlyHoaDon.setOnClickListener(view -> {
-
-        });
-        binding.btnQlyVoucher.setOnClickListener(view -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_main_view_customer, new OrderHistoryFragment())
+                    .addToBackStack(OrderHistoryFragment.class.getName())
+                    .commit();
 
         });
         binding.btnTaiKoanVaBaoMat.setOnClickListener(view -> {
             ((MainActivity) requireActivity()).showChangeProfile();
         });
         binding.btnLogout.setOnClickListener(view -> {
-            auth.signOut();
-            Intent intent = new Intent(getContext(), LoginRegisterActivity.class);
-            startActivity(intent);
-            ((AppCompatActivity) requireActivity()).finish();
-            // Hiển thị thông báo đăng xuất
-            Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();
-
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Bạn có chắn muốn đăng xuất không ?");
+            builder.setNegativeButton("Trở lại", null);
+            builder.setPositiveButton("Có", (dialogInterface, i) -> {
+                auth.signOut();
+                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                getActivity().finish();
+            });
+            builder.create().show();
         });
         return binding.getRoot();
     }
