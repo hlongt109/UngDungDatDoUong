@@ -1,4 +1,4 @@
-package com.duongnd.sipdrinkadmin.model;
+package com.longthph30891.ungdungdatdouong.model;
 
 public class Admin {
     private String Id, Email, Password, FullName, Img, Date;

@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.R;
+import com.longthph30891.ungdungdatdouong.activity.ChatActivity;
 import com.longthph30891.ungdungdatdouong.activity.LoginRegisterActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentPersonalBinding;
 import com.longthph30891.ungdungdatdouong.fragment.login_register.UserPassFragment;
@@ -69,6 +70,9 @@ public class PersonalFragment extends Fragment {
                     .addToBackStack(OrderHistoryFragment.class.getName())
                     .commit();
 
+        });
+        binding.btnChat.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity(), ChatActivity.class));
         });
 
         binding.btnTaiKoanVaBaoMat.setOnClickListener(view -> {

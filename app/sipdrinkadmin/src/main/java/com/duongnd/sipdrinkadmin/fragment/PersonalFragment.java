@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetBillsList;
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetUsersList;
 import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.activity.ChatActivity;
 import com.duongnd.sipdrinkadmin.activity.LoginRegisterActivity;
 import com.duongnd.sipdrinkadmin.databinding.FragmentPersonalBinding;
 import com.duongnd.sipdrinkadmin.model.Admin;
@@ -80,6 +81,9 @@ public class PersonalFragment extends Fragment {
                     .replace(R.id.fragment_container, new UserPassFragment())
                     .addToBackStack(UserPassFragment.class.getName())
                     .commit();
+        });
+        binding.btnChat.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity(), ChatActivity.class));
         });
         binding.btnLogout.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

@@ -52,7 +52,7 @@
                 android:layout_marginLeft="15dp"
                 android:drawableLeft="@drawable/ic_article_24"
                 android:padding="10dp"
-                android:text="  Quản lý hóa đơn"/>
+                android:text="  Danh sách hóa đơn"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 android:layout_marginLeft="15dp"
                 android:padding="10dp"
                 android:drawableLeft="@drawable/ic_manage_accounts_24"
-                android:text="  Quản lý người dùng"/>
+                android:text="  Danh sách người dùng"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,11 +103,32 @@
                 android:layout_margin="10dp"/>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
-            android:id="@+id/btnLogout"
+            android:id="@+id/btnChat"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnTaiKoanVaBaoMat">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/ic_message_24"
+                android:text="  Chat "/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_next2"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btnLogout"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnChat">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
