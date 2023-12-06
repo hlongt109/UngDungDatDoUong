@@ -30,10 +30,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class RegisterFragment extends Fragment {
     FragmentRegisterBinding binding;
-    private  String userStr, emailStr, passStr, repassStr, nameStr;
     ProgressDialog dialog;
-    private String deviceId;
     FirebaseAuth auth;
+    private String userStr, emailStr, passStr, repassStr, nameStr;
+    private String deviceId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +44,7 @@ public class RegisterFragment extends Fragment {
         deviceId = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         auth = FirebaseAuth.getInstance();
-        dialog= new ProgressDialog(getContext());
+        dialog = new ProgressDialog(getContext());
         dialog.setCancelable(false);
         dialog.setMessage("loading...");
 
@@ -74,47 +74,41 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    public  Boolean validate(){
+    public Boolean validate() {
         nameStr = binding.edtNameSignup.getText().toString().trim();
-        userStr = binding.edtUsernameSignup.getText().toString().trim();
         passStr = binding.edtPasswordSignup.getText().toString().trim();
         repassStr = binding.edtRepasswordSignup.getText().toString().trim();
         emailStr = binding.edtEmailSignup.getText().toString().trim();
-        if (nameStr.isEmpty() || userStr.isEmpty() || repassStr.isEmpty() || passStr.isEmpty() || emailStr.isEmpty()){
+        if (nameStr.isEmpty() || userStr.isEmpty() || repassStr.isEmpty() || passStr.isEmpty() || emailStr.isEmpty()) {
             binding.edtNameSignup.setError("Tên không được để trống");
-            binding.edtUsernameSignup.setError("UserName không được để trống");
             binding.edtPasswordSignup.setError("Mật khẩu không được để trống");
             binding.edtRepasswordSignup.setError("Nhập lại mật khẩu không được để trống");
             binding.edtEmailSignup.setError("Email không được để trống");
             return false;
 
-        }else if (nameStr.isEmpty()) {
+        } else if (nameStr.isEmpty()) {
             binding.edtNameSignup.setError("Tên không được để trống");
             return false;
-        }else if(userStr.isEmpty() ) {
-            binding.edtUsernameSignup.setError("UserName không được để trống");
-            return false;
-        }else if(passStr.isEmpty()) {
+        } else if (passStr.isEmpty()) {
             binding.edtPasswordSignup.setError("Mật khẩu không được để trống");
             return false;
-        }else if(repassStr.isEmpty()) {
+        } else if (repassStr.isEmpty()) {
             binding.edtRepasswordSignup.setError("Nhập lại mật khẩu không được để trống");
             return false;
-        }else if(emailStr.isEmpty()) {
+        } else if (emailStr.isEmpty()) {
             binding.edtEmailSignup.setError("Email không được để trống");
             return false;
-        }else  if (!passStr.matches("^(?=.*[A-Z]).{6,}$")) {
+        } else if (!passStr.matches("^(?=.*[A-Z]).{6,}$")) {
             binding.edtPasswordSignup.setError("Mật khẩu phải có 5 ký tự trở lên, Ít nhất 1 chữ in hoa và 1 chữ thường !");
             return false;
-        }else  if (!passStr.equals(repassStr)) {
+        } else if (!passStr.equals(repassStr)) {
             binding.edtRepasswordSignup.setError("Mật khẩu nhập lại không trùng khớp");
             return false;
-        }else if(!emailStr.matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+){1,2}$")) {
+        } else if (!emailStr.matches("^[a-zA-Z0-9_]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+){1,2}$")) {
             binding.edtEmailSignup.setError("Nhập đúng định dạng email");
             return false;
-        }else {
+        } else {
             binding.edtNameSignup.setError(null);
-            binding.edtUsernameSignup.setError(null);
             binding.edtPasswordSignup.setError(null);
             binding.edtRepasswordSignup.setError(null);
             binding.edtEmailSignup.setError(null);
@@ -130,19 +124,17 @@ public class RegisterFragment extends Fragment {
         final FirebaseUser user = auth.getCurrentUser();
 
         nameStr = binding.edtNameSignup.getText().toString().trim();
-        userStr = binding.edtUsernameSignup.getText().toString().trim();
         passStr = binding.edtPasswordSignup.getText().toString().trim();
         repassStr = binding.edtRepasswordSignup.getText().toString().trim();
         emailStr = binding.edtEmailSignup.getText().toString().trim();
-        Query query= reference.orderByChild("diviceId").equalTo(deviceId);
+        Query query = reference.orderByChild("diviceId").equalTo(deviceId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     Toast.makeText(getContext(), "thiết bị đã đc đang ký", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    signUpUser(user, userStr, nameStr, emailStr, passStr);
+                } else {
+                    signUpUser(user, nameStr, emailStr, passStr);
                     dialog.show();
                 }
             }
@@ -154,19 +146,19 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-    private void signUpUser(FirebaseUser user, String userStr, String nameStr, String emailStr, String passStr) {
+    private void signUpUser(FirebaseUser user, String nameStr, String emailStr, String passStr) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("admin");
         auth.createUserWithEmailAndPassword(emailStr, passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     String Id = auth.getCurrentUser().getUid();
 
                     Admin admin = new Admin();
                     admin.setId(Id);
-                    admin.setUsername(userStr);
                     admin.setFullName(nameStr);
                     admin.setEmail(emailStr);
+                    admin.setPassword(passStr);
 
 
                     reference.child(Id).setValue(admin).addOnCompleteListener(new OnCompleteListener<Void>() {

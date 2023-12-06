@@ -8,61 +8,53 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_avata"
-            android:layout_width="80dp"
+        <LinearLayout
+            android:id="@+id/ly"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_launcher_background" />
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_above="@id/btnQlyHoaDon"
-            android:layout_toRightOf="@id/img_avata"
-            android:text="Name user"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="30dp"
-            android:layout_alignParentTop="true"
-            android:id="@+id/tvName"/>
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_avata"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_above="@id/btnQlyHoaDon"
+                android:layout_toRightOf="@id/img_avata"
+                android:text="Name user"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:id="@+id/tvName"/>
+
+
+        </LinearLayout>
+
+
         <androidx.cardview.widget.CardView
             android:id="@+id/btnQlyHoaDon"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/img_avata">
+            android:layout_below="@id/ly">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginLeft="15dp"
-                android:padding="10dp"
-                android:text="Lịch sử mua hàng"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_next_2"
-                android:layout_gravity="end"
-                android:layout_margin="10dp"/>
-        </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/btnQlyVoucher"
-            android:layout_marginTop="1dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnQlyHoaDon">
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_marginLeft="15dp"
                 android:padding="10dp"
-                android:text="Quản lý voucher"/>
+                android:drawableLeft="@drawable/ic_history_24"
+                android:text="  Lịch sử mua hàng"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,17 +64,18 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/btnTaiKoanVaBaoMat"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnQlyVoucher">
+            android:layout_below="@id/btnQlyHoaDon">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_marginLeft="15dp"
                 android:padding="10dp"
-                android:text="Tài khoản và bảo mật "/>
+                android:text="  Tài khoản và bảo mật "
+                android:drawableLeft="@drawable/baseline_lock_person_24"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,8 +84,8 @@
                 android:layout_margin="10dp"/>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
-            android:id="@+id/btnLogout"
-            android:layout_marginTop="1dp"
+            android:id="@+id/btnChat"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnTaiKoanVaBaoMat">
@@ -102,7 +95,29 @@
                 android:textSize="18sp"
                 android:layout_marginLeft="15dp"
                 android:padding="10dp"
-                android:text="Đăng xuất "/>
+                android:text="  Chat"
+                android:drawableLeft="@drawable/ic_message_24"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_next_2"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btnLogout"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnChat">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:padding="10dp"
+                android:text="  Đăng xuất "
+                android:drawableLeft="@drawable/ic_logout_24"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

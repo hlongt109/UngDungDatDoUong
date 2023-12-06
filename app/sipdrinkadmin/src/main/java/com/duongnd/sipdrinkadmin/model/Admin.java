@@ -1,83 +1,65 @@
 package com.duongnd.sipdrinkadmin.model;
 
-import java.util.HashMap;
-
 public class Admin {
-    private String id;
-    private String username;
-    private String password;
-    private String fullName;
-    private String email;
-
-    private String image;
+    private String Id, Email, Password, FullName, Img, Date;
 
     public Admin() {
     }
 
-    public Admin(String id, String username, String password, String fullName, String email, String image) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.image = image;
+    public Admin(String id, String email, String password, String fullName, String img, String date) {
+        Id = id;
+        Email = email;
+        Password = password;
+        FullName = fullName;
+        Img = img;
+        Date = date;
+    }
+
+    public String getImg() {
+        return Img;
+    }
+
+    public void setImg(String img) {
+        Img = img;
+    }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+        Id = id;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        Email = email;
     }
 
-    public String getImage() {
-        return image;
+    public String getPassword() {
+        return Password;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setPassword(String password) {
+        Password = password;
     }
 
-    public HashMap<String, Object> convertHashMap(){
-        HashMap<String,Object> Admin = new HashMap<>();
-        Admin.put("id",id);
-        Admin.put("username",username);
-        Admin.put("password",password);
-        Admin.put("fullName",fullName);
-        Admin.put("email",email);
-        return Admin;
+    public String getFullName() {
+        return FullName;
+    }
+
+    public void setFullName(String fullName) {
+        FullName = fullName;
     }
 }

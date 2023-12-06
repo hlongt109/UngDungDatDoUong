@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/img_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back"
+        android:layout_marginLeft="30dp"
+        android:background="@drawable/bg_edit"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_avata"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@color/cardview_dark_background"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp" />
+
+        <EditText
+            android:id="@+id/txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edit"
+            android:hint="Name"
+            android:paddingStart="20dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/txt_username"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edit"
+            android:hint="user"
+            android:paddingStart="20dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/txt_date"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edit"
+            android:hint="Ngày sinh"
+            android:paddingStart="20dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/txt_phone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edit"
+            android:hint="Số điện thoại"
+            android:paddingStart="20dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/txt_email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edit"
+            android:hint="Email"
+            android:paddingStart="20dp"
+            android:singleLine="true" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btnDoiPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:padding="10dp"
+                android:text="Đổi Mật Khẩu "
+                android:textSize="18sp" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/UploadInfo"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_edit"
+            android:text="Cập nhật"
+            android:backgroundTint="@color/my_light_primary"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</RelativeLayout>

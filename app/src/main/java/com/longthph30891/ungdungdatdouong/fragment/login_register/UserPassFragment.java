@@ -1,4 +1,4 @@
-package com.duongnd.sipdrinkadmin.fragment;
+package com.longthph30891.ungdungdatdouong.fragment.login_register;
 
 
 import android.app.Activity;
@@ -7,6 +7,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.bumptech.glide.Glide;
-import com.duongnd.sipdrinkadmin.R;
-import com.duongnd.sipdrinkadmin.databinding.FragmentProfileBinding;
-import com.duongnd.sipdrinkadmin.model.Admin;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,32 +37,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.longthph30891.ungdungdatdouong.R;
+
+import com.longthph30891.ungdungdatdouong.databinding.FragmentUserpassBinding;
+import com.longthph30891.ungdungdatdouong.model.Khachang;
 
 import java.util.HashMap;
 
 
-public class ProfileFragment extends Fragment {
-    FragmentProfileBinding binding;
+public class UserPassFragment extends Fragment {
+    FragmentUserpassBinding binding;
     FirebaseAuth auth;
     FirebaseUser user;
-    DatabaseReference reference, databaseReference;
+    DatabaseReference reference,databaseReference;
     ProgressDialog dialog;
     Uri ImgUri;
-    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                Intent data = result.getData();
-                if (data != null && result.getResultCode() == Activity.RESULT_OK) {
-                    ImgUri = data.getData();
-                    binding.imgAvata.setImageURI(ImgUri);
-                } else {
-                    Toast.makeText(requireActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
-                }
-            }
-    );
     String userStr, nameStr, dateStr, phoneStr;
 
     @Override
@@ -71,29 +63,32 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         dialog = new ProgressDialog(getContext());
-        dialog.setTitle("Upload...");
+        dialog.setTitle("Đang tải...");
         dialog.setCancelable(false);
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentProfileBinding.inflate(getLayoutInflater());
+        binding = FragmentUserpassBinding.inflate(getLayoutInflater());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Admin admin = snapshot.getValue(Admin.class);
-                binding.txtName.setText(admin.getFullName());
-                binding.txtUsername.setText(admin.getUsername());
-                binding.txtEmail.setText(admin.getEmail());
+                Khachang khachang = snapshot.getValue(Khachang.class);
+                binding.txtName.setText(khachang.getFullName());
+                binding.txtUsername.setText(khachang.getUserName());
+                binding.txtPhone.setText(khachang.getPhone());
+                binding.txtDate.setText(khachang.getDate());
+                binding.txtEmail.setText(khachang.getEmail());
 
-                Glide.with(getContext()).load(admin.getImage()).error(R.drawable.profilebkg).into(binding.imgAvata);
+                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.sold_out).into(binding.imgAvata);
 
 
             }
@@ -116,11 +111,14 @@ public class ProfileFragment extends Fragment {
         binding.UploadInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ImgUri != null) {
-                    UploadPostFb();
-                } else {
-                    UploadInfor();
+                if(validateDate() || validatePhone()){
+                    if(ImgUri != null ){
+                        UploadPostFb();
+                    }else {
+                        UploadInfor();
+                    }
                 }
+
             }
         });
         binding.btnDoiPass.setOnClickListener(new View.OnClickListener() {
@@ -129,11 +127,10 @@ public class ProfileFragment extends Fragment {
                 showPassDialog();
             }
         });
-        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
-
             }
         });
 
@@ -141,7 +138,42 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void showPassDialog() {
+    public Boolean validateDate(){
+        String val = binding.txtDate.getText().toString().trim();
+        if (val.isEmpty()) {
+            binding.txtDate.setError(null);
+            return true;
+        }else {
+            if(!val.matches("^([0-9]{2})\\/([0-9]{2})\\/([0-9]{4})$")) {
+                binding.txtDate.setError("Nhập đúng định dạng ngày sinh");
+                return false;
+            }else {
+                binding.txtDate.setError(null);
+                return true;
+            }
+        }
+
+
+    }
+    public Boolean validatePhone(){
+        String val = binding.txtPhone.getText().toString().trim();
+        if (val.isEmpty()) {
+            binding.txtPhone.setError(null);
+            return true;
+        }else {
+            if(!val.matches("^([0-9]{3})\\-([0-9]{3})\\-([0-9]{4})$")) {
+                binding.txtPhone.setError("Nhập đúng định dạng số điện thoại");
+                return false;
+            }else {
+                binding.txtPhone.setError(null);
+                return true;
+            }
+        }
+
+    }
+
+
+    private void showPassDialog(){
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_update_pass, null);
         EditText passold = view.findViewById(R.id.edt_pass_old);
         EditText passnew = view.findViewById(R.id.edt_pass_new);
@@ -157,11 +189,11 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 String oldPass = passold.getText().toString().trim();
                 String newPass = passnew.getText().toString().trim();
-                if (TextUtils.isEmpty(oldPass)) {
+                if(TextUtils.isEmpty(oldPass)){
                     Toast.makeText(getContext(), "Vui lòng nhập mật khẩu cũ", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!newPass.matches("^(?=.*[A-Z]).{6,}$")) {
+                if (!newPass.matches("^(?=.*[A-Z]).{6,}$")){
                     Toast.makeText(getContext(), "Mật khẩu phải có 5 ký tự trở lên, Ít nhất 1 chữ in hoa và 1 chữ thường !", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -183,8 +215,8 @@ public class ProfileFragment extends Fragment {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-                                        HashMap<String, Object> map = new HashMap<>();
+                                        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                                        HashMap<String,Object> map = new HashMap<>();
                                         map.put("password", newPass);
                                         databaseReference.updateChildren(map);
 
@@ -212,12 +244,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void UploadPostFb() {
-        dialog.dismiss();
+        dialog.show();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
-        phoneStr = binding.txtPhone.getText().toString();
+        phoneStr= binding.txtPhone.getText().toString();
 
-        String file = "Photo/" + "admin" + user.getUid();
+        String file = "Photo/" + "users" + user.getUid();
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(file);
         storageReference.putFile(ImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -228,13 +260,14 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         String img = uri.toString();
-                        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("img", img);
+                        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                        HashMap<String,Object> map = new HashMap<>();
+                        map.put("img",img);
                         map.put("fullName", nameStr);
                         map.put("date", dateStr);
                         map.put("phone", phoneStr);
                         databaseReference.updateChildren(map);
+                        dialog.dismiss();
 
                     }
                 });
@@ -242,31 +275,34 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void UploadInfor() {
-        dialog.dismiss();
-        userStr = binding.txtUsername.getEditableText().toString();
+    private void UploadInfor(){
+        dialog.show();
+        userStr= binding.txtUsername.getEditableText().toString();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
-        phoneStr = binding.txtPhone.getText().toString();
+        phoneStr= binding.txtPhone.getText().toString();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-        HashMap<String, Object> map = new HashMap<>();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        HashMap<String,Object> map = new HashMap<>();
         map.put("userName", userStr);
         map.put("fullName", nameStr);
         map.put("date", dateStr);
         map.put("phone", phoneStr);
         databaseReference.updateChildren(map);
-        Toast.makeText(getContext(), " Update thành công ", Toast.LENGTH_SHORT).show();
+        dialog.dismiss();
+        Toast.makeText(getContext(), " Cập nhật thành công ", Toast.LENGTH_SHORT).show();
+
 
 
     }
 
+
     private void PicikImage() {
 
         ImagePicker.with(this)
-                .crop()                    //Crop image(Optional), Check Customization for more option
-                .compress(1024)            //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
+                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .createIntent(intent -> {
                     activityResultLauncher.launch(intent);
                     return null;
@@ -274,5 +310,23 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result ->{
+                Intent data = result.getData();
+                if(data != null &&  result.getResultCode() == Activity.RESULT_OK){
+                    ImgUri = data.getData();
+                    binding.imgAvata.setImageURI(ImgUri);
+                }else {
+                    Toast.makeText(requireActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
+    
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) requireActivity()).showBottomNavOnBackPressed();
+    }
 }

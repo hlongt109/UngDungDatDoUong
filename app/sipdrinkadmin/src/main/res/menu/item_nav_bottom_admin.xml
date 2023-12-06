@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_danhMuc"
+        android:icon="@drawable/ic_category"
+        android:title="Danh Mục" />
     <item
         android:id="@+id/nav_thongKe"
         android:icon="@drawable/ic_bar_chart"
         android:title="Thống Kê" />
     <item
-        android:id="@+id/nav_danhMuc"
-        android:icon="@drawable/ic_category"
-        android:title="Danh Mục" />
-
-    <item
-        android:id="@+id/nav_addProduct"
-        android:title="" />
+        android:title=""
+        android:enabled="false"/>
 
     <item
         android:id="@+id/nav_thongBao"
