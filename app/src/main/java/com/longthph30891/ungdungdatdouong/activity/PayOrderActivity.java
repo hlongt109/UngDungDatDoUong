@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -201,7 +202,7 @@ public class PayOrderActivity extends AppCompatActivity {
                 new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Vui lòng chọn phương thức thanh toán!")
                         .show();
-            } else if (methodPay.equals("Thanh toán khi nhận hàng")) {
+            } else if (methodPay.equals("Thanh toán khi nhận hàng")) {
                 addOrder(order);
             } else if (methodPay.equals("Thanh toán bằng ZaloPay")) {
                 paymentWithZaloPay(order);
@@ -267,13 +268,11 @@ public class PayOrderActivity extends AppCompatActivity {
             if (task.isComplete()) {
                 dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                 dialog.setTitleText("Đặt hàng thành công");
-                dialog.setContentText("Đơn hàng đã được đặt");
-                dialog.setConfirmText("Xem đơn hàng");
-                dialog.setCancelText("Quay lại");
+                dialog.setConfirmText("Xác nhận");
                 dialog.setConfirmClickListener(v -> {
                     dialog.dismiss();
                     for (Cart item : selectedItems) {
-                        DatabaseReference cartRef = firebaseDatabase.getReference("Cart").child(sessionManager.getLoggedInCustomerId()).child(item.getIdGioHang());
+                        DatabaseReference cartRef = firebaseDatabase.getReference("Cart").child(sessionManager.getLoggedInCustomerId()).child(item.getIdDoUong());
                         cartRef.removeValue().addOnSuccessListener(command -> {
                             Log.d(TAG, "addOrderDetail: " + command);
                         }).addOnFailureListener(e -> {
