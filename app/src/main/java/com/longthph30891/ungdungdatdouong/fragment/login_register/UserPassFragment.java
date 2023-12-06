@@ -43,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.longthph30891.ungdungdatdouong.R;
 
+import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentUserpassBinding;
 import com.longthph30891.ungdungdatdouong.model.Khachang;
 
@@ -83,7 +84,6 @@ public class UserPassFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Khachang khachang = snapshot.getValue(Khachang.class);
                 binding.txtName.setText(khachang.getFullName());
-                binding.txtUsername.setText(khachang.getUserName());
                 binding.txtPhone.setText(khachang.getPhone());
                 binding.txtDate.setText(khachang.getDate());
                 binding.txtEmail.setText(khachang.getEmail());
@@ -277,7 +277,6 @@ public class UserPassFragment extends Fragment {
 
     private void UploadInfor(){
         dialog.show();
-        userStr= binding.txtUsername.getEditableText().toString();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
         phoneStr= binding.txtPhone.getText().toString();

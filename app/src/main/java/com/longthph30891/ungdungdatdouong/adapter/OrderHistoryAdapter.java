@@ -73,7 +73,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             Locale locale = new Locale("vi","VN");
             NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
             String tongTien = numberFormat.format(order.getTotalPrice());
-            binding.tvTotalPrice.setText(String.valueOf(order.getTotalPrice()));
+            binding.tvTotalPrice.setText(tongTien);
 
         }
     }

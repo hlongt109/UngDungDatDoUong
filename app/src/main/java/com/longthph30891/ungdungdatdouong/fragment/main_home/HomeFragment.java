@@ -1,5 +1,6 @@
 package com.longthph30891.ungdungdatdouong.fragment.main_home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.longthph30891.ungdungdatdouong.R;
+import com.longthph30891.ungdungdatdouong.activity.ChatActivity;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.adapter.CategoryHomeAdapter;
 import com.longthph30891.ungdungdatdouong.adapter.ProductAdapter;
@@ -102,6 +104,10 @@ public class HomeFragment extends Fragment {
             }
         }, timeLoadingCategory);
 
+
+        binding.imgMessage.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), ChatActivity.class));
+        });
 
 //        getNamCustomerById(sessionManager.getLoggedInCustomerId());
 
