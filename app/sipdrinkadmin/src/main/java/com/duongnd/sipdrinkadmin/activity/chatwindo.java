@@ -1,16 +1,14 @@
-
-
 package com.duongnd.sipdrinkadmin.activity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,20 +31,21 @@ import java.util.Date;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class chatwindo extends AppCompatActivity {
-    String reciverimg, reciverUid,reciverName,SenderUID;
+    public static String senderImg;
+    public static String reciverIImg;
+    String reciverimg, reciverUid, reciverName, SenderUID;
     CircleImageView profile;
     TextView reciverNName;
     FirebaseDatabase database;
     FirebaseAuth firebaseAuth;
-    public  static String senderImg;
-    public  static String reciverIImg;
-    CardView sendbtn;
+    ImageView sendbtn;
     EditText textmsg;
 
-    String senderRoom,reciverRoom;
+    String senderRoom, reciverRoom;
     RecyclerView messageAdpter;
     ArrayList<msgModelclass> messagesArrayList;
     messagesAdpter mmessagesAdpter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,29 +68,28 @@ public class chatwindo extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         messageAdpter.setLayoutManager(linearLayoutManager);
-        mmessagesAdpter = new messagesAdpter(chatwindo.this,messagesArrayList);
+        mmessagesAdpter = new messagesAdpter(chatwindo.this, messagesArrayList);
         messageAdpter.setAdapter(mmessagesAdpter);
 
 
         Glide.with(this).load(reciverimg).into(profile);
-        reciverNName.setText(""+reciverName);
+        reciverNName.setText("" + reciverName);
 
-        SenderUID =  firebaseAuth.getUid();
+        SenderUID = firebaseAuth.getUid();
 
-        senderRoom = SenderUID+reciverUid;
-        reciverRoom = reciverUid+SenderUID;
+        senderRoom = SenderUID + reciverUid;
+        reciverRoom = reciverUid + SenderUID;
 
 
-
-        DatabaseReference  reference = database.getReference().child("admin").child(firebaseAuth.getUid());
-        DatabaseReference  chatreference = database.getReference().child("chats").child(senderRoom).child("messages");
+        DatabaseReference reference = database.getReference().child("admin").child(firebaseAuth.getUid());
+        DatabaseReference chatreference = database.getReference().child("chats").child(senderRoom).child("messages");
 
 
         chatreference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 messagesArrayList.clear();
-                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     msgModelclass messages = dataSnapshot.getValue(msgModelclass.class);
                     messagesArrayList.add(messages);
                 }
@@ -106,8 +104,8 @@ public class chatwindo extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                senderImg= snapshot.child("img").getValue().toString();
-                reciverIImg=reciverimg;
+                senderImg = snapshot.child("img").getValue().toString();
+                reciverIImg = reciverimg;
             }
 
             @Override
@@ -120,15 +118,15 @@ public class chatwindo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String message = textmsg.getText().toString();
-                if (message.isEmpty()){
+                if (message.isEmpty()) {
                     Toast.makeText(chatwindo.this, "Enter The Message First", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 textmsg.setText("");
                 Date date = new Date();
-                msgModelclass messagess = new msgModelclass(message,SenderUID,date.getTime());
+                msgModelclass messagess = new msgModelclass(message, SenderUID, date.getTime());
 
-                database=FirebaseDatabase.getInstance();
+                database = FirebaseDatabase.getInstance();
                 database.getReference().child("chats")
                         .child(senderRoom)
                         .child("messages")

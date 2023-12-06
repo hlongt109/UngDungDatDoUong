@@ -21,17 +21,18 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdpter extends RecyclerView.Adapter<UserAdpter.viewholder> {
-    Context mainActivity;
+    Context context;
     ArrayList<Khachang> usersArrayList;
-    public UserAdpter(ChatActivity mainActivity, ArrayList<Khachang> usersArrayList) {
-        this.mainActivity=mainActivity;
-        this.usersArrayList=usersArrayList;
+
+    public UserAdpter(ChatActivity chatActivity, ArrayList<Khachang> usersArrayList) {
+        this.context = chatActivity;
+        this.usersArrayList = usersArrayList;
     }
 
     @NonNull
     @Override
     public viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mainActivity).inflate(R.layout.user_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.user_item, parent, false);
         return new viewholder(view);
     }
 
@@ -41,17 +42,16 @@ public class UserAdpter extends RecyclerView.Adapter<UserAdpter.viewholder> {
         Khachang khachang = usersArrayList.get(position);
         holder.username.setText(khachang.getFullName());
         holder.userstatus.setText(khachang.getEmail());
-        Glide.with(mainActivity).load(khachang.getImg()).into(holder.userimg);
+        Glide.with(context).load(khachang.getImg()).into(holder.userimg);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mainActivity, chatwindo.class);
-                intent.putExtra("nameeee",khachang.getFullName());
-                intent.putExtra("reciverImg",khachang.getImg());
-                intent.putExtra("uid",khachang.getId());
-                mainActivity.startActivity(intent);
-
+                Intent intent = new Intent(context, chatwindo.class);
+                intent.putExtra("nameeee", khachang.getFullName());
+                intent.putExtra("reciverImg", khachang.getImg());
+                intent.putExtra("uid", khachang.getId());
+                context.startActivity(intent);
             }
         });
 
@@ -66,6 +66,7 @@ public class UserAdpter extends RecyclerView.Adapter<UserAdpter.viewholder> {
         CircleImageView userimg;
         TextView username;
         TextView userstatus;
+
         public viewholder(@NonNull View itemView) {
             super(itemView);
             userimg = itemView.findViewById(R.id.userimg);

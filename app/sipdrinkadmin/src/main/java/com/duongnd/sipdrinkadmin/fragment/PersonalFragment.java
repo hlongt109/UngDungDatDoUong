@@ -56,7 +56,7 @@ public class PersonalFragment extends Fragment {
                 if(admin.getImg().equals("img")){
                     binding.imgAvata.setImageResource(R.drawable.profilebkg);
                 }else {
-                    Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
+                    Glide.with(requireActivity()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
                 }
 
             }
