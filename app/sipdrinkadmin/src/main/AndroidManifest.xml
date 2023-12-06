@@ -32,6 +32,13 @@
         <activity
             android:name=".activity.chatwindo"
             android:exported="true" />
+        <activity
+            android:name=".activity.CreateDrinkActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".activity.CreateTypeDrinkActivity"
+            android:exported="true" />
 
         <service
             android:name=".Service.listenerOrder"
