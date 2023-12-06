@@ -1,18 +1,25 @@
 package com.longthph30891.ungdungdatdouong.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.longthph30891.ungdungdatdouong.R;
+
 import com.longthph30891.ungdungdatdouong.databinding.ItemOderHistoryBinding;
+import com.longthph30891.ungdungdatdouong.databinding.ItemOrderBinding;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.HistoryDetailFragment;
 import com.longthph30891.ungdungdatdouong.model.Order;
 
@@ -66,19 +73,8 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             Locale locale = new Locale("vi","VN");
             NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
             String tongTien = numberFormat.format(order.getTotalPrice());
-            binding.tvTotalPrice.setText(String.valueOf(order.getTotalPrice()));
-            if (order.getStatusOrder().equals("choxacnhan")) {
-                binding.tvStatus.setText("Đang chờ xác nhận");
-            } else if (order.getStatusOrder().equals("danggiao")) {
-                binding.tvStatus.setText("Đang giao hàng");
-                binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.green));
-            }else if (order.getStatusOrder().equals("dathanhtoan")) {
-                binding.tvStatus.setText("Giao hàng thành công");
-                binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.green));
-            }else if (order.getStatusOrder().equals("dahuy")) {
-                binding.tvStatus.setText("Đơn hàng đã hủy");
-                binding.tvStatus.setTextColor(ContextCompat.getColor(context,R.color.red));
-            }
+            binding.tvTotalPrice.setText(tongTien);
+
         }
     }
     private void showOrderDetails(Order order) {

@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -21,15 +19,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
 import com.longthph30891.ungdungdatdouong.R;
+import com.longthph30891.ungdungdatdouong.activity.ChatActivity;
 import com.longthph30891.ungdungdatdouong.activity.LoginRegisterActivity;
-import com.longthph30891.ungdungdatdouong.activity.MainActivity;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentPersonalBinding;
-import com.longthph30891.ungdungdatdouong.fragment.login_register.ProfileFragment;
+import com.longthph30891.ungdungdatdouong.fragment.login_register.UserPassFragment;
 import com.longthph30891.ungdungdatdouong.model.Khachang;
-
-import java.util.Objects;
 
 
 public class PersonalFragment extends Fragment {
@@ -76,21 +71,34 @@ public class PersonalFragment extends Fragment {
                     .commit();
 
         });
+        binding.btnChat.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity(), ChatActivity.class));
+        });
+
         binding.btnTaiKoanVaBaoMat.setOnClickListener(view -> {
-            ((MainActivity) requireActivity()).showChangeProfile();
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_main_view_customer, new UserPassFragment())
+                    .addToBackStack(UserPassFragment.class.getName())
+                    .commit();
+
         });
         binding.btnLogout.setOnClickListener(view -> {
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Bạn có chắn muốn đăng xuất không ?");
             builder.setNegativeButton("Trở lại", null);
             builder.setPositiveButton("Có", (dialogInterface, i) -> {
                 auth.signOut();
-                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                Intent intent = new Intent(getContext(), LoginRegisterActivity.class);
+                startActivity(intent);
                 getActivity().finish();
             });
             builder.create().show();
         });
         return binding.getRoot();
     }
+
+
+
 
 }

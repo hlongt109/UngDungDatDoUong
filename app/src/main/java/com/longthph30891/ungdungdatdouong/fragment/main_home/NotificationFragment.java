@@ -15,7 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.longthph30891.ungdungdatdouong.Adapter.NotifyAdapter;
+import com.longthph30891.ungdungdatdouong.adapter.NotifyAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentNotificationBinding;
 import com.longthph30891.ungdungdatdouong.model.Order;
 import com.longthph30891.ungdungdatdouong.utilities.SessionManager;

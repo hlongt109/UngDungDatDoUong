@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.login_register.ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.login_register.UserPassFragment">
 
     <ImageView
         android:id="@+id/img_back"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:src="@drawable/ic_arrow_back"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_arrow_back" />
+        android:layout_marginTop="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
         android:gravity="center"
         android:orientation="vertical">
@@ -28,7 +28,6 @@
             android:id="@+id/img_avata"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginTop="10dp"
             android:src="@color/cardview_dark_background"
             app:cardCornerRadius="20dp"
             app:cardElevation="5dp" />
@@ -50,7 +49,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_edit"
-            android:hint="Date"
+            android:hint="Ngày sinh"
             android:paddingStart="20dp"
             android:singleLine="true" />
 
@@ -60,7 +59,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_edit"
-            android:hint="Sđt"
+            android:hint="Số điện thoại"
             android:paddingStart="20dp"
             android:singleLine="true" />
 
@@ -103,9 +102,9 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="20dp"
-            android:background="@drawable/bg_button"
-            android:backgroundTint="@color/my_light_primary"
+            android:background="@drawable/bg_boder"
             android:text="Cập nhật"
+            android:backgroundTint="@color/my_light_primary"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

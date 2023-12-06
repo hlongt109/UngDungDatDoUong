@@ -1,7 +1,5 @@
 package com.longthph30891.ungdungdatdouong.activity;
 
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,19 +17,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.databinding.ActivityMainBinding;
-import com.longthph30891.ungdungdatdouong.fragment.login_register.ProfileFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.CartFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.HomeFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.NotificationFragment;
 import com.longthph30891.ungdungdatdouong.fragment.main_home.PersonalFragment;
 import com.longthph30891.ungdungdatdouong.model.Order;
-import com.longthph30891.ungdungdatdouong.servicies.OrderListenerSv;
 import com.longthph30891.ungdungdatdouong.utilities.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
     SessionManager sessionManager;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("Customer_device")
                 .addOnCompleteListener(task -> {
                     String msg = "Done";
-                    if(!task.isSuccessful()){
+                    if (!task.isSuccessful()) {
                         msg = "Failed";
                     }
                 });
@@ -97,13 +93,13 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void showChangeProfile() {
-        hideBottomNav();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_main_view_customer, new ProfileFragment())
-                .addToBackStack(ProfileFragment.class.getName())
-                .commit();
-    }
+//    public void showChangeProfile() {
+//        hideBottomNav();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_main_view_customer, new ProfileFragment())
+//                .addToBackStack(ProfileFragment.class.getName())
+//                .commit();
+//    }
 
     public void showBottomNavOnBackPressed() {
         showBottomNav();
@@ -133,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public void showQuantityNotification(){
+
+    public void showQuantityNotification() {
         String idKhachHang = sessionManager.getLoggedInCustomerId();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Order").child(idKhachHang);
@@ -160,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {

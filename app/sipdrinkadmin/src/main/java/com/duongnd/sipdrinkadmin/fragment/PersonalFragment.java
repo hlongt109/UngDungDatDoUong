@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetBillsList;
 import com.duongnd.sipdrinkadmin.BottomDiaLog.BottomSheetUsersList;
 import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.activity.ChatActivity;
 import com.duongnd.sipdrinkadmin.activity.LoginRegisterActivity;
 import com.duongnd.sipdrinkadmin.databinding.FragmentPersonalBinding;
 import com.duongnd.sipdrinkadmin.model.Admin;
@@ -38,6 +39,9 @@ public class PersonalFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentPersonalBinding.inflate(inflater, container, false);
+
+        binding = FragmentPersonalBinding.inflate(inflater,container,false);
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -50,9 +54,9 @@ public class PersonalFragment extends Fragment {
                 binding.tvName.setText(admin.getFullName());
 
                 if(admin.getImg().equals("img")){
-                    binding.imgPersonal.setImageResource(R.drawable.profilebkg);
+                    binding.imgAvata.setImageResource(R.drawable.profilebkg);
                 }else {
-                    Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgPersonal);
+                    Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
                 }
 
             }
@@ -63,7 +67,7 @@ public class PersonalFragment extends Fragment {
             }
         });
 
-        binding = FragmentPersonalBinding.inflate(inflater, container, false);
+
         binding.btnQlyHoaDon.setOnClickListener(view -> {
             BottomSheetBillsList bottomSheetBillsList = new BottomSheetBillsList();
             bottomSheetBillsList.show(getChildFragmentManager(), "BottomSheetBillsList");
@@ -72,14 +76,14 @@ public class PersonalFragment extends Fragment {
             BottomSheetUsersList bottomSheetUsersList = new BottomSheetUsersList();
             bottomSheetUsersList.show(getChildFragmentManager(), "BottomSheetUsersList");
         });
-        binding.btnQlyVoucher.setOnClickListener(view -> {
-
-        });
         binding.btnTaiKoanVaBaoMat.setOnClickListener(view -> {
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new ProfileFragment())
-                    .addToBackStack(ProfileFragment.class.getName())
+                    .replace(R.id.fragment_container, new UserPassFragment())
+                    .addToBackStack(UserPassFragment.class.getName())
                     .commit();
+        });
+        binding.btnChat.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity(), ChatActivity.class));
         });
         binding.btnLogout.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

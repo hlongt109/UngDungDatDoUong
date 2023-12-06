@@ -11,9 +11,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.duongnd.sipdrinkadmin.Adapter.UserAdapter;
+import com.duongnd.sipdrinkadmin.adapter.UserAdapter;
 import com.duongnd.sipdrinkadmin.databinding.BottomSheetUsersListBinding;
-import com.duongnd.sipdrinkadmin.databinding.FragmentUserBinding;
 import com.duongnd.sipdrinkadmin.model.Khachang;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DataSnapshot;
@@ -36,15 +35,13 @@ public class BottomSheetUsersList extends BottomSheetDialogFragment {
         database = FirebaseDatabase.getInstance();
         recyclerList = new ArrayList<>();
     }
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding = BottomSheetUsersListBinding.inflate(inflater, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = BottomSheetUsersListBinding.inflate(inflater,container,false);
 
-        adapter = new UserAdapter(recyclerList, getContext());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        adapter = new UserAdapter(recyclerList,getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
         binding.recyclerUser.setLayoutManager(layoutManager);
         binding.recyclerUser.setNestedScrollingEnabled(false);
         binding.recyclerUser.setAdapter(adapter);
@@ -53,8 +50,8 @@ public class BottomSheetUsersList extends BottomSheetDialogFragment {
         database.getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                if(snapshot.exists()){
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         Khachang model = dataSnapshot.getValue(Khachang.class);
 
                         recyclerList.add(model);
@@ -68,7 +65,6 @@ public class BottomSheetUsersList extends BottomSheetDialogFragment {
 
             }
         });
-
         binding.seach.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -86,14 +82,12 @@ public class BottomSheetUsersList extends BottomSheetDialogFragment {
 
         return binding.getRoot();
     }
-
-    public void seachList(String text) {
-        ArrayList<Khachang> seachList = new ArrayList<>();
-        for (Khachang khachang : recyclerList) {
-            if (khachang.getFullName().toLowerCase().contains(text.toLowerCase())) {
+    public void seachList(String text){
+        ArrayList <Khachang> seachList = new ArrayList<>();
+        for (Khachang khachang: recyclerList){
+            if (khachang.getFullName().toLowerCase().contains(text.toLowerCase())){
                 seachList.add(khachang);
             }
-        }
-        adapter.seachDatalist(seachList);
+        }adapter.seachDatalist(seachList);
     }
 }

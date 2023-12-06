@@ -1,4 +1,4 @@
-package com.longthph30891.ungdungdatdouong.Adapter;
+package com.longthph30891.ungdungdatdouong.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

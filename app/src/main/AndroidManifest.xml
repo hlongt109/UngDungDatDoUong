@@ -47,6 +47,11 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.ChatActivity"
+            android:exported="false" />
+        <activity android:name=".activity.chatwindo"
+            android:exported="true"/>
+        <activity
             android:name=".activity.LoginRegisterActivity"
             android:exported="false" />
         <service

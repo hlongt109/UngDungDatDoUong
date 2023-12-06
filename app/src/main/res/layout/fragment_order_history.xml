@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragment.main_home.OrderHistoryFragment">
 
     <TextView
         android:id="@+id/rule"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:background="@color/my_light_primary"
+        android:gravity="center"
         android:text="Lịch sử mua hàng"
-        android:textSize="12pt"
-        android:textColor="@color/black"
-        android:layout_marginTop="39dp" />
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvOderList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rule"
-        android:layout_marginTop="5dp"
-        android:id="@+id/rcvOderList"/>
+        android:layout_below="@id/rule" />
 </RelativeLayout>
