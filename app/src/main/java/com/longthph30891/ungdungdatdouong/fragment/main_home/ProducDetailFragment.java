@@ -19,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
-import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
+//import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
 import com.longthph30891.ungdungdatdouong.adapter.ProductAdapter;
 import com.longthph30891.ungdungdatdouong.databinding.FragmentProducDetailBinding;
 import com.longthph30891.ungdungdatdouong.model.Cart;
@@ -88,9 +88,9 @@ public class ProducDetailFragment extends Fragment {
                     cart.setSoLuong(1);
                     selectedItems.clear();
                     selectedItems.add(cart);
-                    Intent intent = new Intent(getContext(), PayOrderActivity.class);
-                    intent.putParcelableArrayListExtra("selectedItems", (ArrayList<Cart>) selectedItems);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getContext(), PayOrderActivity.class);
+//                    intent.putParcelableArrayListExtra("selectedItems", (ArrayList<Cart>) selectedItems);
+//                    startActivity(intent);
                 });
 
                 binding.btnAddToCart.setOnClickListener(v -> {

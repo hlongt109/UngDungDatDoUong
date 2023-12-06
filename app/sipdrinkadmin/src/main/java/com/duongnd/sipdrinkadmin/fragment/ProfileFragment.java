@@ -1,4 +1,4 @@
-package com.longthph30891.ungdungdatdouong.fragment.login_register;
+package com.duongnd.sipdrinkadmin.fragment;
 
 
 import android.app.Activity;
@@ -26,6 +26,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.duongnd.sipdrinkadmin.R;
+import com.duongnd.sipdrinkadmin.activity.MainActivity;
+import com.duongnd.sipdrinkadmin.databinding.FragmentProfileBinding;
+import com.duongnd.sipdrinkadmin.model.Admin;
+import com.duongnd.sipdrinkadmin.model.Khachang;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,10 +50,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.longthph30891.ungdungdatdouong.R;
-import com.longthph30891.ungdungdatdouong.activity.MainActivity;
-import com.longthph30891.ungdungdatdouong.databinding.FragmentProfileBinding;
-import com.longthph30891.ungdungdatdouong.model.Khachang;
+
 
 import java.util.HashMap;
 
@@ -67,7 +69,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         dialog = new ProgressDialog(getContext());
-        dialog.setTitle("Đang đăng ký, vui lòng chờ...");
+        dialog.setTitle("Đang cập nhật...");
         dialog.setCancelable(false);
 
     }
@@ -80,18 +82,17 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Khachang khachang = snapshot.getValue(Khachang.class);
-                binding.txtName.setText(khachang.getFullName());
-                binding.txtPhone.setText(khachang.getPhone());
-                binding.txtDate.setText(khachang.getDate());
-                binding.txtEmail.setText(khachang.getEmail());
+                Admin admin = snapshot.getValue(Admin.class);
+                binding.txtName.setText(admin.getFullName());
+                binding.txtDate.setText(admin.getDate());
+                binding.txtEmail.setText(admin.getEmail());
 
-                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.pagebkg).into(binding.imgAvata);
+                Glide.with(getContext()).load(admin.getImg()).into(binding.imgAvata);
 
 
             }
@@ -114,7 +115,7 @@ public class ProfileFragment extends Fragment {
         binding.UploadInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validateDate() || validatePhone()){
+                if(validateDate() || validateGmail()){
                     if(ImgUri != null ){
                         UploadPostFb();
                     }else {
@@ -158,20 +159,22 @@ public class ProfileFragment extends Fragment {
 
 
     }
-    public Boolean validatePhone(){
-        String val = binding.txtPhone.getText().toString().trim();
+
+    public Boolean validateGmail(){
+        String val = binding.txtEmail.getText().toString().trim();
         if (val.isEmpty()) {
-            binding.txtPhone.setError(null);
+            binding.txtEmail.setError(null);
             return true;
         }else {
-            if(!val.matches("^([0-9]{3})\\-([0-9]{3})\\-([0-9]{4})$")) {
-                binding.txtPhone.setError("Nhập đúng định dạng số điện thoại");
+            if(!val.matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]+$")) {
+                binding.txtEmail.setError("Nhập đúng định dạng gamil");
                 return false;
             }else {
-                binding.txtPhone.setError(null);
+                binding.txtEmail.setError(null);
                 return true;
             }
         }
+
 
     }
 
@@ -224,7 +227,7 @@ public class ProfileFragment extends Fragment {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                                        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
                                         HashMap<String,Object> map = new HashMap<>();
                                         map.put("password", newPass);
                                         databaseReference.updateChildren(map);
@@ -253,12 +256,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void UploadPostFb() {
-        dialog.dismiss();
+        dialog.show();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
-        phoneStr= binding.txtPhone.getText().toString();
+        phoneStr= binding.txtEmail.getText().toString();
 
-        String file = "Photo/" + "users" + user.getUid();
+        String file = "Photo/" + "admin" + user.getUid();
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(file);
         storageReference.putFile(ImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -269,13 +272,14 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         String img = uri.toString();
-                        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
                         HashMap<String,Object> map = new HashMap<>();
                         map.put("img",img);
                         map.put("fullName", nameStr);
                         map.put("date", dateStr);
                         map.put("phone", phoneStr);
                         databaseReference.updateChildren(map);
+                        dialog.dismiss();
 
                     }
                 });
@@ -287,9 +291,9 @@ public class ProfileFragment extends Fragment {
         dialog.dismiss();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
-        phoneStr= binding.txtPhone.getText().toString();
+        phoneStr= binding.txtEmail.getText().toString();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
         HashMap<String,Object> map = new HashMap<>();
         map.put("userName", userStr);
         map.put("fullName", nameStr);
@@ -329,9 +333,4 @@ public class ProfileFragment extends Fragment {
             }
     );
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ((MainActivity) requireActivity()).showBottomNavOnBackPressed();
-    }
 }

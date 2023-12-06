@@ -47,6 +47,9 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.MessActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.LoginRegisterActivity"
             android:exported="false" />
         <service

@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.longthph30891.ungdungdatdouong.activity.MainActivity;
-import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
+//import com.longthph30891.ungdungdatdouong.activity.PayOrderActivity;
 import com.longthph30891.ungdungdatdouong.adapter.CartAdapter;
 
 import com.longthph30891.ungdungdatdouong.databinding.FragmentCartBinding;
@@ -88,9 +88,9 @@ public class CartFragment extends Fragment {
                 if (selectedItems.isEmpty()) {
                     Toast.makeText(getContext(), "Vui lòng chọn sản phẩm", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent(getContext(), PayOrderActivity.class);
-                    intent.putParcelableArrayListExtra("selectedItems", (ArrayList<Cart>) selectedItems);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getContext(), PayOrderActivity.class);
+//                    intent.putParcelableArrayListExtra("selectedItems", (ArrayList<Cart>) selectedItems);
+//                    startActivity(intent);
                 }
             }
         });
