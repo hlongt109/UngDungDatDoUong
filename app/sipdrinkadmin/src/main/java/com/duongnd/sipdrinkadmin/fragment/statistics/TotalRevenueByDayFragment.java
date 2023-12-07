@@ -110,9 +110,10 @@ public class TotalRevenueByDayFragment extends Fragment {
             Date targetDateTime = dateFormat.parse(getDate);
             Date startDateTime = dateFormat.parse(startDate);
             Date endDateTime = dateFormat.parse(endDate);
+
             return targetDateTime != null && startDateTime != null && endDateTime != null &&
-                    (targetDateTime.equals(startDateTime)) || (targetDateTime.after(startDateTime)) &&
-                    (targetDateTime.equals(endDateTime)) || (targetDateTime.before(endDateTime));
+                    (targetDateTime.equals(startDateTime) || targetDateTime.after(startDateTime)) &&
+                    (targetDateTime.equals(endDateTime) || targetDateTime.before(endDateTime));
         } catch (ParseException e) {
             e.printStackTrace();
             return false;

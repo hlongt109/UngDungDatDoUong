@@ -29,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.checkerframework.checker.units.qual.s;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class DetailsTopDrinkFragment extends Fragment {
@@ -96,7 +98,12 @@ public class DetailsTopDrinkFragment extends Fragment {
                                         }
                                     }
                                 }
-
+                                Collections.sort(list, new Comparator<DrinkTop>() {
+                                    @Override
+                                    public int compare(DrinkTop o1, DrinkTop o2) {
+                                        return Integer.compare(o2.getQuantity(), o1.getQuantity());
+                                    }
+                                });
                                 adapter.notifyDataSetChanged();
                             }
 
