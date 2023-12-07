@@ -58,7 +58,7 @@ public class HistoryDetailAdapter extends RecyclerView.Adapter<HistoryDetailAdap
             binding.tvNameProduct.setText(orderDetails.getNameProduct());
             binding.tvQuantity.setText("x"+orderDetails.getQuantity());
             Glide.with(context).load(orderDetails.getImageProduct())
-                    .error(R.drawable.pagebkg).into(binding.imgProduct);
+                    .error(R.drawable.profilebkg).into(binding.imgProduct);
             Locale locale = new Locale("vi","VN");
             NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
             String money = numberFormat.format(orderDetails.getPrice());

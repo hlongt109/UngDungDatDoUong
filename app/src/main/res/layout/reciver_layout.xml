@@ -13,7 +13,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/pagebkg" />
+        android:src="@drawable/profilebkg" />
 
     <TextView
         android:id="@+id/recivertextset"
