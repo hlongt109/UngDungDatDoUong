@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_Update"
-        android:title="Update" />
+        android:title="Cập nhật" />
     <item
         android:id="@+id/nav_Delete"
-        android:title="Delete" />
+        android:title="Xóa" />
 </menu>
