@@ -22,6 +22,7 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.SearchView
+                android:id="@+id/seach"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -46,6 +47,11 @@
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_header"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView_slider"

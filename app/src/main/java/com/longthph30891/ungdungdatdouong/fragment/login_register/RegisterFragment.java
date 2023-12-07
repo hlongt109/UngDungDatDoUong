@@ -79,7 +79,7 @@ public class RegisterFragment extends Fragment {
         passStr = binding.edtPasswordSignup.getText().toString().trim();
         repassStr = binding.edtRepasswordSignup.getText().toString().trim();
         emailStr = binding.edtEmailSignup.getText().toString().trim();
-        if (nameStr.isEmpty() || userStr.isEmpty() || repassStr.isEmpty() || passStr.isEmpty() || emailStr.isEmpty()) {
+        if (nameStr.isEmpty() || repassStr.isEmpty() || passStr.isEmpty() || emailStr.isEmpty()) {
             binding.edtNameSignup.setError("Tên không được để trống");
             binding.edtPasswordSignup.setError("Mật khẩu không được để trống");
             binding.edtRepasswordSignup.setError("Nhập lại mật khẩu không được để trống");
@@ -88,8 +88,6 @@ public class RegisterFragment extends Fragment {
 
         } else if (nameStr.isEmpty()) {
             binding.edtNameSignup.setError("Tên không được để trống");
-            return false;
-        } else if (userStr.isEmpty()) {
             return false;
         } else if (passStr.isEmpty()) {
             binding.edtPasswordSignup.setError("Mật khẩu không được để trống");
@@ -136,7 +134,7 @@ public class RegisterFragment extends Fragment {
                 if (snapshot.exists()) {
                     Toast.makeText(getContext(), "thiết bị đã đc đang ký", Toast.LENGTH_SHORT).show();
                 } else {
-                    signUpUser(user, userStr, nameStr, emailStr, passStr);
+                    signUpUser(user, nameStr, emailStr, passStr);
                     dialog.show();
                 }
             }
@@ -148,7 +146,7 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-    private void signUpUser(FirebaseUser user, String userStr, String nameStr, String emailStr, String passStr) {
+    private void signUpUser(FirebaseUser user, String nameStr, String emailStr, String passStr) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
         auth.createUserWithEmailAndPassword(emailStr, passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -163,9 +161,8 @@ public class RegisterFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(getContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), MainActivity.class));
-                            getActivity().finishAffinity();
-
+                            dialog.dismiss();
+                            getParentFragmentManager().popBackStack();
                         }
                     });
 

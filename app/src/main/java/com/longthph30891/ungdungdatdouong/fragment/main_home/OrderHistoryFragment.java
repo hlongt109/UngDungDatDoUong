@@ -62,7 +62,7 @@ public class OrderHistoryFragment extends Fragment {
                 list.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Order order1 = dataSnapshot.getValue(Order.class);
-                    if (order1 != null && order1.getIdUser().equals(curUserId) && order1.getStatusOrder().equals("dathanhtoan")) {
+                    if (order1 != null && order1.getIdUser().equals(curUserId)) {
                         list.add(order1);
                     }
                 }

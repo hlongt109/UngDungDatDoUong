@@ -45,9 +45,6 @@ public class HistoryDetailFragment extends Fragment {
             address = getArguments().getString("address");
             statusOrder = getArguments().getString("statusOrder");
             totalPrice = getArguments().getDouble("totalPrice");
-            Toast.makeText(getContext(), "có", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(getContext(), "ko", Toast.LENGTH_SHORT).show();
         }
     }
     @Override

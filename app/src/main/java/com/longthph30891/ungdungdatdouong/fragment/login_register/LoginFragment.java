@@ -38,10 +38,6 @@ public class LoginFragment extends Fragment {
         dialog= new ProgressDialog(getContext());
         dialog.setCancelable(false);
         dialog.setMessage("Đăng đăng nhập, vui lòng chờ...");
-        if(auth.getCurrentUser() != null){
-            startActivity(new Intent(getContext(), MainActivity.class));
-            getActivity().finish();
-        }
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

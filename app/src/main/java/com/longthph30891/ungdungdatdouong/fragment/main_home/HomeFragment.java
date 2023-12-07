@@ -45,11 +45,10 @@ public class HomeFragment extends Fragment {
     ProductAdapter productAdapter;
     List<Category> categoryList;
     List<Product> productList;
+    SessionManager sessionManager;
     private FragmentHomeBinding binding;
-
     private int timeLoadingCategory;
     private int timeLoadingProduct;
-    SessionManager sessionManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,7 +110,6 @@ public class HomeFragment extends Fragment {
         });
 
 //        getNamCustomerById(sessionManager.getLoggedInCustomerId());
-
 
 
         binding.seach.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

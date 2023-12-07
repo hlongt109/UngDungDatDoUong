@@ -23,10 +23,8 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.duongnd.sipdrinkadmin.R;
-import com.duongnd.sipdrinkadmin.activity.MainActivity;
 import com.duongnd.sipdrinkadmin.databinding.FragmentProfileBinding;
 import com.duongnd.sipdrinkadmin.model.Admin;
-import com.duongnd.sipdrinkadmin.model.Khachang;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,9 +49,21 @@ public class ProfileFragment extends Fragment {
     FragmentProfileBinding binding;
     FirebaseAuth auth;
     FirebaseUser user;
-    DatabaseReference reference,databaseReference;
+    DatabaseReference reference, databaseReference;
     ProgressDialog dialog;
     Uri ImgUri;
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent data = result.getData();
+                if (data != null && result.getResultCode() == Activity.RESULT_OK) {
+                    ImgUri = data.getData();
+                    binding.imgAvata.setImageURI(ImgUri);
+                } else {
+                    Toast.makeText(requireActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
     String userStr, nameStr, dateStr, phoneStr;
 
     @Override
@@ -65,7 +75,6 @@ public class ProfileFragment extends Fragment {
         dialog.setCancelable(false);
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,14 +92,7 @@ public class ProfileFragment extends Fragment {
                 binding.txtName.setText(admin.getFullName());
                 binding.txtDate.setText(admin.getDate());
                 binding.txtEmail.setText(admin.getEmail());
-
-<<<<<<<< HEAD:app/sipdrinkadmin/src/main/java/com/duongnd/sipdrinkadmin/fragment/ProfileFragment.java
                 Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
-========
-                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.pagebkg).into(binding.imgAvata);
->>>>>>>> thank3:app/src/main/java/com/longthph30891/ungdungdatdouong/fragment/login_register/ProfileFragment.java
-
-
             }
 
             @Override
@@ -111,10 +113,10 @@ public class ProfileFragment extends Fragment {
         binding.UploadInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validateDate() || validatePhone()){
-                    if(ImgUri != null ){
+                if (validateDate() || validatePhone()) {
+                    if (ImgUri != null) {
                         UploadPostFb();
-                    }else {
+                    } else {
                         UploadInfor();
                     }
                 }
@@ -138,16 +140,16 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public Boolean validateDate(){
+    public Boolean validateDate() {
         String val = binding.txtDate.getText().toString().trim();
         if (val.isEmpty()) {
             binding.txtDate.setError(null);
             return true;
-        }else {
-            if(!val.matches("^([0-9]{2})\\/([0-9]{2})\\/([0-9]{4})$")) {
+        } else {
+            if (!val.matches("^([0-9]{2})\\/([0-9]{2})\\/([0-9]{4})$")) {
                 binding.txtDate.setError("Nhập đúng định dạng ngày sinh");
                 return false;
-            }else {
+            } else {
                 binding.txtDate.setError(null);
                 return true;
             }
@@ -155,16 +157,17 @@ public class ProfileFragment extends Fragment {
 
 
     }
-    public Boolean validatePhone(){
+
+    public Boolean validatePhone() {
         String val = binding.txtEmail.getText().toString().trim();
         if (val.isEmpty()) {
             binding.txtEmail.setError(null);
             return true;
-        }else {
-            if(!val.matches("^([0-9]{3})\\-([0-9]{3})\\-([0-9]{4})$")) {
+        } else {
+            if (!val.matches("^([0-9]{3})\\-([0-9]{3})\\-([0-9]{4})$")) {
                 binding.txtEmail.setError("Nhập đúng định dạng số điện thoại");
                 return false;
-            }else {
+            } else {
                 binding.txtEmail.setError(null);
                 return true;
             }
@@ -172,8 +175,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-
-    private void showPassDialog(){
+    private void showPassDialog() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_update_pass, null);
         EditText passold = view.findViewById(R.id.edt_pass_old);
         EditText passnew = view.findViewById(R.id.edt_pass_new);
@@ -189,22 +191,19 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 String oldPass = passold.getText().toString().trim();
                 String newPass = passnew.getText().toString().trim();
-                if(TextUtils.isEmpty(oldPass)){
+                if (TextUtils.isEmpty(oldPass)) {
                     Toast.makeText(getContext(), "Vui lòng nhập mật khẩu cũ", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(newPass)){
+                if (TextUtils.isEmpty(newPass)) {
                     Toast.makeText(getContext(), "Vui lòng nhập mật khẩu mới", Toast.LENGTH_SHORT).show();
-<<<<<<<< HEAD:app/sipdrinkadmin/src/main/java/com/duongnd/sipdrinkadmin/fragment/ProfileFragment.java
                     return;
                 }
-                if (!newPass.matches("^(?=.*[A-Z]).{6,}$")){
+                if (!newPass.matches("^(?=.*[A-Z]).{6,}$")) {
                     Toast.makeText(getContext(), "Mật khẩu phải có 5 ký tự trở lên, Ít nhất 1 chữ in hoa và 1 chữ thường !", Toast.LENGTH_SHORT).show();
-========
->>>>>>>> thank3:app/src/main/java/com/longthph30891/ungdungdatdouong/fragment/login_register/ProfileFragment.java
                     return;
-                }else {
-                    if (!newPass.matches("^(?=.*[A-Z]).{6,}$")){
+                } else {
+                    if (!newPass.matches("^(?=.*[A-Z]).{6,}$")) {
                         Toast.makeText(getContext(), "Mật khẩu phải có 5 ký tự trở lên, Ít nhất 1 chữ in hoa và 1 chữ thường !", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -219,10 +218,8 @@ public class ProfileFragment extends Fragment {
 
     private void updatePass(String oldPass, String newPass) {
         dialog.show();
-<<<<<<<< HEAD:app/sipdrinkadmin/src/main/java/com/duongnd/sipdrinkadmin/fragment/ProfileFragment.java
-//        FirebaseUser user1 = auth.getCurrentUser();
-========
->>>>>>>> thank3:app/src/main/java/com/longthph30891/ungdungdatdouong/fragment/login_register/ProfileFragment.java
+//       FirebaseUser user1 = auth.getCurrentUser();
+
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), oldPass);
         user.reauthenticate(credential)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -233,7 +230,7 @@ public class ProfileFragment extends Fragment {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-                                        HashMap<String,Object> map = new HashMap<>();
+                                        HashMap<String, Object> map = new HashMap<>();
                                         map.put("password", newPass);
                                         databaseReference.updateChildren(map);
 
@@ -276,8 +273,8 @@ public class ProfileFragment extends Fragment {
                     public void onSuccess(Uri uri) {
                         String img = uri.toString();
                         databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-                        HashMap<String,Object> map = new HashMap<>();
-                        map.put("img",img);
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("img", img);
                         map.put("fullName", nameStr);
                         map.put("date", dateStr);
                         databaseReference.updateChildren(map);
@@ -289,13 +286,13 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void UploadInfor(){
+    private void UploadInfor() {
         dialog.dismiss();
         nameStr = binding.txtName.getEditableText().toString();
         dateStr = binding.txtDate.getText().toString();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("admin").child(user.getUid());
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("userName", userStr);
         map.put("fullName", nameStr);
         map.put("date", dateStr);
@@ -303,35 +300,20 @@ public class ProfileFragment extends Fragment {
         Toast.makeText(getContext(), " Update thành công ", Toast.LENGTH_SHORT).show();
 
 
-
     }
-
 
     private void PicikImage() {
 
         ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .crop()                    //Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
                 .createIntent(intent -> {
                     activityResultLauncher.launch(intent);
                     return null;
 
                 });
     }
-
-    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result ->{
-                Intent data = result.getData();
-                if(data != null &&  result.getResultCode() == Activity.RESULT_OK){
-                    ImgUri = data.getData();
-                    binding.imgAvata.setImageURI(ImgUri);
-                }else {
-                    Toast.makeText(requireActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
-                }
-            }
-    );
 
 
 }
