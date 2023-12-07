@@ -5,18 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/layout1"
         tools:ignore="RtlOverlay" />
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:theme="@style/mytheme1">
+
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
             android:layout_width="match_parent"
@@ -25,8 +28,8 @@
             android:layout_gravity="bottom"
             android:background="@color/white"
             android:backgroundTint="@color/my_light_primary"
-            app:fabCradleRoundedCornerRadius="50dp"
             app:fabCradleMargin="@dimen/common_circle_width"
+            app:fabCradleRoundedCornerRadius="50dp"
             app:layout_anchorGravity="bottom">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -46,12 +49,12 @@
             android:id="@+id/btnAddNew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
             android:layout_marginBottom="3dp"
-            app:layout_anchor="@id/bottomAppBar"
+            android:backgroundTint="@color/white"
             android:src="@drawable/ic_add"
             app:backgroundTint="@color/my_light_primary"
             app:borderWidth="1dp"
+            app:layout_anchor="@id/bottomAppBar"
             app:maxImageSize="30dp"
             app:tint="@color/my_light_primary" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
