@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import com.denzcoskun.imageslider.constants.ScaleTypes;
@@ -110,6 +111,23 @@ public class HomeFragment extends Fragment {
         });
 
 //        getNamCustomerById(sessionManager.getLoggedInCustomerId());
+
+
+
+        binding.seach.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                seachList(newText);
+
+
+                return true;
+            }
+        });
 
         return binding.getRoot();
     }
@@ -223,6 +241,16 @@ public class HomeFragment extends Fragment {
                 Log.e("TAG", "onCancelled: " + error.getMessage());
             }
         });
+    }
+
+    public void seachList(String text) {
+        ArrayList<Product> seachList = new ArrayList<>();
+        for (Product product : productList) {
+            if (product.getTenDoUong().toLowerCase().contains(text.toLowerCase())) {
+                seachList.add(product);
+            }
+        }
+        productAdapter.seachDatalist(seachList);
     }
 
 

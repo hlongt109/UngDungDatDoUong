@@ -82,7 +82,7 @@ public class UserFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                seachList(newText);
+//                seachList(newText);
 
 
                 return true;
@@ -98,13 +98,13 @@ public class UserFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public void seachList(String text) {
-        ArrayList<Khachang> seachList = new ArrayList<>();
-        for (Khachang khachang : recyclerList) {
-            if (khachang.getFullName().toLowerCase().contains(text.toLowerCase())) {
-                seachList.add(khachang);
-            }
-        }
-        adapter.seachDatalist(seachList);
-    }
+//    public void seachList(String text) {
+//        ArrayList<Khachang> seachList = new ArrayList<>();
+//        for (Khachang khachang : recyclerList) {
+//            if (khachang.getFullName().toLowerCase().contains(text.toLowerCase())) {
+//                seachList.add(khachang);
+//            }
+//        }
+//        adapter.seachDatalist(seachList);
+//    }
 }

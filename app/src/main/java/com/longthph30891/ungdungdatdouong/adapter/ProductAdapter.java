@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.longthph30891.ungdungdatdouong.R;
 import com.longthph30891.ungdungdatdouong.interfaces.ProductInterface;
+import com.longthph30891.ungdungdatdouong.model.Khachang;
 import com.longthph30891.ungdungdatdouong.model.Product;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -99,6 +101,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public int getItemCount() {
         return productList.size();
+    }
+
+    public void seachDatalist(ArrayList<Product> sacrhList){
+        productList = sacrhList;
+        notifyDataSetChanged();
     }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {

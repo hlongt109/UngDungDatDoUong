@@ -84,7 +84,11 @@ public class ProfileFragment extends Fragment {
                 binding.txtDate.setText(admin.getDate());
                 binding.txtEmail.setText(admin.getEmail());
 
+<<<<<<<< HEAD:app/sipdrinkadmin/src/main/java/com/duongnd/sipdrinkadmin/fragment/ProfileFragment.java
                 Glide.with(getContext()).load(admin.getImg()).error(R.drawable.profilebkg).into(binding.imgAvata);
+========
+                Glide.with(getContext()).load(khachang.getImg()).error(R.drawable.pagebkg).into(binding.imgAvata);
+>>>>>>>> thank3:app/src/main/java/com/longthph30891/ungdungdatdouong/fragment/login_register/ProfileFragment.java
 
 
             }
@@ -191,12 +195,22 @@ public class ProfileFragment extends Fragment {
                 }
                 if(TextUtils.isEmpty(newPass)){
                     Toast.makeText(getContext(), "Vui lòng nhập mật khẩu mới", Toast.LENGTH_SHORT).show();
+<<<<<<<< HEAD:app/sipdrinkadmin/src/main/java/com/duongnd/sipdrinkadmin/fragment/ProfileFragment.java
                     return;
                 }
                 if (!newPass.matches("^(?=.*[A-Z]).{6,}$")){
                     Toast.makeText(getContext(), "Mật khẩu phải có 5 ký tự trở lên, Ít nhất 1 chữ in hoa và 1 chữ thường !", Toast.LENGTH_SHORT).show();
+========
+>>>>>>>> thank3:app/src/main/java/com/longthph30891/ungdungdatdouong/fragment/login_register/ProfileFragment.java
                     return;
+                }else {
+                    if (!newPass.matches("^(?=.*[A-Z]).{6,}$")){
+                        Toast.makeText(getContext(), "Mật khẩu phải có 5 ký tự trở lên, Ít nhất 1 chữ in hoa và 1 chữ thường !", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+
+
                 dialogPass.dismiss();
                 updatePass(oldPass, newPass);
             }
@@ -205,7 +219,10 @@ public class ProfileFragment extends Fragment {
 
     private void updatePass(String oldPass, String newPass) {
         dialog.show();
+<<<<<<<< HEAD:app/sipdrinkadmin/src/main/java/com/duongnd/sipdrinkadmin/fragment/ProfileFragment.java
 //        FirebaseUser user1 = auth.getCurrentUser();
+========
+>>>>>>>> thank3:app/src/main/java/com/longthph30891/ungdungdatdouong/fragment/login_register/ProfileFragment.java
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), oldPass);
         user.reauthenticate(credential)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
