@@ -47,12 +47,6 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/layout_header"/>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView_slider"
             android:layout_width="match_parent"
@@ -90,12 +84,6 @@
                 android:text="Thể loại"
                 android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text="Xem thêm"
-                android:textSize="18sp" />
         </LinearLayout>
 
 
@@ -154,13 +142,6 @@
                 android:layout_weight="1"
                 android:text="Sản phẩm"
                 android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text="Xem thêm"
-                android:textSize="18sp" />
         </LinearLayout>
 
 

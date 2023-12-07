@@ -115,16 +115,16 @@ public class HomeFragment extends Fragment {
         binding.seach.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                ;
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 seachList(newText);
-
-
                 return true;
             }
+
         });
 
         return binding.getRoot();
@@ -248,7 +248,11 @@ public class HomeFragment extends Fragment {
                 seachList.add(product);
             }
         }
-        productAdapter.seachDatalist(seachList);
+        if (seachList.isEmpty()) {
+            getListProduct();
+        } else {
+            productAdapter.seachDatalist(seachList);
+        }
     }
 
 
