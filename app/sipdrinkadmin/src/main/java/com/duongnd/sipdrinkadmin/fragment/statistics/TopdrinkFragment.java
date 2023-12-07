@@ -128,7 +128,7 @@ public class TopdrinkFragment extends Fragment {
             entries.add(new BarEntry(i, ddobc.getTotalQuantity()));
         }
 
-        BarDataSet barDataSet = new BarDataSet(entries, "Thống kê số lượng bán");
+        BarDataSet barDataSet = new BarDataSet(entries, "Số lượng bán của sản phẩm");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(16f);
