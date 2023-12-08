@@ -51,7 +51,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/sen"
                     android:textSize="14sp"
-                    android:text="Chọn hình ảnh"/>
+                    android:text="Chọn hình ảnh" />
             </androidx.cardview.widget.CardView>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_NameDrink"
