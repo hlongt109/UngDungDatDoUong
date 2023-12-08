@@ -1,5 +1,6 @@
 package com.longthph30891.ungdungdatdouong.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -38,7 +39,7 @@ public class chatwindo extends AppCompatActivity {
     TextView reciverNName;
     FirebaseDatabase database;
     FirebaseAuth firebaseAuth;
-    ImageView sendbtn;
+    ImageView sendbtn, img_back_chat_2;
     EditText textmsg;
 
     String senderRoom, reciverRoom;
@@ -46,6 +47,7 @@ public class chatwindo extends AppCompatActivity {
     ArrayList<msgModelclass> messagesArrayList;
     messagesAdpter mmessagesAdpter;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,7 @@ public class chatwindo extends AppCompatActivity {
 
         messagesArrayList = new ArrayList<>();
 
+        img_back_chat_2 = findViewById(R.id.img_back_chat_2);
         sendbtn = findViewById(R.id.sendbtnn);
         textmsg = findViewById(R.id.textmsg);
         reciverNName = findViewById(R.id.recivername);
@@ -145,6 +148,11 @@ public class chatwindo extends AppCompatActivity {
                             }
                         });
             }
+        });
+
+
+        img_back_chat_2.setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
         });
 
     }

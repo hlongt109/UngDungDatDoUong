@@ -13,22 +13,15 @@
         android:roundIcon="@drawable/icon_drink_bucket"
         android:supportsRtl="true"
         android:theme="@style/Theme.UngDungDatDoUong">
-        <activity android:name=".activity.CreateTypeDrinkActivity"
-            android:exported="false">
 
-        </activity>
-        <activity android:name=".activity.CreateDrinkActivity"
-            android:exported="false">
-
-        </activity>
         <activity
             android:name=".activity.LoginRegisterActivity"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"

@@ -5,11 +5,37 @@
     android:layout_height="match_parent"
     tools:context=".activity.ChatActivity">
 
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/my_light_primary"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/img_back_chat_1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_arrow_back"/>
+
+        <TextView
+            android:id="@+id/tvListTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
+            android:text="Tin nhắn"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainUserRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"/>
-
+        android:layout_margin="10dp"
+        android:layout_below="@id/layout1"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

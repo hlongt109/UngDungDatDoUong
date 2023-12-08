@@ -29,8 +29,7 @@ public class ChatActivity extends AppCompatActivity{
     UserAdpter adapter;
     FirebaseDatabase database;
     ArrayList<Khachang> usersArrayList;
-    ImageView imglogout;
-    ImageView cumbut,setbut;
+    ImageView img_back_chat_1;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -39,6 +38,7 @@ public class ChatActivity extends AppCompatActivity{
         setContentView(R.layout.activity_chat);
 //        getSupportActionBar().hide();
 
+        img_back_chat_1 = findViewById(R.id.img_back_chat_1);
         database=FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
@@ -51,6 +51,10 @@ public class ChatActivity extends AppCompatActivity{
         adapter = new UserAdpter(ChatActivity.this,usersArrayList);
         mainUserRecyclerView.setAdapter(adapter);
 
+
+        img_back_chat_1.setOnClickListener(v -> {
+            onBackPressed();
+        });
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -68,7 +72,6 @@ public class ChatActivity extends AppCompatActivity{
 
             }
         });
-
 
 
         if (auth.getCurrentUser() == null){

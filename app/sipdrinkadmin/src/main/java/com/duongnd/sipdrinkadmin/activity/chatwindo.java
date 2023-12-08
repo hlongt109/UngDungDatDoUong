@@ -38,7 +38,7 @@ public class chatwindo extends AppCompatActivity {
     TextView reciverNName;
     FirebaseDatabase database;
     FirebaseAuth firebaseAuth;
-    ImageView sendbtn;
+    ImageView sendbtn, img_back_chat_2;
     EditText textmsg;
 
     String senderRoom, reciverRoom;
@@ -60,6 +60,7 @@ public class chatwindo extends AppCompatActivity {
 
         messagesArrayList = new ArrayList<>();
 
+        img_back_chat_2 = findViewById(R.id.img_back_chat_2);
         sendbtn = findViewById(R.id.sendbtnn);
         textmsg = findViewById(R.id.textmsg);
         reciverNName = findViewById(R.id.recivername);
@@ -70,6 +71,11 @@ public class chatwindo extends AppCompatActivity {
         messageAdpter.setLayoutManager(linearLayoutManager);
         mmessagesAdpter = new messagesAdpter(chatwindo.this, messagesArrayList);
         messageAdpter.setAdapter(mmessagesAdpter);
+
+
+        img_back_chat_2.setOnClickListener(v -> {
+            onBackPressed();
+        });
 
 
         Glide.with(this).load(reciverimg).into(profile);
