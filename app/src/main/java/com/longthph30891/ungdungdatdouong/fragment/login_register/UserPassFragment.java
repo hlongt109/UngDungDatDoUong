@@ -114,7 +114,7 @@ public class UserPassFragment extends Fragment {
                 if(validateDate() || validatePhone()){
                     if(ImgUri != null ){
                         UploadPostFb();
-                    }else {
+                    } else {
                         UploadInfor();
                     }
                 }
